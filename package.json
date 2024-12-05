@@ -57,13 +57,13 @@
     "vitest": "^1.0.0 || ^2.0.0"
   },
   "dependencies": {
+    "@ntnyq/utils": "^0.3.1",
     "postcss": "^8.4.49",
     "stylelint": "^16.11.0"
   },
   "devDependencies": {
     "@ntnyq/eslint-config": "^3.8.1",
     "@ntnyq/prettier-config": "^1.22.0",
-    "@ntnyq/utils": "^0.3.1",
     "@vitest/coverage-v8": "^2.1.8",
     "bumpp": "^9.8.1",
     "eslint": "^9.16.0",

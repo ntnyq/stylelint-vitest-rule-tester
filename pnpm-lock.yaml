@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@ntnyq/utils':
+        specifier: ^0.3.1
+        version: 0.3.1
       postcss:
         specifier: ^8.4.49
         version: 8.4.49
@@ -21,9 +24,6 @@ importers:
       '@ntnyq/prettier-config':
         specifier: ^1.22.0
         version: 1.22.0
-      '@ntnyq/utils':
-        specifier: ^0.3.1
-        version: 0.3.1
       '@vitest/coverage-v8':
         specifier: ^2.1.8
         version: 2.1.8(vitest@2.1.8)
