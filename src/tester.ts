@@ -132,9 +132,9 @@ export function createRuleTester(options: RuleTesterInitOptions): RuleTester {
     const {
       // errored,
       warnings,
-      // parseErrors,
-      // deprecations,
-      // invalidOptionWarnings,
+      parseErrors,
+      deprecations,
+      invalidOptionWarnings,
     } = useLinterResult(linterResult)
 
     verifyLintResultMessages({
@@ -142,21 +142,21 @@ export function createRuleTester(options: RuleTesterInitOptions): RuleTester {
       testCase,
       messages: warnings,
     })
-    // verifyLintResultMessages({
-    //   type: 'parseErrors',
-    //   testCase,
-    //   messages: parseErrors,
-    // })
-    // verifyLintResultMessages({
-    //   type: 'deprecations',
-    //   testCase,
-    //   messages: deprecations,
-    // })
-    // verifyLintResultMessages({
-    //   type: 'invalidOptionWarnings',
-    //   testCase,
-    //   messages: invalidOptionWarnings,
-    // })
+    verifyLintResultMessages({
+      type: 'parseErrors',
+      testCase,
+      messages: parseErrors,
+    })
+    verifyLintResultMessages({
+      type: 'deprecations',
+      testCase,
+      messages: deprecations,
+    })
+    verifyLintResultMessages({
+      type: 'invalidOptionWarnings',
+      testCase,
+      messages: invalidOptionWarnings,
+    })
 
     async function fix(code: string) {
       const linterResult = await stylelint.lint({
