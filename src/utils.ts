@@ -21,6 +21,7 @@ export function getRuleName(options: RuleTesterInitOptions) {
 export function normalizeRuleOptions(testCase: NormalizedTestCase, options: RuleTesterInitOptions) {
   const { rule = {} } = options
   const { url } = rule?.meta || {}
+
   if (testCase.ruleOptions) {
     if (Array.isArray(testCase.ruleOptions)) {
       return testCase.ruleOptions.length === 1

@@ -1,4 +1,4 @@
-import { isFunction, isNull, isNumber, isUndefined, toArray } from '@ntnyq/utils'
+import { isEmptyArray, isFunction, isNull, isNumber, isUndefined, toArray } from '@ntnyq/utils'
 import stylelint from 'stylelint'
 import { describe, expect, it } from 'vitest'
 import { DEFAULT_FILE_NAMES } from './constants'
@@ -126,6 +126,7 @@ export function createRuleTester(options: RuleTesterInitOptions): RuleTester {
       code: testCase.code,
       codeFilename: testCase.filename,
       fix: false,
+      quietDeprecationWarnings: true,
     }
 
     const linterResult = await stylelint.lint(lintOptions)
@@ -221,10 +222,10 @@ export function createRuleTester(options: RuleTesterInitOptions): RuleTester {
     if (
       testCase.type === 'invalid' &&
       isUndefined(testCase.output) &&
-      isUndefined(testCase.warnings)
-      // && isUndefined(testCase.parseErrors) &&
-      // isUndefined(testCase.deprecations) &&
-      // isUndefined(testCase.invalidOptionWarnings)
+      isUndefined(testCase.warnings) &&
+      isUndefined(testCase.parseErrors) &&
+      isUndefined(testCase.deprecations) &&
+      isUndefined(testCase.invalidOptionWarnings)
     ) {
       throw new Error(
         `Invalid test case must have either 'output', 'warnings', 'parseErrors', 'deprecations', or 'invalidOptionWarnings' property.`,
@@ -263,10 +264,18 @@ export function createRuleTester(options: RuleTesterInitOptions): RuleTester {
     const linterResult = await each(arg)
     const result = useLinterResult(linterResult)
 
-    expect.soft(result.warnings, 'expect warnings').not.toEqual([])
-    // expect.soft(result.deprecations, 'expect deprecations').not.toEqual([])
-    // expect.soft(result.parseErrors, 'expect parseErrors').not.toEqual([])
-    // expect.soft(result.invalidOptionWarnings, 'expect invalidOptionWarnings').not.toEqual([])
+    const noMessages =
+      isEmptyArray(result.warnings) &&
+      isEmptyArray(result.deprecations) &&
+      isEmptyArray(result.parseErrors) &&
+      isEmptyArray(result.invalidOptionWarnings)
+
+    expect
+      .soft(
+        noMessages,
+        'expect either have warnings, deprecations, parseErrors or invalidOptionWarnings',
+      )
+      .toBeFalsy()
 
     return linterResult
   }

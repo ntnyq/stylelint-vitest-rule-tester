@@ -1,7 +1,10 @@
 import stylelint from 'stylelint'
-import type { CoreRules } from 'stylelint'
+import type { Rule } from 'stylelint'
 
-const { report, ruleMessages, validateOptions } = stylelint.utils
+const {
+  createPlugin,
+  utils: { report, ruleMessages, validateOptions },
+} = stylelint
 
 const ruleName = 'no-empty-source'
 
@@ -13,7 +16,7 @@ const meta = {
   url: 'https://stylelint.io/user-guide/rules/no-empty-source',
 }
 
-const rule: CoreRules['no-empty-source'] = (primary, _secondaryOptions, context) => {
+const ruleFunction: Rule = (primary, secondaryOptions, context) => {
   return (root, result) => {
     const validOptions = validateOptions(result, ruleName, { actual: primary })
 
@@ -38,8 +41,8 @@ const rule: CoreRules['no-empty-source'] = (primary, _secondaryOptions, context)
   }
 }
 
-rule.ruleName = ruleName
-rule.messages = messages
-rule.meta = meta
+ruleFunction.ruleName = ruleName
+ruleFunction.messages = messages
+ruleFunction.meta = meta
 
-export default rule
+export default createPlugin(ruleName, ruleFunction)
