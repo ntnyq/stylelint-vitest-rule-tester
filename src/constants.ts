@@ -8,7 +8,7 @@ export const DEFAULT_RULE_OPTIONS = true
 export const DEFAULT_FILE_NAMES: DefaultFilenames = {
   css: 'file.css',
   less: 'file.less',
-  postcss: 'file.css',
+  postcss: 'file.postcss',
   sass: 'file.sass',
   scss: 'file.scss',
   styl: 'file.styl',
