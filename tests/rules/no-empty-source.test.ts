@@ -1,10 +1,6 @@
-/**
- * @see {@link https://github.com/stylelint/stylelint/tree/main/lib/rules/no-empty-source}
- */
-
 import { expect } from 'vitest'
 import { run } from '../../src'
-import rule from './no-empty-source'
+import rule from '../fixtures/rules/no-empty-source'
 
 run({
   rule,
@@ -16,6 +12,13 @@ run({
     `\n.class {}`,
     `\r\n.class {}`,
     `.box { color: red; }`,
+    {
+      description: 'HTML without CSS',
+      stylelintConfig: {
+        customSyntax: 'postcss-html',
+      },
+      code: '<html></html>',
+    },
   ],
   invalid: [
     {
@@ -189,6 +192,29 @@ run({
               "endColumn": 6,
               "endLine": 2,
               "line": 1,
+              "rule": "no-empty-source",
+              "severity": "error",
+              "text": "Unexpected empty source (no-empty-source)",
+              "url": undefined,
+            },
+          ]
+        `)
+      },
+    },
+    {
+      description: 'CSS block in HTML',
+      stylelintConfig: {
+        customSyntax: 'postcss-html',
+      },
+      code: '<style>\n</style>',
+      warnings(warnings) {
+        expect(warnings).toMatchInlineSnapshot(`
+          [
+            {
+              "column": 1,
+              "endColumn": 2,
+              "endLine": 2,
+              "line": 2,
               "rule": "no-empty-source",
               "severity": "error",
               "text": "Unexpected empty source (no-empty-source)",

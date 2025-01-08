@@ -115,6 +115,7 @@ export function createRuleTester(options: RuleTesterInitOptions): RuleTester {
 
     const linterConfig: LinterConfig = {
       ...options.stylelintConfig,
+      ...testCase.stylelintConfig,
       rules: {
         [ruleName]: normalizeRuleOptions(testCase, options),
       },

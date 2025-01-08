@@ -1,3 +1,7 @@
+/**
+ * @see {@link https://github.com/stylelint/stylelint/tree/main/lib/rules/no-empty-source}
+ */
+
 import stylelint from 'stylelint'
 import type { Rule } from 'stylelint'
 
