@@ -20,6 +20,11 @@ export interface DefaultFilenames {
 export type RuleModule = any
 
 /**
+ * rule options
+ */
+export type RuleOptions = any
+
+/**
  * Rule Tester
  */
 export interface RuleTester {
@@ -161,6 +166,11 @@ export interface StylelintOptions {
    * linter options for `stylelint.lint(options)`
    */
   linterOptions?: LinterOptions
+
+  /**
+   * rule options
+   */
+  ruleOptions?: RuleOptions
 }
 
 /**
@@ -231,7 +241,7 @@ export interface ValidTestCaseBase extends RuleTesterBehaviorOptions, StylelintO
   /**
    * rule options
    */
-  ruleOptions?: any
+  ruleOptions?: RuleOptions
 
   /**
    * lint result

@@ -22,15 +22,16 @@ export function normalizeRuleOptions(testCase: NormalizedTestCase, options: Rule
   const { rule = {} } = options
   const { url } = rule?.meta || {}
 
-  if (testCase.ruleOptions) {
-    if (Array.isArray(testCase.ruleOptions)) {
-      return testCase.ruleOptions.length === 1
-        ? [testCase.ruleOptions[0], { url }]
-        : testCase.ruleOptions
+  const resolvedOptions = testCase.ruleOptions || options.ruleOptions
+
+  if (resolvedOptions) {
+    if (Array.isArray(resolvedOptions)) {
+      return resolvedOptions.length === 1 ? [resolvedOptions[0], { url }] : resolvedOptions
     } else {
-      return [testCase.ruleOptions, { url }]
+      return [resolvedOptions, { url }]
     }
   }
+
   return url ? [DEFAULT_RULE_OPTIONS, { url }] : DEFAULT_RULE_OPTIONS
 }
 

@@ -1,9 +1,15 @@
+/**
+ * @see {@link https://github.com/stylelint/stylelint/tree/main/lib/rules/no-empty-source}
+ */
+
+import stylelint from 'stylelint'
 import { expect } from 'vitest'
 import { run } from '../../src'
-import rule from '../fixtures/rules/no-empty-source'
+
+// console.log((await stylelint.rules['no-empty-source']).ruleName)
 
 run({
-  rule,
+  rule: stylelint.rules['no-empty-source'],
   name: 'no-empty-source',
   valid: [
     `.class {}`,
