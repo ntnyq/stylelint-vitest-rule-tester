@@ -215,7 +215,6 @@ run({
       description: 'ignore less mixin',
       code: $`
         .some-mixin() { margin: 0; }
-        
         span { .some-mixin(); }
       `,
     },
