@@ -3,7 +3,6 @@
  */
 
 import { unindent as $ } from '@ntnyq/utils'
-import stylelint from 'stylelint'
 import { expect } from 'vitest'
 import { run } from '../../src'
 
@@ -11,7 +10,6 @@ import { run } from '../../src'
  * default
  */
 run({
-  rule: stylelint.rules['at-rule-no-unknown'],
   name: 'at-rule-no-unknown',
   valid: [
     `@charset "UTF-8";`,
@@ -73,7 +71,6 @@ run({
  * rule options
  */
 run({
-  rule: stylelint.rules['at-rule-no-unknown'],
   name: 'at-rule-no-unknown',
   ruleOptions: [
     true,
@@ -204,7 +201,6 @@ run({
  * custom syntax
  */
 run({
-  rule: stylelint.rules['at-rule-no-unknown'],
   name: 'at-rule-no-unknown',
   stylelintConfig: {
     customSyntax: 'postcss-less',

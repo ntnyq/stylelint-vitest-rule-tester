@@ -2,14 +2,10 @@
  * @see {@link https://github.com/stylelint/stylelint/tree/main/lib/rules/no-empty-source}
  */
 
-import stylelint from 'stylelint'
 import { expect } from 'vitest'
 import { run } from '../../src'
 
-// console.log((await stylelint.rules['no-empty-source']).ruleName)
-
 run({
-  rule: stylelint.rules['no-empty-source'],
   name: 'no-empty-source',
   valid: [
     `.class {}`,
@@ -18,6 +14,11 @@ run({
     `\n.class {}`,
     `\r\n.class {}`,
     `.box { color: red; }`,
+    {
+      filename: 'disable.css',
+      code: '',
+      ruleOptions: [false],
+    },
     {
       description: 'HTML without CSS',
       stylelintConfig: {
@@ -202,6 +203,32 @@ run({
               "severity": "error",
               "text": "Unexpected empty source (no-empty-source)",
               "url": undefined,
+            },
+          ]
+        `)
+      },
+    },
+    {
+      filename: 'empty-with-url.css',
+      code: '',
+      ruleOptions: [
+        true,
+        {
+          url: 'https://github.com/stylelint/stylelint/tree/main/lib/rules/no-empty-source',
+        },
+      ],
+      warnings(warnings) {
+        expect(warnings).toMatchInlineSnapshot(`
+          [
+            {
+              "column": 1,
+              "endColumn": 2,
+              "endLine": 1,
+              "line": 1,
+              "rule": "no-empty-source",
+              "severity": "error",
+              "text": "Unexpected empty source (no-empty-source)",
+              "url": "https://github.com/stylelint/stylelint/tree/main/lib/rules/no-empty-source",
             },
           ]
         `)
