@@ -2,7 +2,7 @@
   "name": "stylelint-vitest-rule-tester",
   "type": "module",
   "version": "0.0.1",
-  "packageManager": "pnpm@9.15.5",
+  "packageManager": "pnpm@10.2.0",
   "description": "Styelint rule tester with Vitest.",
   "keywords": [
     "rule-tester",
