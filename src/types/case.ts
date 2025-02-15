@@ -21,7 +21,7 @@ export type InvalidTestCaseBase = ValidTestCaseBase & {
   output?: string | ((output: string, input: string) => void) | null
 
   /**
-   * expect for {@link LintResultDeprecation
+   * expect for {@link LintResultDeprecation}
    */
   deprecations?:
     | number

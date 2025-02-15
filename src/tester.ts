@@ -1,32 +1,18 @@
-import {
-  isEmptyArray,
-  isFunction,
-  isNull,
-  isNumber,
-  isUndefined,
-  toArray,
-} from '@ntnyq/utils'
-import deepmerge from 'deepmerge'
+import { isEmptyArray, isFunction, isNull, isUndefined } from '@ntnyq/utils'
 import stylelint from 'stylelint'
 import { describe, expect, it } from 'vitest'
 import { DEFAULT_FILE_NAMES } from './constants'
 import {
   getRuleName,
-  normalizeCaseMessage,
   normalizeLinterResult,
-  normalizeRuleOptions,
   normalizeTestCase,
   normalizeTestExecutionResult,
+  resolveLinterOptions,
+  verifyLintResultMessages,
 } from './utils'
-import type { LinterOptions } from 'stylelint'
 import type {
   DefaultFilenames,
   InvalidTestCase,
-  LintResultDeprecation,
-  LintResultInvalidOptionWarning,
-  LintResultParseError,
-  LintResultWarning,
-  NormalizedTestCase,
   RuleTester,
   RuleTesterInitOptions,
   TestCase,
@@ -34,76 +20,6 @@ import type {
   TestExecutionResult,
   ValidTestCase,
 } from './types'
-
-function verifyLintResultMessages({
-  type,
-  testCase,
-  messages,
-}: {
-  type: 'warnings'
-  testCase: NormalizedTestCase
-  messages: LintResultWarning[]
-}): void
-function verifyLintResultMessages({
-  type,
-  testCase,
-  messages,
-}: {
-  type: 'parseErrors'
-  testCase: NormalizedTestCase
-  messages: LintResultParseError[]
-}): void
-function verifyLintResultMessages({
-  type,
-  testCase,
-  messages,
-}: {
-  type: 'deprecations'
-  testCase: NormalizedTestCase
-  messages: LintResultDeprecation[]
-}): void
-function verifyLintResultMessages({
-  type,
-  testCase,
-  messages,
-}: {
-  type: 'invalidOptionWarnings'
-  testCase: NormalizedTestCase
-  messages: LintResultInvalidOptionWarning[]
-}): void
-function verifyLintResultMessages({
-  type,
-  testCase,
-  messages,
-}: {
-  type: 'warnings' | 'parseErrors' | 'deprecations' | 'invalidOptionWarnings'
-  testCase: NormalizedTestCase
-  messages: any[]
-}) {
-  if (!testCase[type]) {
-    return
-  }
-
-  if (isFunction(testCase[type])) {
-    testCase[type]?.(messages)
-  } else if (isNumber(testCase[type])) {
-    expect.soft(messages.length, `number of ${type}`).toBe(testCase[type])
-  } else {
-    const testCaseMessages = toArray(testCase[type]).map(message =>
-      normalizeCaseMessage(message),
-    )
-
-    expect(testCaseMessages.length, `number of ${type}`).toBe(
-      testCase[type].length,
-    )
-
-    testCaseMessages.forEach((expected, idx) => {
-      expect
-        .soft(messages[idx], `object of ${type}-${idx}`)
-        .toMatchObject(expected)
-    })
-  }
-}
 
 export function createRuleTester(options: RuleTesterInitOptions): RuleTester {
   const defaultFilenames: Partial<DefaultFilenames> = {
@@ -124,24 +40,8 @@ export function createRuleTester(options: RuleTesterInitOptions): RuleTester {
       ...testCase,
     }
 
-    const lintOptions: LinterOptions = {
-      ...options.linterOptions,
-      config: {
-        ...deepmerge(
-          options.stylelintConfig || {},
-          testCase.stylelintConfig || {},
-        ),
-        rules: {
-          [ruleName]: normalizeRuleOptions(testCase, options),
-        },
-      },
-      code: testCase.code,
-      codeFilename: testCase.filename,
-      fix: false,
-      quietDeprecationWarnings: true,
-    }
-
-    const linterResult = await stylelint.lint(lintOptions)
+    const linterOptions = resolveLinterOptions(ruleName, options, testCase)
+    const linterResult = await stylelint.lint(linterOptions)
     const {
       // errored,
       warnings,
@@ -173,7 +73,7 @@ export function createRuleTester(options: RuleTesterInitOptions): RuleTester {
 
     async function fix(code: string) {
       const linterResult = await stylelint.lint({
-        ...lintOptions,
+        ...linterOptions,
         code,
         fix: true,
       })
@@ -251,7 +151,7 @@ export function createRuleTester(options: RuleTesterInitOptions): RuleTester {
 
     if (result.fixed && verifyAfterFix) {
       const linterResult = await stylelint.lint({
-        ...lintOptions,
+        ...linterOptions,
         code: result.code,
         fix: false,
       })

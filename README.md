@@ -6,7 +6,7 @@
 [![CODECOV](https://codecov.io/github/ntnyq/stylelint-vitest-rule-tester/graph/badge.svg?token=34A8PZF57N)](https://codecov.io/github/ntnyq/stylelint-vitest-rule-tester)
 [![LICENSE](https://img.shields.io/github/license/ntnyq/stylelint-vitest-rule-tester.svg)](https://github.com/ntnyq/stylelint-vitest-rule-tester/blob/main/LICENSE)
 
-> Styelint rule tester with Vitest.
+> Styellint rule tester with Vitest, with more powerful and friendly APIs
 
 ## Install
 
