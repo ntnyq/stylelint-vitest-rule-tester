@@ -1,6 +1,7 @@
 import { isFunction, isNumber, toArray } from '@ntnyq/utils'
 import { expect } from 'vitest'
 import { normalizeCaseMessage } from './normalizeCaseMessage'
+import type Stylelint from 'stylelint'
 import type {
   LintResultDeprecation,
   LintResultInvalidOptionWarning,
@@ -9,7 +10,7 @@ import type {
   NormalizedTestCase,
 } from '../types'
 
-export function verifyLintResultMessages({
+function verifyLintResultMessages({
   type,
   testCase,
   messages,
@@ -18,7 +19,7 @@ export function verifyLintResultMessages({
   testCase: NormalizedTestCase
   messages: LintResultWarning[]
 }): void
-export function verifyLintResultMessages({
+function verifyLintResultMessages({
   type,
   testCase,
   messages,
@@ -27,7 +28,7 @@ export function verifyLintResultMessages({
   testCase: NormalizedTestCase
   messages: LintResultParseError[]
 }): void
-export function verifyLintResultMessages({
+function verifyLintResultMessages({
   type,
   testCase,
   messages,
@@ -36,7 +37,7 @@ export function verifyLintResultMessages({
   testCase: NormalizedTestCase
   messages: LintResultDeprecation[]
 }): void
-export function verifyLintResultMessages({
+function verifyLintResultMessages({
   type,
   testCase,
   messages,
@@ -45,7 +46,7 @@ export function verifyLintResultMessages({
   testCase: NormalizedTestCase
   messages: LintResultInvalidOptionWarning[]
 }): void
-export function verifyLintResultMessages({
+function verifyLintResultMessages({
   type,
   testCase,
   messages,
@@ -77,4 +78,30 @@ export function verifyLintResultMessages({
         .toMatchObject(expected)
     })
   }
+}
+
+export function validateLintResult(
+  testCase: NormalizedTestCase,
+  lintResult: Stylelint.LintResult,
+) {
+  verifyLintResultMessages({
+    type: 'warnings',
+    testCase,
+    messages: lintResult.warnings,
+  })
+  verifyLintResultMessages({
+    type: 'parseErrors',
+    testCase,
+    messages: lintResult.parseErrors,
+  })
+  verifyLintResultMessages({
+    type: 'deprecations',
+    testCase,
+    messages: lintResult.deprecations,
+  })
+  verifyLintResultMessages({
+    type: 'invalidOptionWarnings',
+    testCase,
+    messages: lintResult.invalidOptionWarnings,
+  })
 }

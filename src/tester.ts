@@ -3,11 +3,12 @@ import stylelint from 'stylelint'
 import { describe, expect, it } from 'vitest'
 import { DEFAULT_FILE_NAMES } from './constants'
 import {
-  getRuleName,
   normalizeLinterResult,
   normalizeTestCase,
   resolveLinterOptions,
-  verifyLintResultMessages,
+  resolveRuleMeta,
+  resolveRuleOptions,
+  validateLintResult,
 } from './utils'
 import type {
   DefaultFilenames,
@@ -25,7 +26,6 @@ export function createRuleTester(options: RuleTesterInitOptions): RuleTester {
     ...DEFAULT_FILE_NAMES,
     ...options.defaultFileNames,
   }
-  const ruleName = getRuleName(options)
 
   async function each(c: TestCase) {
     const testCase = normalizeTestCase(c, defaultFilenames)
@@ -39,30 +39,13 @@ export function createRuleTester(options: RuleTesterInitOptions): RuleTester {
       ...testCase,
     }
 
-    const linterOptions = resolveLinterOptions(ruleName, options, testCase)
+    const ruleMeta = await resolveRuleMeta(options)
+    const ruleOptions = resolveRuleOptions(testCase, options, ruleMeta)
+    const linterOptions = resolveLinterOptions(options, testCase, ruleOptions)
     const linterResult = await stylelint.lint(linterOptions)
     const [lintResult] = linterResult.results
 
-    verifyLintResultMessages({
-      type: 'warnings',
-      testCase,
-      messages: lintResult.warnings,
-    })
-    verifyLintResultMessages({
-      type: 'parseErrors',
-      testCase,
-      messages: lintResult.parseErrors,
-    })
-    verifyLintResultMessages({
-      type: 'deprecations',
-      testCase,
-      messages: lintResult.deprecations,
-    })
-    verifyLintResultMessages({
-      type: 'invalidOptionWarnings',
-      testCase,
-      messages: lintResult.invalidOptionWarnings,
-    })
+    validateLintResult(testCase, lintResult)
 
     async function fix(code: string) {
       const linterResult = await stylelint.lint({
@@ -150,6 +133,7 @@ export function createRuleTester(options: RuleTesterInitOptions): RuleTester {
       })
       const [lintResult] = results
 
+      expect.soft(lintResult, 'no lint result').toBeDefined()
       expect.soft(lintResult.warnings, 'no warnings after fix').toEqual([])
     }
 
@@ -214,7 +198,7 @@ export function createRuleTester(options: RuleTesterInitOptions): RuleTester {
   }
 
   function run(cases: TestCasesOptions) {
-    describe(ruleName, () => {
+    describe(options.name, () => {
       if (cases.valid?.length) {
         describe('valid', () => {
           cases.valid!.forEach((c, index) => {

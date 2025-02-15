@@ -10,6 +10,3 @@ export const DEFAULT_FILE_NAMES = Object.freeze<DefaultFilenames>({
   stylus: 'file.stylus',
 })
 export const DEFAULT_FILE_NAME = DEFAULT_FILE_NAMES.css
-
-export const DEFAULT_RULE_OPTIONS = true
-export const DEFAULT_RULE_NAME = 'rule-to-test'

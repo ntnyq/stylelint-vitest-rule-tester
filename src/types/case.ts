@@ -1,4 +1,3 @@
-import type { RuleOptions } from './rule'
 import type {
   LintResultDeprecation,
   LintResultInvalidOptionWarning,
@@ -83,11 +82,6 @@ export type ValidTestCaseBase = RuleTesterBehaviorOptions
      * only run this test case
      */
     only?: boolean
-
-    /**
-     * rule options
-     */
-    ruleOptions?: RuleOptions
 
     /**
      * skip this test case

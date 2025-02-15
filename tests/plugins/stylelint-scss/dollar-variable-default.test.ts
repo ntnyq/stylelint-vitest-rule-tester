@@ -37,7 +37,7 @@ run({
               "rule": "scss/dollar-variable-default",
               "severity": "error",
               "text": "Expected !default flag for "$var" (scss/dollar-variable-default)",
-              "url": undefined,
+              "url": "https://github.com/stylelint-scss/stylelint-scss/blob/master/src/rules/dollar-variable-default",
             },
           ]
         `)
@@ -64,7 +64,7 @@ run({
               "rule": "scss/dollar-variable-default",
               "severity": "error",
               "text": "Expected !default flag for "$local-var" (scss/dollar-variable-default)",
-              "url": undefined,
+              "url": "https://github.com/stylelint-scss/stylelint-scss/blob/master/src/rules/dollar-variable-default",
             },
           ]
         `)
@@ -93,7 +93,7 @@ run({
               "rule": "scss/dollar-variable-default",
               "severity": "error",
               "text": "Expected !default flag for "$nested-var" (scss/dollar-variable-default)",
-              "url": undefined,
+              "url": "https://github.com/stylelint-scss/stylelint-scss/blob/master/src/rules/dollar-variable-default",
             },
           ]
         `)
@@ -139,7 +139,7 @@ run({
               "rule": "scss/dollar-variable-default",
               "severity": "error",
               "text": "Expected !default flag for "$var" (scss/dollar-variable-default)",
-              "url": undefined,
+              "url": "https://github.com/stylelint-scss/stylelint-scss/blob/master/src/rules/dollar-variable-default",
             },
           ]
         `)

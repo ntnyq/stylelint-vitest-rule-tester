@@ -1,4 +1,3 @@
-export * from './rule'
 export * from './case'
 export * from './file'
 export * from './test'

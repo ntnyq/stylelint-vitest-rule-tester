@@ -43,7 +43,7 @@ run({
               "rule": "no-empty-source",
               "severity": "error",
               "text": "Unexpected empty source (no-empty-source)",
-              "url": undefined,
+              "url": "https://stylelint.io/user-guide/rules/no-empty-source",
             },
           ]
         `)
@@ -64,7 +64,7 @@ run({
               "rule": "no-empty-source",
               "severity": "error",
               "text": "Unexpected empty source (no-empty-source)",
-              "url": undefined,
+              "url": "https://stylelint.io/user-guide/rules/no-empty-source",
             },
           ]
         `)
@@ -85,7 +85,7 @@ run({
               "rule": "no-empty-source",
               "severity": "error",
               "text": "Unexpected empty source (no-empty-source)",
-              "url": undefined,
+              "url": "https://stylelint.io/user-guide/rules/no-empty-source",
             },
           ]
         `)
@@ -106,7 +106,7 @@ run({
               "rule": "no-empty-source",
               "severity": "error",
               "text": "Unexpected empty source (no-empty-source)",
-              "url": undefined,
+              "url": "https://stylelint.io/user-guide/rules/no-empty-source",
             },
           ]
         `)
@@ -127,7 +127,7 @@ run({
               "rule": "no-empty-source",
               "severity": "error",
               "text": "Unexpected empty source (no-empty-source)",
-              "url": undefined,
+              "url": "https://stylelint.io/user-guide/rules/no-empty-source",
             },
           ]
         `)
@@ -148,7 +148,7 @@ run({
               "rule": "no-empty-source",
               "severity": "error",
               "text": "Unexpected empty source (no-empty-source)",
-              "url": undefined,
+              "url": "https://stylelint.io/user-guide/rules/no-empty-source",
             },
           ]
         `)
@@ -169,7 +169,7 @@ run({
               "rule": "no-empty-source",
               "severity": "error",
               "text": "Unexpected empty source (no-empty-source)",
-              "url": undefined,
+              "url": "https://stylelint.io/user-guide/rules/no-empty-source",
             },
           ]
         `)
@@ -190,7 +190,7 @@ run({
               "rule": "no-empty-source",
               "severity": "error",
               "text": "Unexpected empty source (no-empty-source)",
-              "url": undefined,
+              "url": "https://stylelint.io/user-guide/rules/no-empty-source",
             },
           ]
         `)
@@ -211,7 +211,7 @@ run({
               "rule": "no-empty-source",
               "severity": "error",
               "text": "Unexpected empty source (no-empty-source)",
-              "url": undefined,
+              "url": "https://stylelint.io/user-guide/rules/no-empty-source",
             },
           ]
         `)
@@ -262,7 +262,7 @@ run({
               "rule": "no-empty-source",
               "severity": "error",
               "text": "Unexpected empty source (no-empty-source)",
-              "url": undefined,
+              "url": "https://stylelint.io/user-guide/rules/no-empty-source",
             },
           ]
         `)

@@ -1,6 +1,5 @@
 import type Postcss from 'postcss'
 import type Stylelint from 'stylelint'
-import type { RuleOptions } from './rule'
 
 export type StylelintLinterResult = Omit<
   Stylelint.LinterResult,
@@ -43,7 +42,7 @@ export interface StylelintOptions {
   /**
    * rule options
    */
-  ruleOptions?: RuleOptions
+  ruleOptions?: any
 
   /**
    * stylelint config

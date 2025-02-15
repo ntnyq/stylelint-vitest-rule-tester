@@ -1,20 +1,18 @@
 import deepmerge from 'deepmerge'
-import { normalizeRuleOptions } from './normalizeRuleOptions'
 import type Stylelint from 'stylelint'
 import type { NormalizedTestCase, RuleTesterInitOptions } from '../types'
 
 /**
  * Resolve linter options of stylelint
  *
- * @param ruleName - rule name
  * @param options - tester init options
  * @param testCase - normalized test case
  * @returns resolved linter options
  */
 export function resolveLinterOptions(
-  ruleName: string,
   options: RuleTesterInitOptions,
   testCase: NormalizedTestCase,
+  ruleOptions: any,
 ) {
   const linterOptions: Stylelint.LinterOptions = {
     ...options.linterOptions,
@@ -24,7 +22,7 @@ export function resolveLinterOptions(
         testCase.stylelintConfig || {},
       ),
       rules: {
-        [ruleName]: normalizeRuleOptions(testCase, options),
+        [options.name]: ruleOptions,
       },
     },
     code: testCase.code,

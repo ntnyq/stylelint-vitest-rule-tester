@@ -1,6 +1,5 @@
 import type { InvalidTestCase, TestCase, ValidTestCase } from './case'
 import type { DefaultFilenames } from './file'
-import type { RuleModule } from './rule'
 import type { StylelintOptions } from './stylelint'
 import type { TestCasesOptions, TestExecutionResult } from './test'
 
@@ -36,19 +35,14 @@ export type RuleTesterBehaviorOptions = {
 export type RuleTesterInitOptions = RuleTesterBehaviorOptions
   & StylelintOptions & {
     /**
+     * rule name to test
+     */
+    name: string
+
+    /**
      * default filenames to be used for tests
      */
     defaultFileNames?: Partial<DefaultFilenames>
-
-    /**
-     * rule name to test
-     */
-    name?: string
-
-    /**
-     * rule module to test
-     */
-    rule?: RuleModule
   }
 
 /**
