@@ -1,0 +1,810 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`at-rule-no-vendor-prefix > invalid > Invalid #4: @-ms-viewport { orientation: landscape; } 3`] = `
+{
+  "code": "@viewport { orientation: landscape; }",
+  "cwd": "/Users/ntnyq/Desktop/github/ntnyq/stylelint-vitest-rule-tester",
+  "errored": false,
+  "fixed": true,
+  "output": "@viewport { orientation: landscape; }",
+  "report": "[{"source":"/Users/ntnyq/Desktop/github/ntnyq/stylelint-vitest-rule-tester/file.css","deprecations":[],"invalidOptionWarnings":[],"parseErrors":[],"errored":false,"warnings":[]}]",
+  "reportedDisables": [],
+  "results": [
+    {
+      "_postcssResult": Result {
+        "css": "@-ms-viewport { orientation: landscape; }",
+        "map": undefined,
+        "messages": [],
+        "opts": {
+          "from": "/Users/ntnyq/Desktop/github/ntnyq/stylelint-vitest-rule-tester/file.css",
+          "syntax": {
+            "parse": [Function],
+            "stringify": [Function],
+          },
+        },
+        "processor": Processor {
+          "plugins": [],
+          "version": "8.5.2",
+        },
+        "root": {
+          "indexes": {},
+          "inputs": [
+            {
+              "css": "@-ms-viewport { orientation: landscape; }",
+              "file": "/Users/ntnyq/Desktop/github/ntnyq/stylelint-vitest-rule-tester/file.css",
+              "hasBOM": false,
+            },
+          ],
+          "lastEach": 3,
+          "nodes": [
+            {
+              "indexes": {},
+              "lastEach": 3,
+              "name": "viewport",
+              "nodes": [
+                {
+                  "prop": "orientation",
+                  "raws": {
+                    "before": " ",
+                    "between": ": ",
+                  },
+                  "source": {
+                    "end": {
+                      "column": 39,
+                      "line": 1,
+                      "offset": 39,
+                    },
+                    "inputId": 0,
+                    "start": {
+                      "column": 17,
+                      "line": 1,
+                      "offset": 16,
+                    },
+                  },
+                  "type": "decl",
+                  "value": "landscape",
+                },
+              ],
+              "params": "",
+              "raws": {
+                "after": " ",
+                "afterName": "",
+                "before": "",
+                "between": " ",
+                "semicolon": true,
+              },
+              "source": {
+                "end": {
+                  "column": 41,
+                  "line": 1,
+                  "offset": 41,
+                },
+                "inputId": 0,
+                "start": {
+                  "column": 1,
+                  "line": 1,
+                  "offset": 0,
+                },
+              },
+              "type": "atrule",
+            },
+          ],
+          "raws": {
+            "after": "",
+            "semicolon": false,
+          },
+          "source": {
+            "end": {
+              "column": 42,
+              "line": 1,
+              "offset": 41,
+            },
+            "inputId": 0,
+            "start": {
+              "column": 1,
+              "line": 1,
+              "offset": 0,
+            },
+          },
+          "type": "root",
+        },
+        "stylelint": {
+          "config": {
+            "fix": true,
+            "rules": {
+              "at-rule-no-vendor-prefix": [
+                true,
+              ],
+            },
+            "validate": true,
+          },
+          "customMessages": {
+            "at-rule-no-vendor-prefix": undefined,
+          },
+          "customUrls": {
+            "at-rule-no-vendor-prefix": undefined,
+          },
+          "disabledRanges": {
+            "all": [],
+          },
+          "fixersData": {
+            "at-rule-no-vendor-prefix": 1,
+          },
+          "quiet": undefined,
+          "quietDeprecationWarnings": true,
+          "rangesOfComputedEditInfos": [],
+          "ruleMetadata": {
+            "at-rule-no-vendor-prefix": {
+              "fixable": true,
+              "url": "https://stylelint.io/user-guide/rules/at-rule-no-vendor-prefix",
+            },
+          },
+          "ruleSeverities": {
+            "at-rule-no-vendor-prefix": "error",
+          },
+          "stylelintError": false,
+          "stylelintWarning": false,
+        },
+      },
+      "deprecations": [],
+      "errored": false,
+      "ignored": undefined,
+      "invalidOptionWarnings": [],
+      "parseErrors": [],
+      "source": "/Users/ntnyq/Desktop/github/ntnyq/stylelint-vitest-rule-tester/file.css",
+      "warnings": [],
+    },
+  ],
+  "ruleMetadata": {
+    "at-rule-no-vendor-prefix": {
+      "fixable": true,
+      "url": "https://stylelint.io/user-guide/rules/at-rule-no-vendor-prefix",
+    },
+  },
+  "steps": [
+    {
+      "code": "@viewport { orientation: landscape; }",
+      "cwd": "/Users/ntnyq/Desktop/github/ntnyq/stylelint-vitest-rule-tester",
+      "errored": false,
+      "fixed": true,
+      "output": "@viewport { orientation: landscape; }",
+      "report": "[{"source":"/Users/ntnyq/Desktop/github/ntnyq/stylelint-vitest-rule-tester/file.css","deprecations":[],"invalidOptionWarnings":[],"parseErrors":[],"errored":false,"warnings":[]}]",
+      "reportedDisables": [],
+      "results": [
+        {
+          "_postcssResult": Result {
+            "css": "@-ms-viewport { orientation: landscape; }",
+            "map": undefined,
+            "messages": [],
+            "opts": {
+              "from": "/Users/ntnyq/Desktop/github/ntnyq/stylelint-vitest-rule-tester/file.css",
+              "syntax": {
+                "parse": [Function],
+                "stringify": [Function],
+              },
+            },
+            "processor": Processor {
+              "plugins": [],
+              "version": "8.5.2",
+            },
+            "root": {
+              "indexes": {},
+              "inputs": [
+                {
+                  "css": "@-ms-viewport { orientation: landscape; }",
+                  "file": "/Users/ntnyq/Desktop/github/ntnyq/stylelint-vitest-rule-tester/file.css",
+                  "hasBOM": false,
+                },
+              ],
+              "lastEach": 3,
+              "nodes": [
+                {
+                  "indexes": {},
+                  "lastEach": 3,
+                  "name": "viewport",
+                  "nodes": [
+                    {
+                      "prop": "orientation",
+                      "raws": {
+                        "before": " ",
+                        "between": ": ",
+                      },
+                      "source": {
+                        "end": {
+                          "column": 39,
+                          "line": 1,
+                          "offset": 39,
+                        },
+                        "inputId": 0,
+                        "start": {
+                          "column": 17,
+                          "line": 1,
+                          "offset": 16,
+                        },
+                      },
+                      "type": "decl",
+                      "value": "landscape",
+                    },
+                  ],
+                  "params": "",
+                  "raws": {
+                    "after": " ",
+                    "afterName": "",
+                    "before": "",
+                    "between": " ",
+                    "semicolon": true,
+                  },
+                  "source": {
+                    "end": {
+                      "column": 41,
+                      "line": 1,
+                      "offset": 41,
+                    },
+                    "inputId": 0,
+                    "start": {
+                      "column": 1,
+                      "line": 1,
+                      "offset": 0,
+                    },
+                  },
+                  "type": "atrule",
+                },
+              ],
+              "raws": {
+                "after": "",
+                "semicolon": false,
+              },
+              "source": {
+                "end": {
+                  "column": 42,
+                  "line": 1,
+                  "offset": 41,
+                },
+                "inputId": 0,
+                "start": {
+                  "column": 1,
+                  "line": 1,
+                  "offset": 0,
+                },
+              },
+              "type": "root",
+            },
+            "stylelint": {
+              "config": {
+                "fix": true,
+                "rules": {
+                  "at-rule-no-vendor-prefix": [
+                    true,
+                  ],
+                },
+                "validate": true,
+              },
+              "customMessages": {
+                "at-rule-no-vendor-prefix": undefined,
+              },
+              "customUrls": {
+                "at-rule-no-vendor-prefix": undefined,
+              },
+              "disabledRanges": {
+                "all": [],
+              },
+              "fixersData": {
+                "at-rule-no-vendor-prefix": 1,
+              },
+              "quiet": undefined,
+              "quietDeprecationWarnings": true,
+              "rangesOfComputedEditInfos": [],
+              "ruleMetadata": {
+                "at-rule-no-vendor-prefix": {
+                  "fixable": true,
+                  "url": "https://stylelint.io/user-guide/rules/at-rule-no-vendor-prefix",
+                },
+              },
+              "ruleSeverities": {
+                "at-rule-no-vendor-prefix": "error",
+              },
+              "stylelintError": false,
+              "stylelintWarning": false,
+            },
+          },
+          "deprecations": [],
+          "errored": false,
+          "ignored": undefined,
+          "invalidOptionWarnings": [],
+          "parseErrors": [],
+          "source": "/Users/ntnyq/Desktop/github/ntnyq/stylelint-vitest-rule-tester/file.css",
+          "warnings": [],
+        },
+      ],
+      "ruleMetadata": {
+        "at-rule-no-vendor-prefix": {
+          "fixable": true,
+          "url": "https://stylelint.io/user-guide/rules/at-rule-no-vendor-prefix",
+        },
+      },
+    },
+    {
+      "code": "@viewport { orientation: landscape; }",
+      "cwd": "/Users/ntnyq/Desktop/github/ntnyq/stylelint-vitest-rule-tester",
+      "errored": false,
+      "fixed": false,
+      "output": "@viewport { orientation: landscape; }",
+      "report": "[{"source":"/Users/ntnyq/Desktop/github/ntnyq/stylelint-vitest-rule-tester/file.css","deprecations":[],"invalidOptionWarnings":[],"parseErrors":[],"errored":false,"warnings":[]}]",
+      "reportedDisables": [],
+      "results": [
+        {
+          "_postcssResult": Result {
+            "css": "@viewport { orientation: landscape; }",
+            "map": undefined,
+            "messages": [],
+            "opts": {
+              "from": "/Users/ntnyq/Desktop/github/ntnyq/stylelint-vitest-rule-tester/file.css",
+              "syntax": {
+                "parse": [Function],
+                "stringify": [Function],
+              },
+            },
+            "processor": Processor {
+              "plugins": [],
+              "version": "8.5.2",
+            },
+            "root": {
+              "indexes": {},
+              "inputs": [
+                {
+                  "css": "@viewport { orientation: landscape; }",
+                  "file": "/Users/ntnyq/Desktop/github/ntnyq/stylelint-vitest-rule-tester/file.css",
+                  "hasBOM": false,
+                },
+              ],
+              "lastEach": 3,
+              "nodes": [
+                {
+                  "indexes": {},
+                  "lastEach": 3,
+                  "name": "viewport",
+                  "nodes": [
+                    {
+                      "prop": "orientation",
+                      "raws": {
+                        "before": " ",
+                        "between": ": ",
+                      },
+                      "source": {
+                        "end": {
+                          "column": 35,
+                          "line": 1,
+                          "offset": 35,
+                        },
+                        "inputId": 0,
+                        "start": {
+                          "column": 13,
+                          "line": 1,
+                          "offset": 12,
+                        },
+                      },
+                      "type": "decl",
+                      "value": "landscape",
+                    },
+                  ],
+                  "params": "",
+                  "raws": {
+                    "after": " ",
+                    "afterName": "",
+                    "before": "",
+                    "between": " ",
+                    "semicolon": true,
+                  },
+                  "source": {
+                    "end": {
+                      "column": 37,
+                      "line": 1,
+                      "offset": 37,
+                    },
+                    "inputId": 0,
+                    "start": {
+                      "column": 1,
+                      "line": 1,
+                      "offset": 0,
+                    },
+                  },
+                  "type": "atrule",
+                },
+              ],
+              "raws": {
+                "after": "",
+                "semicolon": false,
+              },
+              "source": {
+                "end": {
+                  "column": 38,
+                  "line": 1,
+                  "offset": 37,
+                },
+                "inputId": 0,
+                "start": {
+                  "column": 1,
+                  "line": 1,
+                  "offset": 0,
+                },
+              },
+              "type": "root",
+            },
+            "stylelint": {
+              "config": {
+                "fix": true,
+                "rules": {
+                  "at-rule-no-vendor-prefix": [
+                    true,
+                  ],
+                },
+                "validate": true,
+              },
+              "customMessages": {
+                "at-rule-no-vendor-prefix": undefined,
+              },
+              "customUrls": {
+                "at-rule-no-vendor-prefix": undefined,
+              },
+              "disabledRanges": {
+                "all": [],
+              },
+              "fixersData": {},
+              "quiet": undefined,
+              "quietDeprecationWarnings": true,
+              "rangesOfComputedEditInfos": [],
+              "ruleMetadata": {
+                "at-rule-no-vendor-prefix": {
+                  "fixable": true,
+                  "url": "https://stylelint.io/user-guide/rules/at-rule-no-vendor-prefix",
+                },
+              },
+              "ruleSeverities": {
+                "at-rule-no-vendor-prefix": "error",
+              },
+              "stylelintError": false,
+              "stylelintWarning": false,
+            },
+          },
+          "deprecations": [],
+          "errored": false,
+          "ignored": undefined,
+          "invalidOptionWarnings": [],
+          "parseErrors": [],
+          "source": "/Users/ntnyq/Desktop/github/ntnyq/stylelint-vitest-rule-tester/file.css",
+          "warnings": [],
+        },
+      ],
+      "ruleMetadata": {
+        "at-rule-no-vendor-prefix": {
+          "fixable": true,
+          "url": "https://stylelint.io/user-guide/rules/at-rule-no-vendor-prefix",
+        },
+      },
+    },
+  ],
+}
+`;
+
+exports[`at-rule-no-vendor-prefix > valid > Valid #1: @viewport { orientation: landscape; } 1`] = `
+{
+  "code": "@viewport { orientation: landscape; }",
+  "cwd": "/Users/ntnyq/Desktop/github/ntnyq/stylelint-vitest-rule-tester",
+  "errored": false,
+  "fixed": false,
+  "output": "@viewport { orientation: landscape; }",
+  "report": "[{"source":"/Users/ntnyq/Desktop/github/ntnyq/stylelint-vitest-rule-tester/file.css","deprecations":[],"invalidOptionWarnings":[],"parseErrors":[],"errored":false,"warnings":[]}]",
+  "reportedDisables": [],
+  "results": [
+    {
+      "_postcssResult": Result {
+        "css": "@viewport { orientation: landscape; }",
+        "map": undefined,
+        "messages": [],
+        "opts": {
+          "from": "/Users/ntnyq/Desktop/github/ntnyq/stylelint-vitest-rule-tester/file.css",
+          "syntax": {
+            "parse": [Function],
+            "stringify": [Function],
+          },
+        },
+        "processor": Processor {
+          "plugins": [],
+          "version": "8.5.2",
+        },
+        "root": {
+          "indexes": {},
+          "inputs": [
+            {
+              "css": "@viewport { orientation: landscape; }",
+              "file": "/Users/ntnyq/Desktop/github/ntnyq/stylelint-vitest-rule-tester/file.css",
+              "hasBOM": false,
+            },
+          ],
+          "lastEach": 3,
+          "nodes": [
+            {
+              "indexes": {},
+              "lastEach": 3,
+              "name": "viewport",
+              "nodes": [
+                {
+                  "prop": "orientation",
+                  "raws": {
+                    "before": " ",
+                    "between": ": ",
+                  },
+                  "source": {
+                    "end": {
+                      "column": 35,
+                      "line": 1,
+                      "offset": 35,
+                    },
+                    "inputId": 0,
+                    "start": {
+                      "column": 13,
+                      "line": 1,
+                      "offset": 12,
+                    },
+                  },
+                  "type": "decl",
+                  "value": "landscape",
+                },
+              ],
+              "params": "",
+              "raws": {
+                "after": " ",
+                "afterName": "",
+                "before": "",
+                "between": " ",
+                "semicolon": true,
+              },
+              "source": {
+                "end": {
+                  "column": 37,
+                  "line": 1,
+                  "offset": 37,
+                },
+                "inputId": 0,
+                "start": {
+                  "column": 1,
+                  "line": 1,
+                  "offset": 0,
+                },
+              },
+              "type": "atrule",
+            },
+          ],
+          "raws": {
+            "after": "",
+            "semicolon": false,
+          },
+          "source": {
+            "end": {
+              "column": 38,
+              "line": 1,
+              "offset": 37,
+            },
+            "inputId": 0,
+            "start": {
+              "column": 1,
+              "line": 1,
+              "offset": 0,
+            },
+          },
+          "type": "root",
+        },
+        "stylelint": {
+          "config": {
+            "fix": true,
+            "rules": {
+              "at-rule-no-vendor-prefix": [
+                true,
+              ],
+            },
+            "validate": true,
+          },
+          "customMessages": {
+            "at-rule-no-vendor-prefix": undefined,
+          },
+          "customUrls": {
+            "at-rule-no-vendor-prefix": undefined,
+          },
+          "disabledRanges": {
+            "all": [],
+          },
+          "fixersData": {},
+          "quiet": undefined,
+          "quietDeprecationWarnings": true,
+          "rangesOfComputedEditInfos": [],
+          "ruleMetadata": {
+            "at-rule-no-vendor-prefix": {
+              "fixable": true,
+              "url": "https://stylelint.io/user-guide/rules/at-rule-no-vendor-prefix",
+            },
+          },
+          "ruleSeverities": {
+            "at-rule-no-vendor-prefix": "error",
+          },
+          "stylelintError": false,
+          "stylelintWarning": false,
+        },
+      },
+      "deprecations": [],
+      "errored": false,
+      "ignored": undefined,
+      "invalidOptionWarnings": [],
+      "parseErrors": [],
+      "source": "/Users/ntnyq/Desktop/github/ntnyq/stylelint-vitest-rule-tester/file.css",
+      "warnings": [],
+    },
+  ],
+  "ruleMetadata": {
+    "at-rule-no-vendor-prefix": {
+      "fixable": true,
+      "url": "https://stylelint.io/user-guide/rules/at-rule-no-vendor-prefix",
+    },
+  },
+  "steps": [
+    {
+      "code": "@viewport { orientation: landscape; }",
+      "cwd": "/Users/ntnyq/Desktop/github/ntnyq/stylelint-vitest-rule-tester",
+      "errored": false,
+      "fixed": false,
+      "output": "@viewport { orientation: landscape; }",
+      "report": "[{"source":"/Users/ntnyq/Desktop/github/ntnyq/stylelint-vitest-rule-tester/file.css","deprecations":[],"invalidOptionWarnings":[],"parseErrors":[],"errored":false,"warnings":[]}]",
+      "reportedDisables": [],
+      "results": [
+        {
+          "_postcssResult": Result {
+            "css": "@viewport { orientation: landscape; }",
+            "map": undefined,
+            "messages": [],
+            "opts": {
+              "from": "/Users/ntnyq/Desktop/github/ntnyq/stylelint-vitest-rule-tester/file.css",
+              "syntax": {
+                "parse": [Function],
+                "stringify": [Function],
+              },
+            },
+            "processor": Processor {
+              "plugins": [],
+              "version": "8.5.2",
+            },
+            "root": {
+              "indexes": {},
+              "inputs": [
+                {
+                  "css": "@viewport { orientation: landscape; }",
+                  "file": "/Users/ntnyq/Desktop/github/ntnyq/stylelint-vitest-rule-tester/file.css",
+                  "hasBOM": false,
+                },
+              ],
+              "lastEach": 3,
+              "nodes": [
+                {
+                  "indexes": {},
+                  "lastEach": 3,
+                  "name": "viewport",
+                  "nodes": [
+                    {
+                      "prop": "orientation",
+                      "raws": {
+                        "before": " ",
+                        "between": ": ",
+                      },
+                      "source": {
+                        "end": {
+                          "column": 35,
+                          "line": 1,
+                          "offset": 35,
+                        },
+                        "inputId": 0,
+                        "start": {
+                          "column": 13,
+                          "line": 1,
+                          "offset": 12,
+                        },
+                      },
+                      "type": "decl",
+                      "value": "landscape",
+                    },
+                  ],
+                  "params": "",
+                  "raws": {
+                    "after": " ",
+                    "afterName": "",
+                    "before": "",
+                    "between": " ",
+                    "semicolon": true,
+                  },
+                  "source": {
+                    "end": {
+                      "column": 37,
+                      "line": 1,
+                      "offset": 37,
+                    },
+                    "inputId": 0,
+                    "start": {
+                      "column": 1,
+                      "line": 1,
+                      "offset": 0,
+                    },
+                  },
+                  "type": "atrule",
+                },
+              ],
+              "raws": {
+                "after": "",
+                "semicolon": false,
+              },
+              "source": {
+                "end": {
+                  "column": 38,
+                  "line": 1,
+                  "offset": 37,
+                },
+                "inputId": 0,
+                "start": {
+                  "column": 1,
+                  "line": 1,
+                  "offset": 0,
+                },
+              },
+              "type": "root",
+            },
+            "stylelint": {
+              "config": {
+                "fix": true,
+                "rules": {
+                  "at-rule-no-vendor-prefix": [
+                    true,
+                  ],
+                },
+                "validate": true,
+              },
+              "customMessages": {
+                "at-rule-no-vendor-prefix": undefined,
+              },
+              "customUrls": {
+                "at-rule-no-vendor-prefix": undefined,
+              },
+              "disabledRanges": {
+                "all": [],
+              },
+              "fixersData": {},
+              "quiet": undefined,
+              "quietDeprecationWarnings": true,
+              "rangesOfComputedEditInfos": [],
+              "ruleMetadata": {
+                "at-rule-no-vendor-prefix": {
+                  "fixable": true,
+                  "url": "https://stylelint.io/user-guide/rules/at-rule-no-vendor-prefix",
+                },
+              },
+              "ruleSeverities": {
+                "at-rule-no-vendor-prefix": "error",
+              },
+              "stylelintError": false,
+              "stylelintWarning": false,
+            },
+          },
+          "deprecations": [],
+          "errored": false,
+          "ignored": undefined,
+          "invalidOptionWarnings": [],
+          "parseErrors": [],
+          "source": "/Users/ntnyq/Desktop/github/ntnyq/stylelint-vitest-rule-tester/file.css",
+          "warnings": [],
+        },
+      ],
+      "ruleMetadata": {
+        "at-rule-no-vendor-prefix": {
+          "fixable": true,
+          "url": "https://stylelint.io/user-guide/rules/at-rule-no-vendor-prefix",
+        },
+      },
+    },
+  ],
+}
+`;

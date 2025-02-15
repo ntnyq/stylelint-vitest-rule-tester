@@ -286,18 +286,21 @@ export function createRuleTester(options: RuleTesterInitOptions): RuleTester {
     const linterResult = await each(arg)
     const result = normalizeLinterResult(linterResult)
 
-    const noMessages =
-      isEmptyArray(result.warnings)
-      && isEmptyArray(result.deprecations)
-      && isEmptyArray(result.parseErrors)
-      && isEmptyArray(result.invalidOptionWarnings)
+    // not fixable rule
+    if (!result.fixed) {
+      const noMessages =
+        isEmptyArray(result.warnings)
+        && isEmptyArray(result.deprecations)
+        && isEmptyArray(result.parseErrors)
+        && isEmptyArray(result.invalidOptionWarnings)
 
-    expect
-      .soft(
-        noMessages,
-        'expect either have warnings, deprecations, parseErrors or invalidOptionWarnings',
-      )
-      .toBeFalsy()
+      expect
+        .soft(
+          noMessages,
+          'expect either have warnings, deprecations, parseErrors or invalidOptionWarnings',
+        )
+        .toBeFalsy()
+    }
 
     return linterResult
   }

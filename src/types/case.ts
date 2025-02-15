@@ -20,21 +20,33 @@ export type InvalidTestCaseBase = ValidTestCaseBase & {
    */
   output?: string | ((output: string, input: string) => void) | null
 
+  /**
+   * expect for {@link LintResultDeprecation
+   */
   deprecations?:
     | number
     | (string | LintResultDeprecation)[]
     | ((deprecations: LintResultDeprecation[]) => void)
 
+  /**
+   * expect for {@link LintResultInvalidOptionWarning}
+   */
   invalidOptionWarnings?:
     | number
     | (string | LintResultInvalidOptionWarning)[]
     | ((invalidOptionWarnings: LintResultInvalidOptionWarning[]) => void)
 
+  /**
+   * expect for {@link LintResultParseError}
+   */
   parseErrors?:
     | number
     | (string | LintResultParseError)[]
     | ((parseErrors: LintResultParseError[]) => void)
 
+  /**
+   * expect for {@link LintResultWarning}
+   */
   warnings?:
     | number
     | (string | LintResultWarning)[]
