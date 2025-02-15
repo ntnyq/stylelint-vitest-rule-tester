@@ -1,13 +1,20 @@
-import { isEmptyArray, isFunction, isNull, isNumber, isUndefined, toArray } from '@ntnyq/utils'
+import {
+  isEmptyArray,
+  isFunction,
+  isNull,
+  isNumber,
+  isUndefined,
+  toArray,
+} from '@ntnyq/utils'
 import stylelint from 'stylelint'
 import { describe, expect, it } from 'vitest'
 import { DEFAULT_FILE_NAMES } from './constants'
 import {
   getRuleName,
   normalizeCaseMessage,
+  normalizeLinterResult,
   normalizeRuleOptions,
   normalizeTestCase,
-  useLinterResult,
 } from './utils'
 import type { Config as LinterConfig, LinterOptions } from 'stylelint'
 import type {
@@ -84,12 +91,18 @@ function verifyLintResultMessages({
   } else if (isNumber(testCase[type])) {
     expect.soft(messages.length, `number of ${type}`).toBe(testCase[type])
   } else {
-    const testCaseMessages = toArray(testCase[type]).map(message => normalizeCaseMessage(message))
+    const testCaseMessages = toArray(testCase[type]).map(message =>
+      normalizeCaseMessage(message),
+    )
 
-    expect(testCaseMessages.length, `number of ${type}`).toBe(testCase[type].length)
+    expect(testCaseMessages.length, `number of ${type}`).toBe(
+      testCase[type].length,
+    )
 
     testCaseMessages.forEach((expected, idx) => {
-      expect.soft(messages[idx], `object of ${type}-${idx}`).toMatchObject(expected)
+      expect
+        .soft(messages[idx], `object of ${type}-${idx}`)
+        .toMatchObject(expected)
     })
   }
 }
@@ -137,7 +150,7 @@ export function createRuleTester(options: RuleTesterInitOptions): RuleTester {
       parseErrors,
       deprecations,
       invalidOptionWarnings,
-    } = useLinterResult(linterResult)
+    } = normalizeLinterResult(linterResult)
 
     verifyLintResultMessages({
       type: 'warnings',
@@ -221,12 +234,12 @@ export function createRuleTester(options: RuleTesterInitOptions): RuleTester {
     }
 
     if (
-      testCase.type === 'invalid' &&
-      isUndefined(testCase.output) &&
-      isUndefined(testCase.warnings) &&
-      isUndefined(testCase.parseErrors) &&
-      isUndefined(testCase.deprecations) &&
-      isUndefined(testCase.invalidOptionWarnings)
+      testCase.type === 'invalid'
+      && isUndefined(testCase.output)
+      && isUndefined(testCase.warnings)
+      && isUndefined(testCase.parseErrors)
+      && isUndefined(testCase.deprecations)
+      && isUndefined(testCase.invalidOptionWarnings)
     ) {
       throw new Error(
         `Invalid test case must have either 'output', 'warnings', 'parseErrors', 'deprecations', or 'invalidOptionWarnings' property.`,
@@ -240,7 +253,12 @@ export function createRuleTester(options: RuleTesterInitOptions): RuleTester {
         fix: false,
       })
 
-      expect.soft(useLinterResult(linterResult).warnings, 'no warnings after fix').toEqual([])
+      expect
+        .soft(
+          normalizeLinterResult(linterResult).warnings,
+          'no warnings after fix',
+        )
+        .toEqual([])
     }
 
     testCase.onResult?.(result)
@@ -250,7 +268,7 @@ export function createRuleTester(options: RuleTesterInitOptions): RuleTester {
 
   async function valid(arg: ValidTestCase | string) {
     const linterResult = await each(arg)
-    const result = useLinterResult(linterResult)
+    const result = normalizeLinterResult(linterResult)
 
     expect.soft(result.fixed, 'no need to fix for valid cases').toBeFalsy()
     expect.soft(result.warnings, 'no warnings on valid cases').toEqual([])
@@ -263,13 +281,13 @@ export function createRuleTester(options: RuleTesterInitOptions): RuleTester {
 
   async function invalid(arg: InvalidTestCase | string) {
     const linterResult = await each(arg)
-    const result = useLinterResult(linterResult)
+    const result = normalizeLinterResult(linterResult)
 
     const noMessages =
-      isEmptyArray(result.warnings) &&
-      isEmptyArray(result.deprecations) &&
-      isEmptyArray(result.parseErrors) &&
-      isEmptyArray(result.invalidOptionWarnings)
+      isEmptyArray(result.warnings)
+      && isEmptyArray(result.deprecations)
+      && isEmptyArray(result.parseErrors)
+      && isEmptyArray(result.invalidOptionWarnings)
 
     expect
       .soft(
@@ -296,10 +314,13 @@ export function createRuleTester(options: RuleTesterInitOptions): RuleTester {
               run = it.skip
             }
 
-            run(`Valid #${index}: ${testCase.description || testCase.code}`, async () => {
-              const result = await valid(testCase)
-              await cases?.onResult?.(testCase, result)
-            })
+            run(
+              `Valid #${index}: ${testCase.description || testCase.code}`,
+              async () => {
+                const result = await valid(testCase)
+                await cases?.onResult?.(testCase, result)
+              },
+            )
           })
         })
       }
@@ -317,10 +338,13 @@ export function createRuleTester(options: RuleTesterInitOptions): RuleTester {
               run = it.skip
             }
 
-            run(`Invalid #${index}: ${testCase.description || testCase.code}`, async () => {
-              const result = await invalid(testCase)
-              await cases?.onResult?.(testCase, result)
-            })
+            run(
+              `Invalid #${index}: ${testCase.description || testCase.code}`,
+              async () => {
+                const result = await invalid(testCase)
+                await cases?.onResult?.(testCase, result)
+              },
+            )
           })
         })
       }

@@ -1,5 +1,9 @@
 import { createRuleTester } from './tester'
-import type { RuleModule, RuleTesterInitOptions, TestCasesOptions } from './types'
+import type {
+  RuleModule,
+  RuleTesterInitOptions,
+  TestCasesOptions,
+} from './types'
 
 /**
  * Shortcut to run test cases for a rule
@@ -10,7 +14,7 @@ export function run(options: TestCasesOptions & RuleTesterInitOptions) {
 }
 
 /**
- * shortcut to run test cases for a rule in classic style
+ * Shortcut to run test cases for a rule in classic style
  */
 export function runClassic(
   ruleName: string,

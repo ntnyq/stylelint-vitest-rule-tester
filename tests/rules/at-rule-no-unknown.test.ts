@@ -79,7 +79,12 @@ run({
       ignoreAtRules: ['unknown', '/^my-/', '/^YOUR-/i'],
     },
   ],
-  valid: [`@unknown { }`, `@my-at-rule { }`, `@your-at-rule { }`, `@YOUR-at-rule { }`],
+  valid: [
+    `@unknown { }`,
+    `@my-at-rule { }`,
+    `@your-at-rule { }`,
+    `@YOUR-at-rule { }`,
+  ],
   invalid: [
     {
       code: `@uNkNoWn { }`,

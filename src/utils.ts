@@ -1,5 +1,9 @@
 import { isString, unindent } from '@ntnyq/utils'
-import { DEFAULT_FILE_NAME, DEFAULT_RULE_NAME, DEFAULT_RULE_OPTIONS } from './constants'
+import {
+  DEFAULT_FILE_NAME,
+  DEFAULT_RULE_NAME,
+  DEFAULT_RULE_OPTIONS,
+} from './constants'
 import type {
   DefaultFilenames,
   LintResultMessage,
@@ -18,7 +22,10 @@ export function getRuleName(options: RuleTesterInitOptions) {
   return options.name || options.rule?.ruleName || DEFAULT_RULE_NAME
 }
 
-export function normalizeRuleOptions(testCase: NormalizedTestCase, options: RuleTesterInitOptions) {
+export function normalizeRuleOptions(
+  testCase: NormalizedTestCase,
+  options: RuleTesterInitOptions,
+) {
   const { rule = {} } = options
   const { url } = rule?.meta || {}
 
@@ -26,7 +33,9 @@ export function normalizeRuleOptions(testCase: NormalizedTestCase, options: Rule
 
   if (resolvedOptions) {
     if (Array.isArray(resolvedOptions)) {
-      return resolvedOptions.length === 1 ? [resolvedOptions[0], { url }] : resolvedOptions
+      return resolvedOptions.length === 1
+        ? [resolvedOptions[0], { url }]
+        : resolvedOptions
     } else {
       return [resolvedOptions, { url }]
     }
@@ -44,12 +53,12 @@ export function normalizeTestCase(
   const normalized = obj as NormalizedTestCase
 
   normalized.type ||=
-    type ||
-    (!!obj.warnings ||
-    !!obj.deprecations ||
-    !!obj.parseErrors ||
-    !!obj.invalidOptionWarnings ||
-    !!obj.output
+    type
+    || (!!obj.warnings
+    || !!obj.deprecations
+    || !!obj.parseErrors
+    || !!obj.invalidOptionWarnings
+    || !!obj.output
       ? 'invalid'
       : 'valid')
 
@@ -75,7 +84,7 @@ export function normalizeCaseMessage(
 /**
  * safe access from linter result
  */
-export function useLinterResult(linterResult: TestExecutionResult) {
+export function normalizeLinterResult(linterResult: TestExecutionResult) {
   const { fixed = false } = linterResult
   const {
     errored,
