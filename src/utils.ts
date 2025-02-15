@@ -44,30 +44,44 @@ export function normalizeRuleOptions(
   return url ? [DEFAULT_RULE_OPTIONS, { url }] : DEFAULT_RULE_OPTIONS
 }
 
+/**
+ * Check if given test case is invalid
+ *
+ * @param c - normalized test case
+ * @returns true if given case is invalid
+ */
+function isInvalidTestCase(c: NormalizedTestCase): boolean {
+  return (
+    !!c.warnings
+    || !!c.deprecations
+    || !!c.parseErrors
+    || !!c.invalidOptionWarnings
+    || !!c.output
+  )
+}
+
 export function normalizeTestCase(
   c: TestCase,
   defaultFilenames: Partial<DefaultFilenames>,
   type?: 'valid' | 'invalid',
-) {
+): NormalizedTestCase {
   const obj = isString(c) ? { code: c } : { ...c }
   const normalized = obj as NormalizedTestCase
 
   normalized.type ||=
-    type
-    || (!!obj.warnings
-    || !!obj.deprecations
-    || !!obj.parseErrors
-    || !!obj.invalidOptionWarnings
-    || !!obj.output
-      ? 'invalid'
-      : 'valid')
+    type || (isInvalidTestCase(normalized) ? 'invalid' : 'valid')
 
-  // TODO: filename resolve
-  normalized.filename = defaultFilenames.css || DEFAULT_FILE_NAME
+  normalized.filename ||= defaultFilenames.css || DEFAULT_FILE_NAME
 
   return normalized
 }
 
+/**
+ * Normalize test case message
+ *
+ * @param message - message string or lint result
+ * @returns normalized message
+ */
 export function normalizeCaseMessage(
   message: string | LintResultMessage,
 ): Partial<LintResultMessage> {
@@ -82,17 +96,17 @@ export function normalizeCaseMessage(
 }
 
 /**
- * safe access from linter result
+ * Safe access from linter result
  */
 export function normalizeLinterResult(linterResult: TestExecutionResult) {
   const { fixed = false } = linterResult
   const {
-    errored,
+    errored = false,
     warnings = [],
     parseErrors = [],
     deprecations = [],
     invalidOptionWarnings = [],
-  } = linterResult.results?.[0] ?? {}
+  } = linterResult.results[0]
 
   return {
     fixed,
