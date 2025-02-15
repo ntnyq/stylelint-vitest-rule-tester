@@ -15,9 +15,9 @@ run({
     `\r\n.class {}`,
     `.box { color: red; }`,
     {
-      filename: 'disable.css',
+      description: 'disable rule',
       code: '',
-      ruleOptions: [false],
+      ruleOptions: [null],
     },
     {
       description: 'HTML without CSS',

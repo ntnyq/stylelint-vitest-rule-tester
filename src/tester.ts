@@ -77,10 +77,6 @@ function verifyLintResultMessages({
   type: 'warnings' | 'parseErrors' | 'deprecations' | 'invalidOptionWarnings'
   testCase: NormalizedTestCase
   messages: any[]
-  // | LintResultWarning[]
-  // | LintResultParseError[]
-  // | LintResultDeprecation[]
-  // | LintResultInvalidOptionWarning[]
 }) {
   if (!testCase[type]) {
     return
@@ -272,9 +268,16 @@ export function createRuleTester(options: RuleTesterInitOptions): RuleTester {
 
     expect.soft(result.fixed, 'no need to fix for valid cases').toBeFalsy()
     expect.soft(result.warnings, 'no warnings on valid cases').toEqual([])
-    // expect.soft(result.deprecations, 'no deprecations on valid cases').toEqual([])
-    // expect.soft(result.parseErrors, 'no parseErrors on valid cases').toEqual([])
-    // expect.soft(result.invalidOptionWarnings, 'no invalidOptionWarnings on valid cases').toEqual([])
+    expect
+      .soft(result.deprecations, 'no deprecations on valid cases')
+      .toEqual([])
+    expect.soft(result.parseErrors, 'no parseErrors on valid cases').toEqual([])
+    expect
+      .soft(
+        result.invalidOptionWarnings,
+        'no invalidOptionWarnings on valid cases',
+      )
+      .toEqual([])
 
     return linterResult
   }
