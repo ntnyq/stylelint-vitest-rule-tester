@@ -58,6 +58,7 @@
   },
   "dependencies": {
     "@ntnyq/utils": "^0.5.2",
+    "deepmerge": "^4.3.1",
     "postcss": "^8.5.2"
   },
   "devDependencies": {

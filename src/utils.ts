@@ -15,6 +15,7 @@ import type {
 
 /**
  * Get rule name
+ *
  * @param options - rule tester options
  * @returns rule name
  */
@@ -22,6 +23,13 @@ export function getRuleName(options: RuleTesterInitOptions) {
   return options.name || options.rule?.ruleName || DEFAULT_RULE_NAME
 }
 
+/**
+ * Normalize rule options
+ *
+ * @param testCase - test case
+ * @param options - tester options
+ * @returns normalized rule option
+ */
 export function normalizeRuleOptions(
   testCase: NormalizedTestCase,
   options: RuleTesterInitOptions,
@@ -60,6 +68,14 @@ function isInvalidTestCase(c: NormalizedTestCase): boolean {
   )
 }
 
+/**
+ * Normalize test case
+ *
+ * @param c - test case
+ * @param defaultFilenames - given default file name
+ * @param type - case type
+ * @returns normalized test case
+ */
 export function normalizeTestCase(
   c: TestCase,
   defaultFilenames: Partial<DefaultFilenames>,

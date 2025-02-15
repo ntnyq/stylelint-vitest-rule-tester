@@ -6,6 +6,7 @@ import {
   isUndefined,
   toArray,
 } from '@ntnyq/utils'
+import deepmerge from 'deepmerge'
 import stylelint from 'stylelint'
 import { describe, expect, it } from 'vitest'
 import { DEFAULT_FILE_NAMES } from './constants'
@@ -16,7 +17,7 @@ import {
   normalizeRuleOptions,
   normalizeTestCase,
 } from './utils'
-import type { Config as LinterConfig, LinterOptions } from 'stylelint'
+import type { LinterOptions } from 'stylelint'
 import type {
   DefaultFilenames,
   InvalidTestCase,
@@ -122,17 +123,17 @@ export function createRuleTester(options: RuleTesterInitOptions): RuleTester {
       ...testCase,
     }
 
-    const linterConfig: LinterConfig = {
-      ...options.stylelintConfig,
-      ...testCase.stylelintConfig,
-      rules: {
-        [ruleName]: normalizeRuleOptions(testCase, options),
-      },
-    }
-
     const lintOptions: LinterOptions = {
       ...options.linterOptions,
-      config: linterConfig,
+      config: {
+        ...deepmerge(
+          options.stylelintConfig || {},
+          testCase.stylelintConfig || {},
+        ),
+        rules: {
+          [ruleName]: normalizeRuleOptions(testCase, options),
+        },
+      },
       code: testCase.code,
       codeFilename: testCase.filename,
       fix: false,
@@ -176,14 +177,19 @@ export function createRuleTester(options: RuleTesterInitOptions): RuleTester {
         fix: true,
       })
 
-      // check only invalid should change after fix
-      // maybe check linterResult.report is an empty string
-      // if (linterResult.code === code && verifyFixChanges) {
-      //   throw new Error(`Expected code to be changed after fix, but it's the same as the input.`)
+      // check if the code is changed
+      const fixed = linterResult.code !== code
+
+      // // not change after fix
+      // if (!fixed && verifyFixChanges) {
+      //   throw new Error(
+      //     `Expected code to be changed after fix, but it's the same as the input.`,
+      //   )
       // }
+
       return {
         ...linterResult,
-        fixed: linterResult.code !== code, // check if the code is changed
+        fixed,
       }
     }
 
