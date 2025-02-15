@@ -1,5 +1,4 @@
 import type { RuleOptions } from './rule'
-import type { StylelintLinterResult } from './stylelint'
 import type {
   LintResultDeprecation,
   LintResultInvalidOptionWarning,
@@ -7,6 +6,7 @@ import type {
   LintResultWarning,
   StylelintOptions,
 } from './stylelint'
+import type { TestExecutionResult } from './test'
 import type { RuleTesterBehaviorOptions } from './tester'
 
 /**
@@ -97,7 +97,7 @@ export type ValidTestCaseBase = RuleTesterBehaviorOptions
     /**
      * lint result
      */
-    onResult?: (result: StylelintLinterResult) => void
+    onResult?: (result: TestExecutionResult) => void
   }
 
 /**
@@ -112,5 +112,6 @@ export type TestCase = InvalidTestCase | ValidTestCase
  */
 export type NormalizedTestCase = InvalidTestCaseBase & {
   code: string
+  filename: string
   type: 'invalid' | 'valid'
 }

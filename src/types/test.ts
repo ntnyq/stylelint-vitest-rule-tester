@@ -20,7 +20,7 @@ export interface TestCasesOptions {
    */
   onResult?: (
     testCase: NormalizedTestCase,
-    result: StylelintLinterResult,
+    result: TestExecutionResult,
   ) => Promise<void> | void
 }
 

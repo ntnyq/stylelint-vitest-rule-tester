@@ -1,24 +1,17 @@
-import type { TestExecutionResult } from '../types'
+import type Stylelint from 'stylelint'
 
 /**
- * Safe access from linter result
+ * Normalize linter result
+ *
+ * @param result - linter result {@link Stylelint.LinterResult}
  */
-export function normalizeLinterResult(linterResult: TestExecutionResult) {
-  const { fixed = false } = linterResult
-  const {
-    errored = false,
-    warnings = [],
-    parseErrors = [],
-    deprecations = [],
-    invalidOptionWarnings = [],
-  } = linterResult.results[0]
+export function normalizeLinterResult(result: Stylelint.LinterResult) {
+  const { cwd: _, results = [], report: _result, ...rest } = result
 
   return {
-    fixed,
-    errored,
-    warnings,
-    parseErrors,
-    deprecations,
-    invalidOptionWarnings,
+    ...rest,
+    results: results.map(({ _postcssResult, source, ...result }) => ({
+      ...result,
+    })),
   }
 }

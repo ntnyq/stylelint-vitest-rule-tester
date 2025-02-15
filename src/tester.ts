@@ -6,7 +6,6 @@ import {
   getRuleName,
   normalizeLinterResult,
   normalizeTestCase,
-  normalizeTestExecutionResult,
   resolveLinterOptions,
   verifyLintResultMessages,
 } from './utils'
@@ -42,33 +41,27 @@ export function createRuleTester(options: RuleTesterInitOptions): RuleTester {
 
     const linterOptions = resolveLinterOptions(ruleName, options, testCase)
     const linterResult = await stylelint.lint(linterOptions)
-    const {
-      // errored,
-      warnings,
-      parseErrors,
-      deprecations,
-      invalidOptionWarnings,
-    } = normalizeLinterResult(linterResult)
+    const [lintResult] = linterResult.results
 
     verifyLintResultMessages({
       type: 'warnings',
       testCase,
-      messages: warnings,
+      messages: lintResult.warnings,
     })
     verifyLintResultMessages({
       type: 'parseErrors',
       testCase,
-      messages: parseErrors,
+      messages: lintResult.parseErrors,
     })
     verifyLintResultMessages({
       type: 'deprecations',
       testCase,
-      messages: deprecations,
+      messages: lintResult.deprecations,
     })
     verifyLintResultMessages({
       type: 'invalidOptionWarnings',
       testCase,
-      messages: invalidOptionWarnings,
+      messages: lintResult.invalidOptionWarnings,
     })
 
     async function fix(code: string) {
@@ -89,7 +82,7 @@ export function createRuleTester(options: RuleTesterInitOptions): RuleTester {
       // }
 
       return {
-        ...normalizeTestExecutionResult(linterResult),
+        ...normalizeLinterResult(linterResult),
         fixed,
       }
     }
@@ -150,18 +143,14 @@ export function createRuleTester(options: RuleTesterInitOptions): RuleTester {
     }
 
     if (result.fixed && verifyAfterFix) {
-      const linterResult = await stylelint.lint({
+      const { results = [] } = await stylelint.lint({
         ...linterOptions,
         code: result.code,
         fix: false,
       })
+      const [lintResult] = results
 
-      expect
-        .soft(
-          normalizeLinterResult(linterResult).warnings,
-          'no warnings after fix',
-        )
-        .toEqual([])
+      expect.soft(lintResult.warnings, 'no warnings after fix').toEqual([])
     }
 
     testCase.onResult?.(result)
@@ -170,36 +159,48 @@ export function createRuleTester(options: RuleTesterInitOptions): RuleTester {
   }
 
   async function valid(arg: ValidTestCase | string) {
-    const linterResult = await each(arg)
-    const result = normalizeLinterResult(linterResult)
+    const executionResult = await each(arg)
+    const [lintResult] = executionResult.results
 
-    expect.soft(result.fixed, 'no need to fix for valid cases').toBeFalsy()
-    expect.soft(result.warnings, 'no warnings on valid cases').toEqual([])
+    expect.soft(lintResult, 'no lint result').toBeDefined()
     expect
-      .soft(result.deprecations, 'no deprecations on valid cases')
+      .soft(executionResult.fixed, 'no need to fix for valid cases')
+      .toBeFalsy()
+
+    expect.soft(lintResult.warnings, 'no warnings on valid cases').toEqual([])
+    expect
+      .soft(lintResult.deprecations, 'no deprecations on valid cases')
       .toEqual([])
-    expect.soft(result.parseErrors, 'no parseErrors on valid cases').toEqual([])
+    expect
+      .soft(lintResult.parseErrors, 'no parseErrors on valid cases')
+      .toEqual([])
     expect
       .soft(
-        result.invalidOptionWarnings,
+        lintResult.invalidOptionWarnings,
         'no invalidOptionWarnings on valid cases',
       )
       .toEqual([])
 
-    return linterResult
+    return executionResult
   }
 
   async function invalid(arg: InvalidTestCase | string) {
-    const linterResult = await each(arg)
-    const result = normalizeLinterResult(linterResult)
+    const executionResult = await each(arg)
+    const [lintResult] = executionResult.results
 
-    // not fixable rule
-    if (!result.fixed) {
+    expect.soft(lintResult, 'no lint result').toBeDefined()
+
+    // This case has been fixed
+    if (executionResult.fixed) {
+      expect
+        .soft(lintResult.warnings, 'expect no warnings on fixed invalid case')
+        .toEqual([])
+    } else {
       const noMessages =
-        isEmptyArray(result.warnings)
-        && isEmptyArray(result.deprecations)
-        && isEmptyArray(result.parseErrors)
-        && isEmptyArray(result.invalidOptionWarnings)
+        isEmptyArray(lintResult.warnings)
+        && isEmptyArray(lintResult.deprecations)
+        && isEmptyArray(lintResult.parseErrors)
+        && isEmptyArray(lintResult.invalidOptionWarnings)
 
       expect
         .soft(
@@ -209,7 +210,7 @@ export function createRuleTester(options: RuleTesterInitOptions): RuleTester {
         .toBeFalsy()
     }
 
-    return linterResult
+    return executionResult
   }
 
   function run(cases: TestCasesOptions) {
@@ -230,8 +231,8 @@ export function createRuleTester(options: RuleTesterInitOptions): RuleTester {
             run(
               `Valid #${index}: ${testCase.description || testCase.code}`,
               async () => {
-                const result = await valid(testCase)
-                await cases?.onResult?.(testCase, result)
+                const executionResult = await valid(testCase)
+                await cases?.onResult?.(testCase, executionResult)
               },
             )
           })
@@ -254,8 +255,8 @@ export function createRuleTester(options: RuleTesterInitOptions): RuleTester {
             run(
               `Invalid #${index}: ${testCase.description || testCase.code}`,
               async () => {
-                const result = await invalid(testCase)
-                await cases?.onResult?.(testCase, result)
+                const executionResult = await invalid(testCase)
+                await cases?.onResult?.(testCase, executionResult)
               },
             )
           })
