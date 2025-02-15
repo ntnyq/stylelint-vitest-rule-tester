@@ -15,9 +15,9 @@ run({
     `@keyframes { 0% { top: 0; } }`,
     {
       code: `@viewport { orientation: landscape; }`,
-      // onResult(result) {
-      //   expect(result).toMatchSnapshot()
-      // },
+      onResult(result) {
+        expect(result).toMatchSnapshot()
+      },
     },
   ],
   invalid: [
@@ -147,9 +147,9 @@ run({
           ]
         `)
       },
-      // onResult(result) {
-      //   expect(result).toMatchSnapshot()
-      // },
+      onResult(result) {
+        expect(result).toMatchSnapshot()
+      },
     },
   ],
 })

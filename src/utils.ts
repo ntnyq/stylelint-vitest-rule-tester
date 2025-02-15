@@ -4,6 +4,7 @@ import {
   DEFAULT_RULE_NAME,
   DEFAULT_RULE_OPTIONS,
 } from './constants'
+import type stylelint from 'stylelint'
 import type {
   DefaultFilenames,
   LintResultMessage,
@@ -131,6 +132,22 @@ export function normalizeLinterResult(linterResult: TestExecutionResult) {
     parseErrors,
     deprecations,
     invalidOptionWarnings,
+  }
+}
+
+/**
+ * Normalize test execution result
+ *
+ * @param result - test execution result {@link TestExecutionResult}
+ */
+export function normalizeTestExecutionResult(result: stylelint.LinterResult) {
+  const { cwd: _, results = [], report: _result, ...rest } = result
+
+  return {
+    ...rest,
+    results: results.map(({ _postcssResult, source, ...result }) => ({
+      ...result,
+    })),
   }
 }
 

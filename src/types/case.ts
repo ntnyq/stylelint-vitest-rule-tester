@@ -1,5 +1,5 @@
-import type Stylelint from 'stylelint'
 import type { RuleOptions } from './rule'
+import type { StylelintLinterResult } from './stylelint'
 import type {
   LintResultDeprecation,
   LintResultInvalidOptionWarning,
@@ -97,7 +97,7 @@ export type ValidTestCaseBase = RuleTesterBehaviorOptions
     /**
      * lint result
      */
-    onResult?: (result: Stylelint.LinterResult) => void
+    onResult?: (result: StylelintLinterResult) => void
   }
 
 /**

@@ -16,6 +16,7 @@ import {
   normalizeLinterResult,
   normalizeRuleOptions,
   normalizeTestCase,
+  normalizeTestExecutionResult,
 } from './utils'
 import type { LinterOptions } from 'stylelint'
 import type {
@@ -188,7 +189,7 @@ export function createRuleTester(options: RuleTesterInitOptions): RuleTester {
       // }
 
       return {
-        ...linterResult,
+        ...normalizeTestExecutionResult(linterResult),
         fixed,
       }
     }

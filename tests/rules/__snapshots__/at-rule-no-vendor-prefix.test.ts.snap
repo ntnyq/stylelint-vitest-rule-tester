@@ -1,0 +1,126 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`at-rule-no-vendor-prefix > invalid > Invalid #4: @-ms-viewport { orientation: landscape; } 3`] = `
+{
+  "code": "@viewport { orientation: landscape; }",
+  "errored": false,
+  "fixed": true,
+  "output": "@viewport { orientation: landscape; }",
+  "reportedDisables": [],
+  "results": [
+    {
+      "deprecations": [],
+      "errored": false,
+      "ignored": undefined,
+      "invalidOptionWarnings": [],
+      "parseErrors": [],
+      "warnings": [],
+    },
+  ],
+  "ruleMetadata": {
+    "at-rule-no-vendor-prefix": {
+      "fixable": true,
+      "url": "https://stylelint.io/user-guide/rules/at-rule-no-vendor-prefix",
+    },
+  },
+  "steps": [
+    {
+      "code": "@viewport { orientation: landscape; }",
+      "errored": false,
+      "fixed": true,
+      "output": "@viewport { orientation: landscape; }",
+      "reportedDisables": [],
+      "results": [
+        {
+          "deprecations": [],
+          "errored": false,
+          "ignored": undefined,
+          "invalidOptionWarnings": [],
+          "parseErrors": [],
+          "warnings": [],
+        },
+      ],
+      "ruleMetadata": {
+        "at-rule-no-vendor-prefix": {
+          "fixable": true,
+          "url": "https://stylelint.io/user-guide/rules/at-rule-no-vendor-prefix",
+        },
+      },
+    },
+    {
+      "code": "@viewport { orientation: landscape; }",
+      "errored": false,
+      "fixed": false,
+      "output": "@viewport { orientation: landscape; }",
+      "reportedDisables": [],
+      "results": [
+        {
+          "deprecations": [],
+          "errored": false,
+          "ignored": undefined,
+          "invalidOptionWarnings": [],
+          "parseErrors": [],
+          "warnings": [],
+        },
+      ],
+      "ruleMetadata": {
+        "at-rule-no-vendor-prefix": {
+          "fixable": true,
+          "url": "https://stylelint.io/user-guide/rules/at-rule-no-vendor-prefix",
+        },
+      },
+    },
+  ],
+}
+`;
+
+exports[`at-rule-no-vendor-prefix > valid > Valid #1: @viewport { orientation: landscape; } 1`] = `
+{
+  "code": "@viewport { orientation: landscape; }",
+  "errored": false,
+  "fixed": false,
+  "output": "@viewport { orientation: landscape; }",
+  "reportedDisables": [],
+  "results": [
+    {
+      "deprecations": [],
+      "errored": false,
+      "ignored": undefined,
+      "invalidOptionWarnings": [],
+      "parseErrors": [],
+      "warnings": [],
+    },
+  ],
+  "ruleMetadata": {
+    "at-rule-no-vendor-prefix": {
+      "fixable": true,
+      "url": "https://stylelint.io/user-guide/rules/at-rule-no-vendor-prefix",
+    },
+  },
+  "steps": [
+    {
+      "code": "@viewport { orientation: landscape; }",
+      "errored": false,
+      "fixed": false,
+      "output": "@viewport { orientation: landscape; }",
+      "reportedDisables": [],
+      "results": [
+        {
+          "deprecations": [],
+          "errored": false,
+          "ignored": undefined,
+          "invalidOptionWarnings": [],
+          "parseErrors": [],
+          "warnings": [],
+        },
+      ],
+      "ruleMetadata": {
+        "at-rule-no-vendor-prefix": {
+          "fixable": true,
+          "url": "https://stylelint.io/user-guide/rules/at-rule-no-vendor-prefix",
+        },
+      },
+    },
+  ],
+}
+`;

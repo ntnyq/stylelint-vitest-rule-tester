@@ -1,5 +1,5 @@
-import type Stylelint from 'stylelint'
 import type { InvalidTestCase, NormalizedTestCase, ValidTestCase } from './case'
+import type { StylelintLinterResult } from './stylelint'
 
 /**
  * Test case options
@@ -20,14 +20,14 @@ export interface TestCasesOptions {
    */
   onResult?: (
     testCase: NormalizedTestCase,
-    result: Stylelint.LinterResult,
+    result: StylelintLinterResult,
   ) => Promise<void> | void
 }
 
 /**
  * Test execution result
  */
-export type TestExecutionResult = Stylelint.LinterResult & {
+export type TestExecutionResult = StylelintLinterResult & {
   /**
    * whether the code was fixed
    */
@@ -36,5 +36,5 @@ export type TestExecutionResult = Stylelint.LinterResult & {
   /**
    * if the rule fixes in multiple steps, the result of each step is present here
    */
-  steps?: Stylelint.LinterResult[]
+  steps?: StylelintLinterResult[]
 }

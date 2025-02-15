@@ -2,6 +2,14 @@ import type Postcss from 'postcss'
 import type Stylelint from 'stylelint'
 import type { RuleOptions } from './rule'
 
+export type StylelintLinterResult = Omit<
+  Stylelint.LinterResult,
+  'cwd' | 'report'
+>
+
+/**
+ * @pg
+ */
 export type LintResultDeprecation = {
   text: string
   reference?: string
