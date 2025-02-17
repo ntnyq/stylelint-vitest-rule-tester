@@ -22,11 +22,11 @@ importers:
         version: 8.5.2
     devDependencies:
       '@ntnyq/eslint-config':
-        specifier: ^4.0.0-beta.4
-        version: 4.0.0-beta.4(@types/eslint@9.6.1)(@typescript-eslint/eslint-plugin@8.24.0(@typescript-eslint/parser@8.24.0(eslint@9.20.1(jiti@2.4.2))(typescript@5.7.3))(eslint@9.20.1(jiti@2.4.2))(typescript@5.7.3))(@typescript-eslint/utils@8.24.0(eslint@9.20.1(jiti@2.4.2))(typescript@5.7.3))(@vue/compiler-sfc@3.5.13)(eslint@9.20.1(jiti@2.4.2))(typescript@5.7.3)(vitest@3.0.5(@types/debug@4.1.12)(@types/node@22.13.4)(jiti@2.4.2)(stylus@0.57.0)(yaml@2.7.0))
+        specifier: ^4.0.0-beta.6
+        version: 4.0.0-beta.6(@types/eslint@9.6.1)(@typescript-eslint/eslint-plugin@8.24.0(@typescript-eslint/parser@8.24.0(eslint@9.20.1(jiti@2.4.2))(typescript@5.7.3))(eslint@9.20.1(jiti@2.4.2))(typescript@5.7.3))(@typescript-eslint/utils@8.24.0(eslint@9.20.1(jiti@2.4.2))(typescript@5.7.3))(@vue/compiler-sfc@3.5.13)(eslint@9.20.1(jiti@2.4.2))(typescript@5.7.3)(vitest@3.0.5(@types/debug@4.1.12)(@types/node@22.13.4)(jiti@2.4.2)(stylus@0.57.0)(yaml@2.7.0))
       '@ntnyq/prettier-config':
-        specifier: ^2.0.0-beta.2
-        version: 2.0.0-beta.2
+        specifier: ^2.0.0
+        version: 2.0.0
       '@types/node':
         specifier: ^22.13.4
         version: 22.13.4
@@ -434,8 +434,8 @@ packages:
     resolution: {integrity: sha512-nn5ozdjYQpUCZlWGuxcJY/KpxkWQs4DcbMCmKojjyrYDEAGy4Ce19NN4v5MduafTwJlbKc99UA8YhSVqq9yPZA==}
     engines: {node: '>=12.4.0'}
 
-  '@ntnyq/eslint-config@4.0.0-beta.4':
-    resolution: {integrity: sha512-xnxn5L0nXiYMylYZaRO3k7YWiAz3icMMvLip/+DVGx5ZtFJzhiFwXi513MJdYlauWGwm6XM6nkjvQmIQvpJOLQ==}
+  '@ntnyq/eslint-config@4.0.0-beta.6':
+    resolution: {integrity: sha512-WDkTuGuWrf+Z33Ie0SBJvlvn8srP4K++aACfRJUiDbuXS+p3DO3X4Mb8Jwm44xYsaN0f1kLiZrV+bj8WuxIetQ==}
     engines: {node: '>=18.18.0'}
     peerDependencies:
       eslint: ^9.5.0
@@ -444,8 +444,8 @@ packages:
       eslint-plugin-eslint-plugin:
         optional: true
 
-  '@ntnyq/prettier-config@2.0.0-beta.2':
-    resolution: {integrity: sha512-vBFHdUW+VPnZTOckLQHKSJitoKaM6IJxh6uvWMtjDa8NKUjci135upL9SxYzTw8KiQB9O6AUGiAEWbr656q5EA==}
+  '@ntnyq/prettier-config@2.0.0':
+    resolution: {integrity: sha512-cgb+VCW8+BJzZBSURgDEjMNt0JNiZ+Kx4k2rC54Igs+VmRiI2J8jPTVVqEKG2urhGLcUA2IuCE6ZDMMKuibN3Q==}
 
   '@ntnyq/utils@0.4.5':
     resolution: {integrity: sha512-A4ik6khNFMCdisUxUVINGwuQD51POdZDjbznK+Kf5XxHuFUfd6ayVfnzsIvfIXyPBZZO2N5NPxs5r9hPOubkpQ==}
@@ -1162,6 +1162,12 @@ packages:
     peerDependencies:
       eslint: '*'
 
+  eslint-plugin-de-morgan@1.0.1:
+    resolution: {integrity: sha512-9YeZT7JvVOuYuhnvNsLmuGl/MebRJZL14W5aQFbr580LMRxzDyEhhFgB+/rvFdsHZ6ygd+CF7zlJ40e6VOPNag==}
+    engines: {node: ^18.0.0 || >=20.0.0}
+    peerDependencies:
+      eslint: '>=8.0.0'
+
   eslint-plugin-depend@0.12.0:
     resolution: {integrity: sha512-bS5ESnC3eXDJPNv0RKkzRbLO45hRRLR/dleAUdbysXChWz1bAxa4MRh14EtDREn7fZieueqz4L7TfQQbzvdYHA==}
 
@@ -1252,8 +1258,8 @@ packages:
     peerDependencies:
       eslint: '>=8.44.0'
 
-  eslint-plugin-svgo@0.5.1:
-    resolution: {integrity: sha512-Fwuvv2g7JFu6IprbvjBbpFC1Y0gIxk4BlAtQJOrUpyRGXRuNpi02m6EcbGkSsaIa9DLmkEdU9agcidU49FWspQ==}
+  eslint-plugin-svgo@0.5.2:
+    resolution: {integrity: sha512-0Ct7H9TgGj64Q+8AtBfrbicyV6qkNHkTLMK8WArg1mtp7Q4LhU49P9GGBoSNUBtcQA6hpW7HTpMr2exNctM3sA==}
     engines: {node: '>=18.18.0'}
     peerDependencies:
       eslint: ^9.5.0
@@ -3026,7 +3032,7 @@ snapshots:
 
   '@nolyfill/is-core-module@1.0.39': {}
 
-  '@ntnyq/eslint-config@4.0.0-beta.4(@types/eslint@9.6.1)(@typescript-eslint/eslint-plugin@8.24.0(@typescript-eslint/parser@8.24.0(eslint@9.20.1(jiti@2.4.2))(typescript@5.7.3))(eslint@9.20.1(jiti@2.4.2))(typescript@5.7.3))(@typescript-eslint/utils@8.24.0(eslint@9.20.1(jiti@2.4.2))(typescript@5.7.3))(@vue/compiler-sfc@3.5.13)(eslint@9.20.1(jiti@2.4.2))(typescript@5.7.3)(vitest@3.0.5(@types/debug@4.1.12)(@types/node@22.13.4)(jiti@2.4.2)(stylus@0.57.0)(yaml@2.7.0))':
+  '@ntnyq/eslint-config@4.0.0-beta.6(@types/eslint@9.6.1)(@typescript-eslint/eslint-plugin@8.24.0(@typescript-eslint/parser@8.24.0(eslint@9.20.1(jiti@2.4.2))(typescript@5.7.3))(eslint@9.20.1(jiti@2.4.2))(typescript@5.7.3))(@typescript-eslint/utils@8.24.0(eslint@9.20.1(jiti@2.4.2))(typescript@5.7.3))(@vue/compiler-sfc@3.5.13)(eslint@9.20.1(jiti@2.4.2))(typescript@5.7.3)(vitest@3.0.5(@types/debug@4.1.12)(@types/node@22.13.4)(jiti@2.4.2)(stylus@0.57.0)(yaml@2.7.0))':
     dependencies:
       '@antfu/install-pkg': 1.0.0
       '@clack/prompts': 0.10.0
@@ -3042,6 +3048,7 @@ snapshots:
       eslint-merge-processors: 2.0.0(eslint@9.20.1(jiti@2.4.2))
       eslint-plugin-antfu: 3.1.0(eslint@9.20.1(jiti@2.4.2))
       eslint-plugin-command: 3.1.0(eslint@9.20.1(jiti@2.4.2))
+      eslint-plugin-de-morgan: 1.0.1(eslint@9.20.1(jiti@2.4.2))
       eslint-plugin-depend: 0.12.0
       eslint-plugin-format: 1.0.1(eslint@9.20.1(jiti@2.4.2))
       eslint-plugin-github-action: 0.0.14(eslint@9.20.1(jiti@2.4.2))
@@ -3055,7 +3062,7 @@ snapshots:
       eslint-plugin-pinia: 0.4.1(@typescript-eslint/utils@8.24.0(eslint@9.20.1(jiti@2.4.2))(typescript@5.7.3))(eslint@9.20.1(jiti@2.4.2))
       eslint-plugin-prettier: 5.2.3(@types/eslint@9.6.1)(eslint@9.20.1(jiti@2.4.2))(prettier@3.5.1)
       eslint-plugin-regexp: 2.7.0(eslint@9.20.1(jiti@2.4.2))
-      eslint-plugin-svgo: 0.5.1(eslint@9.20.1(jiti@2.4.2))
+      eslint-plugin-svgo: 0.5.2(eslint@9.20.1(jiti@2.4.2))
       eslint-plugin-toml: 0.12.0(eslint@9.20.1(jiti@2.4.2))
       eslint-plugin-unicorn: 56.0.1(eslint@9.20.1(jiti@2.4.2))
       eslint-plugin-unused-imports: 4.1.4(@typescript-eslint/eslint-plugin@8.24.0(@typescript-eslint/parser@8.24.0(eslint@9.20.1(jiti@2.4.2))(typescript@5.7.3))(eslint@9.20.1(jiti@2.4.2))(typescript@5.7.3))(eslint@9.20.1(jiti@2.4.2))
@@ -3082,7 +3089,7 @@ snapshots:
       - typescript
       - vitest
 
-  '@ntnyq/prettier-config@2.0.0-beta.2': {}
+  '@ntnyq/prettier-config@2.0.0': {}
 
   '@ntnyq/utils@0.4.5':
     dependencies:
@@ -3816,6 +3823,10 @@ snapshots:
       '@es-joy/jsdoccomment': 0.50.0
       eslint: 9.20.1(jiti@2.4.2)
 
+  eslint-plugin-de-morgan@1.0.1(eslint@9.20.1(jiti@2.4.2)):
+    dependencies:
+      eslint: 9.20.1(jiti@2.4.2)
+
   eslint-plugin-depend@0.12.0:
     dependencies:
       fd-package-json: 1.2.0
@@ -3958,7 +3969,7 @@ snapshots:
       regexp-ast-analysis: 0.7.1
       scslre: 0.3.0
 
-  eslint-plugin-svgo@0.5.1(eslint@9.20.1(jiti@2.4.2)):
+  eslint-plugin-svgo@0.5.2(eslint@9.20.1(jiti@2.4.2)):
     dependencies:
       eslint: 9.20.1(jiti@2.4.2)
       eslint-formatting-reporter: 0.0.0(eslint@9.20.1(jiti@2.4.2))
