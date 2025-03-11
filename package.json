@@ -2,7 +2,7 @@
   "name": "stylelint-vitest-rule-tester",
   "type": "module",
   "version": "0.0.3",
-  "packageManager": "pnpm@10.5.2",
+  "packageManager": "pnpm@10.6.2",
   "description": "Styelint rule tester with Vitest.",
   "keywords": [
     "rule-tester",
@@ -43,12 +43,13 @@
     "build": "tsup",
     "coverage": "vitest --coverage",
     "dev": "tsup --watch src",
-    "lint": "eslint .",
+    "lint": "eslint",
     "prepare": "husky",
     "prepublishOnly": "pnpm run build",
-    "release": "run-s release:check release:publish",
+    "release": "run-s release:check release:version release:publish",
     "release:check": "run-s lint typecheck test",
-    "release:publish": "bumpp && pnpm publish",
+    "release:publish": "pnpm publish",
+    "release:version": "bumpp",
     "test": "vitest",
     "typecheck": "tsc --noEmit"
   },
@@ -62,12 +63,12 @@
     "postcss": "^8.5.3"
   },
   "devDependencies": {
-    "@ntnyq/eslint-config": "^4.0.0-beta.10",
+    "@ntnyq/eslint-config": "^4.0.1",
     "@ntnyq/prettier-config": "^2.0.0",
-    "@types/node": "^22.13.9",
-    "@vitest/coverage-v8": "^3.0.7",
+    "@types/node": "^22.13.10",
+    "@vitest/coverage-v8": "^3.0.8",
     "bumpp": "^10.0.3",
-    "eslint": "^9.21.0",
+    "eslint": "^9.22.0",
     "husky": "^9.1.7",
     "nano-staged": "^0.8.0",
     "npm-run-all2": "^7.0.2",
@@ -79,20 +80,12 @@
     "stylelint-scss": "^6.11.1",
     "tsup": "^8.4.0",
     "typescript": "^5.8.2",
-    "vitest": "^3.0.7"
+    "vitest": "^3.0.8"
   },
   "engines": {
     "node": ">=18.18.0"
   },
-  "pnpm": {
-    "onlyBuiltDependencies": [
-      "esbuild"
-    ],
-    "overrides": {
-      "esbuild": "^0.25.0"
-    }
-  },
   "nano-staged": {
-    "*.{js,ts,mjs,cjs,json,md,yml,yaml}": "eslint --fix"
+    "*.{js,ts,mjs,cjs,md,yml,yaml,json}": "eslint --fix"
   }
 }
