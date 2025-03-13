@@ -1,4 +1,4 @@
-import type Postcss from 'postcss'
+import type { Warning } from 'postcss'
 import type Stylelint from 'stylelint'
 
 export type StylelintLinterResult = Omit<
@@ -16,7 +16,7 @@ export type LintResultDeprecation = {
 export type LintResultInvalidOptionWarning = {
   text: string
 }
-export type LintResultParseError = Postcss.Warning & {
+export type LintResultParseError = Warning & {
   stylelintType: 'parseError'
 }
 export type LintResultWarning = Stylelint.Warning
