@@ -1,3 +1,4 @@
+/* eslint-disable no-useless-call */
 import { isEmptyArray, isFunction, isNull, isUndefined } from '@ntnyq/utils'
 import stylelint from 'stylelint'
 import { describe, expect, it } from 'vitest'
@@ -28,7 +29,7 @@ export function createRuleTester(options: RuleTesterInitOptions): RuleTester {
   }
 
   async function each(c: TestCase) {
-    const testCase = normalizeTestCase(c, defaultFilenames)
+    const testcase = normalizeTestCase(c, defaultFilenames)
 
     const {
       recursive = 10,
@@ -36,16 +37,19 @@ export function createRuleTester(options: RuleTesterInitOptions): RuleTester {
       // verifyFixChanges = true,
     } = {
       ...options,
-      ...testCase,
+      ...testcase,
     }
 
     const ruleMeta = await resolveRuleMeta(options)
-    const ruleOptions = resolveRuleOptions(testCase, options, ruleMeta)
-    const linterOptions = resolveLinterOptions(options, testCase, ruleOptions)
+    const ruleOptions = resolveRuleOptions(testcase, options, ruleMeta)
+    const linterOptions = resolveLinterOptions(options, testcase, ruleOptions)
+
+    await testcase.before?.call(testcase, linterOptions)
+
     const linterResult = await stylelint.lint(linterOptions)
     const [lintResult] = linterResult.results
 
-    validateLintResult(testCase, lintResult)
+    await validateLintResult(testcase, lintResult)
 
     async function fix(code: string) {
       const linterResult = await stylelint.lint({
@@ -70,7 +74,7 @@ export function createRuleTester(options: RuleTesterInitOptions): RuleTester {
       }
     }
 
-    const fixedLinterResult = await fix(testCase.code)
+    const fixedLinterResult = await fix(testcase.code)
 
     const result: TestExecutionResult = {
       ...fixedLinterResult,
@@ -100,25 +104,25 @@ export function createRuleTester(options: RuleTesterInitOptions): RuleTester {
     }
 
     // expected fixed
-    if (!isUndefined(testCase.output)) {
-      if (isNull(testCase.output)) {
+    if (!isUndefined(testcase.output)) {
+      if (isNull(testcase.output)) {
         // null means output should be the same as the input
-        expect(result.code, 'output').toBe(testCase.code)
-      } else if (isFunction(testCase.output)) {
+        expect(result.code, 'output').toBe(testcase.code)
+      } else if (isFunction(testcase.output)) {
         // custom assertion
-        testCase.output(result.code || '', testCase.code)
+        await testcase.output(result.code || '', testcase.code)
       } else {
-        expect(result.code, 'output').toBe(testCase.output)
+        expect(result.code, 'output').toBe(testcase.output)
       }
     }
 
     if (
-      testCase.type === 'invalid'
-      && isUndefined(testCase.output)
-      && isUndefined(testCase.warnings)
-      && isUndefined(testCase.parseErrors)
-      && isUndefined(testCase.deprecations)
-      && isUndefined(testCase.invalidOptionWarnings)
+      testcase.type === 'invalid'
+      && isUndefined(testcase.output)
+      && isUndefined(testcase.warnings)
+      && isUndefined(testcase.parseErrors)
+      && isUndefined(testcase.deprecations)
+      && isUndefined(testcase.invalidOptionWarnings)
     ) {
       throw new Error(
         `Invalid test case must have either 'output', 'warnings', 'parseErrors', 'deprecations', or 'invalidOptionWarnings' property.`,
@@ -137,19 +141,21 @@ export function createRuleTester(options: RuleTesterInitOptions): RuleTester {
       expect.soft(lintResult.warnings, 'no warnings after fix').toEqual([])
     }
 
-    testCase.onResult?.(result)
+    await testcase.onResult?.(result)
+    await testcase.after?.call(testcase, result)
 
-    return result
+    return {
+      testcase,
+      result,
+    }
   }
 
   async function valid(arg: ValidTestCase | string) {
-    const executionResult = await each(arg)
-    const [lintResult] = executionResult.results
+    const { testcase, result } = await each(arg)
+    const [lintResult] = result.results
 
     expect.soft(lintResult, 'no lint result').toBeDefined()
-    expect
-      .soft(executionResult.fixed, 'no need to fix for valid cases')
-      .toBeFalsy()
+    expect.soft(result.fixed, 'no need to fix for valid cases').toBeFalsy()
 
     expect.soft(lintResult.warnings, 'no warnings on valid cases').toEqual([])
     expect
@@ -165,17 +171,20 @@ export function createRuleTester(options: RuleTesterInitOptions): RuleTester {
       )
       .toEqual([])
 
-    return executionResult
+    return {
+      testcase,
+      result,
+    }
   }
 
   async function invalid(arg: InvalidTestCase | string) {
-    const executionResult = await each(arg)
-    const [lintResult] = executionResult.results
+    const { testcase, result } = await each(arg)
+    const [lintResult] = result.results
 
     expect.soft(lintResult, 'no lint result').toBeDefined()
 
     // This case has been fixed
-    if (executionResult.fixed) {
+    if (result.fixed) {
       expect
         .soft(lintResult.warnings, 'expect no warnings on fixed invalid case')
         .toEqual([])
@@ -194,10 +203,13 @@ export function createRuleTester(options: RuleTesterInitOptions): RuleTester {
         .toBeFalsy()
     }
 
-    return executionResult
+    return {
+      testcase,
+      result,
+    }
   }
 
-  function run(cases: TestCasesOptions) {
+  async function run(cases: TestCasesOptions) {
     describe(options.name, () => {
       if (cases.valid?.length) {
         describe('valid', () => {
@@ -215,8 +227,8 @@ export function createRuleTester(options: RuleTesterInitOptions): RuleTester {
             run(
               `Valid #${index}: ${testCase.description || testCase.code}`,
               async () => {
-                const executionResult = await valid(testCase)
-                await cases?.onResult?.(testCase, executionResult)
+                const { testcase, result } = await valid(testCase)
+                await cases?.onResult?.(testcase, result)
               },
             )
           })
@@ -239,8 +251,8 @@ export function createRuleTester(options: RuleTesterInitOptions): RuleTester {
             run(
               `Invalid #${index}: ${testCase.description || testCase.code}`,
               async () => {
-                const executionResult = await invalid(testCase)
-                await cases?.onResult?.(testCase, executionResult)
+                const { testcase, result } = await invalid(testCase)
+                await cases?.onResult?.(testcase, result)
               },
             )
           })

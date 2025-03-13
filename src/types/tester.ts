@@ -1,4 +1,9 @@
-import type { InvalidTestCase, TestCase, ValidTestCase } from './case'
+import type {
+  InvalidTestCase,
+  NormalizedTestCase,
+  TestCase,
+  ValidTestCase,
+} from './case'
 import type { DefaultFilenames } from './file'
 import type { StylelintOptions } from './stylelint'
 import type { TestCasesOptions, TestExecutionResult } from './test'
@@ -51,22 +56,31 @@ export type RuleTesterInitOptions = RuleTesterBehaviorOptions
  */
 export interface RuleTester {
   /**
+   * run multiple test cases
+   */
+  run: (options: TestCasesOptions) => Promise<void>
+
+  /**
    * run a single test case
    */
-  each: (arg: TestCase) => Promise<TestExecutionResult>
+  each: (arg: TestCase) => Promise<{
+    result: TestExecutionResult
+    testcase: NormalizedTestCase
+  }>
 
   /**
    * run a single invalid test case
    */
-  invalid: (arg: InvalidTestCase) => Promise<TestExecutionResult>
-
-  /**
-   * run multiple test cases
-   */
-  run: (options: TestCasesOptions) => void
+  invalid: (arg: InvalidTestCase) => Promise<{
+    result: TestExecutionResult
+    testcase: NormalizedTestCase
+  }>
 
   /**
    * run a single valid test case
    */
-  valid: (arg: ValidTestCase) => Promise<TestExecutionResult>
+  valid: (arg: ValidTestCase) => Promise<{
+    result: TestExecutionResult
+    testcase: NormalizedTestCase
+  }>
 }

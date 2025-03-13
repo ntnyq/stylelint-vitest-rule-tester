@@ -10,7 +10,7 @@ import type {
   NormalizedTestCase,
 } from '../types'
 
-function verifyLintResultMessages({
+async function verifyLintResultMessages({
   type,
   testCase,
   messages,
@@ -18,8 +18,8 @@ function verifyLintResultMessages({
   type: 'warnings'
   testCase: NormalizedTestCase
   messages: LintResultWarning[]
-}): void
-function verifyLintResultMessages({
+}): Promise<void>
+async function verifyLintResultMessages({
   type,
   testCase,
   messages,
@@ -27,8 +27,8 @@ function verifyLintResultMessages({
   type: 'parseErrors'
   testCase: NormalizedTestCase
   messages: LintResultParseError[]
-}): void
-function verifyLintResultMessages({
+}): Promise<void>
+async function verifyLintResultMessages({
   type,
   testCase,
   messages,
@@ -36,8 +36,8 @@ function verifyLintResultMessages({
   type: 'deprecations'
   testCase: NormalizedTestCase
   messages: LintResultDeprecation[]
-}): void
-function verifyLintResultMessages({
+}): Promise<void>
+async function verifyLintResultMessages({
   type,
   testCase,
   messages,
@@ -45,8 +45,8 @@ function verifyLintResultMessages({
   type: 'invalidOptionWarnings'
   testCase: NormalizedTestCase
   messages: LintResultInvalidOptionWarning[]
-}): void
-function verifyLintResultMessages({
+}): Promise<void>
+async function verifyLintResultMessages({
   type,
   testCase,
   messages,
@@ -60,7 +60,7 @@ function verifyLintResultMessages({
   }
 
   if (isFunction(testCase[type])) {
-    testCase[type]?.(messages)
+    await testCase[type]?.(messages)
   } else if (isNumber(testCase[type])) {
     expect.soft(messages.length, `number of ${type}`).toBe(testCase[type])
   } else {
@@ -80,26 +80,26 @@ function verifyLintResultMessages({
   }
 }
 
-export function validateLintResult(
+export async function validateLintResult(
   testCase: NormalizedTestCase,
   lintResult: Stylelint.LintResult,
 ) {
-  verifyLintResultMessages({
+  await verifyLintResultMessages({
     type: 'warnings',
     testCase,
     messages: lintResult.warnings,
   })
-  verifyLintResultMessages({
+  await verifyLintResultMessages({
     type: 'parseErrors',
     testCase,
     messages: lintResult.parseErrors,
   })
-  verifyLintResultMessages({
+  await verifyLintResultMessages({
     type: 'deprecations',
     testCase,
     messages: lintResult.deprecations,
   })
-  verifyLintResultMessages({
+  await verifyLintResultMessages({
     type: 'invalidOptionWarnings',
     testCase,
     messages: lintResult.invalidOptionWarnings,

@@ -1,3 +1,5 @@
+import type { Awaitable } from '@ntnyq/utils'
+import type { LinterOptions } from 'stylelint'
 import type {
   LintResultDeprecation,
   LintResultInvalidOptionWarning,
@@ -17,7 +19,7 @@ export type InvalidTestCaseBase = ValidTestCaseBase & {
    * Assert if output is expected.
    * Pass `null` to assert that the output is the same as the input.
    */
-  output?: string | ((output: string, input: string) => void) | null
+  output?: string | ((output: string, input: string) => Awaitable<void>) | null
 
   /**
    * expect for {@link LintResultDeprecation}
@@ -25,7 +27,7 @@ export type InvalidTestCaseBase = ValidTestCaseBase & {
   deprecations?:
     | number
     | (string | LintResultDeprecation)[]
-    | ((deprecations: LintResultDeprecation[]) => void)
+    | ((deprecations: LintResultDeprecation[]) => Awaitable<void>)
 
   /**
    * expect for {@link LintResultInvalidOptionWarning}
@@ -33,7 +35,9 @@ export type InvalidTestCaseBase = ValidTestCaseBase & {
   invalidOptionWarnings?:
     | number
     | (string | LintResultInvalidOptionWarning)[]
-    | ((invalidOptionWarnings: LintResultInvalidOptionWarning[]) => void)
+    | ((
+        invalidOptionWarnings: LintResultInvalidOptionWarning[],
+      ) => Awaitable<void>)
 
   /**
    * expect for {@link LintResultParseError}
@@ -41,7 +45,7 @@ export type InvalidTestCaseBase = ValidTestCaseBase & {
   parseErrors?:
     | number
     | (string | LintResultParseError)[]
-    | ((parseErrors: LintResultParseError[]) => void)
+    | ((parseErrors: LintResultParseError[]) => Awaitable<void>)
 
   /**
    * expect for {@link LintResultWarning}
@@ -49,7 +53,7 @@ export type InvalidTestCaseBase = ValidTestCaseBase & {
   warnings?:
     | number
     | (string | LintResultWarning)[]
-    | ((warnings: LintResultWarning[]) => void)
+    | ((warnings: LintResultWarning[]) => Awaitable<void>)
 }
 
 /**
@@ -90,8 +94,26 @@ export type ValidTestCaseBase = RuleTesterBehaviorOptions
 
     /**
      * lint result
+     *
+     * @deprecated use `after` instead
      */
-    onResult?: (result: TestExecutionResult) => void
+    onResult?: (result: TestExecutionResult) => Awaitable<void>
+
+    /**
+     * hook after run test case
+     */
+    after?: (
+      this: NormalizedTestCase,
+      result: TestExecutionResult,
+    ) => Awaitable<void>
+
+    /**
+     * hook before run test case
+     */
+    before?: (
+      this: NormalizedTestCase,
+      linterOptions: LinterOptions,
+    ) => Awaitable<void>
   }
 
 /**
