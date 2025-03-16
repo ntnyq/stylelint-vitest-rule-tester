@@ -57,7 +57,7 @@
     "postcss": "^8.5.3"
   },
   "devDependencies": {
-    "@ntnyq/eslint-config": "^4.0.1",
+    "@ntnyq/eslint-config": "^4.0.2",
     "@ntnyq/prettier-config": "^2.0.0",
     "@types/node": "^22.13.10",
     "@vitest/coverage-v8": "^3.0.8",
@@ -70,7 +70,7 @@
     "postcss-less": "^6.0.0",
     "postcss-scss": "^4.0.9",
     "prettier": "^3.5.3",
-    "stylelint": "^16.15.0",
+    "stylelint": "^16.16.0",
     "stylelint-scss": "^6.11.1",
     "typescript": "^5.8.2",
     "unbuild": "^3.5.0",
