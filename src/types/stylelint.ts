@@ -33,7 +33,7 @@ export type LintResultMessage =
 /**
  * Stylelint options
  */
-export interface StylelintOptions {
+export interface StylelintOptions<RuleOptions = any> {
   /**
    * linter options for `stylelint.lint(options)`
    */
@@ -42,7 +42,7 @@ export interface StylelintOptions {
   /**
    * rule options
    */
-  ruleOptions?: any
+  ruleOptions?: RuleOptions
 
   /**
    * stylelint config

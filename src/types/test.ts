@@ -4,22 +4,22 @@ import type { StylelintLinterResult } from './stylelint'
 /**
  * Test case options
  */
-export interface TestCasesOptions {
+export interface TestCasesOptions<RuleOptions = any> {
   /**
    * invalid cases
    */
-  invalid?: (string | InvalidTestCase)[]
+  invalid?: (string | InvalidTestCase<RuleOptions>)[]
 
   /**
    * valid cases
    */
-  valid?: (string | ValidTestCase)[]
+  valid?: (string | ValidTestCase<RuleOptions>)[]
 
   /**
    * callback to be called after each test case
    */
   onResult?: (
-    testCase: NormalizedTestCase,
+    testCase: NormalizedTestCase<RuleOptions>,
     result: TestExecutionResult,
   ) => Promise<void> | void
 }

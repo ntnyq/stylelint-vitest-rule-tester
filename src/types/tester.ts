@@ -37,8 +37,8 @@ export type RuleTesterBehaviorOptions = {
 /**
  * Rule tester init options
  */
-export type RuleTesterInitOptions = RuleTesterBehaviorOptions
-  & StylelintOptions & {
+export type RuleTesterInitOptions<RuleOptions = any> = RuleTesterBehaviorOptions
+  & StylelintOptions<RuleOptions> & {
     /**
      * rule name to test
      */
@@ -54,18 +54,18 @@ export type RuleTesterInitOptions = RuleTesterBehaviorOptions
  * Rule Tester
  * @pg
  */
-export interface RuleTester {
+export interface RuleTester<RuleOptions = any> {
   /**
    * run multiple test cases
    */
-  run: (options: TestCasesOptions) => Promise<void>
+  run: (options: TestCasesOptions<RuleOptions>) => Promise<void>
 
   /**
    * run a single test case
    */
   each: (arg: TestCase) => Promise<{
     result: TestExecutionResult
-    testcase: NormalizedTestCase
+    testcase: NormalizedTestCase<RuleOptions>
   }>
 
   /**
@@ -73,7 +73,7 @@ export interface RuleTester {
    */
   invalid: (arg: InvalidTestCase) => Promise<{
     result: TestExecutionResult
-    testcase: NormalizedTestCase
+    testcase: NormalizedTestCase<RuleOptions>
   }>
 
   /**
@@ -81,6 +81,6 @@ export interface RuleTester {
    */
   valid: (arg: ValidTestCase) => Promise<{
     result: TestExecutionResult
-    testcase: NormalizedTestCase
+    testcase: NormalizedTestCase<RuleOptions>
   }>
 }

@@ -9,4 +9,5 @@ export const DEFAULT_FILE_NAMES = Object.freeze<DefaultFilenames>({
   styl: 'file.styl',
   stylus: 'file.stylus',
 })
+
 export const DEFAULT_FILE_NAME = DEFAULT_FILE_NAMES.css

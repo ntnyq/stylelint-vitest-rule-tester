@@ -22,13 +22,15 @@ import type {
   ValidTestCase,
 } from './types'
 
-export function createRuleTester(options: RuleTesterInitOptions): RuleTester {
+export function createRuleTester<RuleOptions = any>(
+  options: RuleTesterInitOptions<RuleOptions>,
+): RuleTester<RuleOptions> {
   const defaultFilenames: Partial<DefaultFilenames> = {
     ...DEFAULT_FILE_NAMES,
     ...options.defaultFileNames,
   }
 
-  async function each(c: TestCase) {
+  async function each(c: TestCase<RuleOptions>) {
     const testcase = normalizeTestCase(c, defaultFilenames)
 
     const {
@@ -150,7 +152,7 @@ export function createRuleTester(options: RuleTesterInitOptions): RuleTester {
     }
   }
 
-  async function valid(arg: ValidTestCase | string) {
+  async function valid(arg: ValidTestCase<RuleOptions> | string) {
     const { testcase, result } = await each(arg)
     const [lintResult] = result.results
 
@@ -177,7 +179,7 @@ export function createRuleTester(options: RuleTesterInitOptions): RuleTester {
     }
   }
 
-  async function invalid(arg: InvalidTestCase | string) {
+  async function invalid(arg: InvalidTestCase<RuleOptions> | string) {
     const { testcase, result } = await each(arg)
     const [lintResult] = result.results
 
@@ -209,7 +211,7 @@ export function createRuleTester(options: RuleTesterInitOptions): RuleTester {
     }
   }
 
-  async function run(cases: TestCasesOptions) {
+  async function run(cases: TestCasesOptions<RuleOptions>) {
     describe(options.name, () => {
       if (cases.valid?.length) {
         describe('valid', () => {
