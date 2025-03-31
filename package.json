@@ -2,7 +2,7 @@
   "name": "stylelint-vitest-rule-tester",
   "type": "module",
   "version": "0.1.0",
-  "packageManager": "pnpm@10.6.5",
+  "packageManager": "pnpm@10.7.0",
   "description": "Styelint rule tester with Vitest.",
   "keywords": [
     "rule-tester",
@@ -59,7 +59,7 @@
   "devDependencies": {
     "@ntnyq/eslint-config": "^4.0.2",
     "@ntnyq/prettier-config": "^2.0.0",
-    "@types/node": "^22.13.11",
+    "@types/node": "^22.13.14",
     "@vitest/coverage-v8": "^3.0.9",
     "bumpp": "^10.1.0",
     "eslint": "^9.23.0",
@@ -70,7 +70,7 @@
     "postcss-less": "^6.0.0",
     "postcss-scss": "^4.0.9",
     "prettier": "^3.5.3",
-    "stylelint": "^16.16.0",
+    "stylelint": "^16.17.0",
     "stylelint-scss": "^6.11.1",
     "typescript": "^5.8.2",
     "unbuild": "^3.5.0",
