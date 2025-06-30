@@ -3,7 +3,6 @@
 [![CI](https://github.com/ntnyq/stylelint-vitest-rule-tester/workflows/CI/badge.svg)](https://github.com/ntnyq/stylelint-vitest-rule-tester/actions)
 [![NPM VERSION](https://img.shields.io/npm/v/stylelint-vitest-rule-tester.svg)](https://www.npmjs.com/package/stylelint-vitest-rule-tester)
 [![NPM DOWNLOADS](https://img.shields.io/npm/dy/stylelint-vitest-rule-tester.svg)](https://www.npmjs.com/package/stylelint-vitest-rule-tester)
-[![CODECOV](https://codecov.io/github/ntnyq/stylelint-vitest-rule-tester/graph/badge.svg?token=34A8PZF57N)](https://codecov.io/github/ntnyq/stylelint-vitest-rule-tester)
 [![LICENSE](https://img.shields.io/github/license/ntnyq/stylelint-vitest-rule-tester.svg)](https://github.com/ntnyq/stylelint-vitest-rule-tester/blob/main/LICENSE)
 
 > Styellint rule tester with Vitest, with more powerful and friendly APIs

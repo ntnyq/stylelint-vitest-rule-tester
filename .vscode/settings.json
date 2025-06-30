@@ -30,6 +30,7 @@
     "lcov",
     "pnpm",
     "styl",
+    "tsdown",
     "unrs",
     "vite",
     "vitest"
