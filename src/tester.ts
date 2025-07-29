@@ -1,4 +1,3 @@
-/* eslint-disable no-useless-call */
 import { isEmptyArray, isFunction, isNull, isUndefined } from '@ntnyq/utils'
 import stylelint from 'stylelint'
 import { describe, expect, it } from 'vitest'
@@ -46,6 +45,7 @@ export function createRuleTester<RuleOptions = any>(
     const ruleOptions = resolveRuleOptions(testcase, options, ruleMeta)
     const linterOptions = resolveLinterOptions(options, testcase, ruleOptions)
 
+    // eslint-disable-next-line no-useless-call
     await testcase.before?.call(testcase, linterOptions)
 
     const linterResult = await stylelint.lint(linterOptions)
@@ -144,6 +144,7 @@ export function createRuleTester<RuleOptions = any>(
     }
 
     await testcase.onResult?.(result)
+    // eslint-disable-next-line no-useless-call
     await testcase.after?.call(testcase, result)
 
     return {
