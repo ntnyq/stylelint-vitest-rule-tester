@@ -58,11 +58,11 @@
     "postcss": "^8.5.6"
   },
   "devDependencies": {
-    "@ntnyq/eslint-config": "^5.3.0",
+    "@ntnyq/eslint-config": "^5.3.1",
     "@ntnyq/prettier-config": "^3.0.1",
-    "@types/node": "^24.2.0",
+    "@types/node": "^24.2.1",
     "bumpp": "^10.2.2",
-    "eslint": "^9.32.0",
+    "eslint": "^9.33.0",
     "husky": "^9.1.7",
     "nano-staged": "^0.8.0",
     "npm-run-all2": "^8.0.4",
@@ -70,9 +70,9 @@
     "postcss-less": "^6.0.0",
     "postcss-scss": "^4.0.9",
     "prettier": "^3.6.2",
-    "stylelint": "^16.23.0",
+    "stylelint": "^16.23.1",
     "stylelint-scss": "^6.12.1",
-    "tsdown": "^0.13.3",
+    "tsdown": "^0.14.0",
     "typescript": "^5.9.2",
     "vitest": "^3.2.4"
   },
