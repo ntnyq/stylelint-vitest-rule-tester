@@ -1,7 +1,7 @@
 declare module 'stylelint-scss' {
-  type PluginRule = { rule: any; ruleName: string }
+  import type { Plugin } from 'stylelint'
 
-  declare const plugin: PluginRule[]
+  const plugin: Plugin[]
 
   export = plugin
 }
