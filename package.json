@@ -68,12 +68,12 @@
     "postcss-html": "^1.8.0",
     "postcss-less": "^6.0.0",
     "postcss-scss": "^4.0.9",
-    "prettier": "^3.7.3",
+    "prettier": "^3.7.4",
     "stylelint": "^16.26.1",
-    "stylelint-scss": "^6.12.1",
-    "tsdown": "^0.16.8",
+    "stylelint-scss": "^6.13.0",
+    "tsdown": "^0.17.1",
     "typescript": "^5.9.3",
-    "vitest": "^4.0.14"
+    "vitest": "^4.0.15"
   },
   "nano-staged": {
     "*.{js,ts,mjs,cjs,md,yml,yaml,json}": "eslint --fix"
