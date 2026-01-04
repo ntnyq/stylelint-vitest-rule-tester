@@ -13,6 +13,7 @@ import {
 import type {
   DefaultFilenames,
   InvalidTestCase,
+  NormalizedTestCase,
   RuleTester,
   RuleTesterInitOptions,
   TestCase,
@@ -29,120 +30,181 @@ export function createRuleTester<RuleOptions = any>(
     ...options.defaultFileNames,
   }
 
-  async function each(c: TestCase<RuleOptions>) {
-    const testcase = normalizeTestCase(c, defaultFilenames)
+  /**
+   * Apply fix to code and check if the code changed
+   */
+  async function applyFix(
+    code: string,
+    linterOptions: stylelint.LinterOptions,
+  ) {
+    const linterResult = await stylelint.lint({
+      ...linterOptions,
+      code,
+      fix: true,
+    })
 
-    const {
-      recursive = 10,
-      verifyAfterFix = true,
-      // verifyFixChanges = true,
-    } = {
-      ...options,
-      ...testcase,
+    const fixed = linterResult.code !== code
+
+    return {
+      ...normalizeLinterResult(linterResult),
+      fixed,
+    }
+  }
+
+  /**
+   * Apply fixes recursively until code stabilizes or limit reached
+   */
+  async function applyRecursiveFix(
+    initialResult: TestExecutionResult,
+    linterOptions: stylelint.LinterOptions,
+    recursive: number | false,
+  ): Promise<TestExecutionResult> {
+    const result = { ...initialResult }
+
+    if (!result.fixed || recursive === false) {
+      return result
     }
 
-    const ruleMeta = await resolveRuleMeta(options)
-    const ruleOptions = resolveRuleOptions(testcase, options, ruleMeta)
-    const linterOptions = resolveLinterOptions(options, testcase, ruleOptions)
+    let remainingAttempts = recursive
 
-    // eslint-disable-next-line no-useless-call
-    await testcase.before?.call(testcase, linterOptions)
+    for (
+      remainingAttempts = recursive;
+      remainingAttempts >= 0;
+      remainingAttempts--
+    ) {
+      const step = await applyFix(result.code!, linterOptions)
 
-    const linterResult = await stylelint.lint(linterOptions)
-    const [lintResult] = linterResult.results
+      result.steps?.push(step)
+      result.code = step.code
 
-    await validateLintResult(testcase, lintResult)
-
-    async function fix(code: string) {
-      const linterResult = await stylelint.lint({
-        ...linterOptions,
-        code,
-        fix: true,
-      })
-
-      // check if the code is changed
-      const fixed = linterResult.code !== code
-
-      // // not change after fix
-      // if (!fixed && verifyFixChanges) {
-      //   throw new Error(
-      //     `Expected code to be changed after fix, but it's the same as the input.`,
-      //   )
-      // }
-
-      return {
-        ...normalizeLinterResult(linterResult),
-        fixed,
+      if (!step.fixed) {
+        break
       }
     }
 
-    const fixedLinterResult = await fix(testcase.code)
-
-    const result: TestExecutionResult = {
-      ...fixedLinterResult,
-      steps: [fixedLinterResult],
+    if (remainingAttempts === 0) {
+      const totalAttempts = recursive + 1
+      throw new Error(
+        `Fix recursion limit exceeded after ${totalAttempts} attempts, possibly the fix is not stable. Last output:\n-------\n${result.code}\n-------`,
+      )
     }
 
-    // should recursive fix
-    if (result.fixed && recursive !== false) {
-      let r = recursive
+    return result
+  }
 
-      for (r = recursive; r >= 0; r--) {
-        const step = await fix(result.code!)
+  /**
+   * Verify the output matches expected value
+   */
+  async function verifyOutput(
+    testcase: NormalizedTestCase<RuleOptions>,
+    result: TestExecutionResult,
+  ) {
+    const normalizedTestCase = testcase
 
-        result.steps?.push(step)
-        result.code = step.code
-
-        if (!step.fixed) {
-          break
-        }
-      }
-
-      if (r === 0) {
-        throw new Error(
-          `Fix recursion limit exceeded, possibly the fix is not stable. Last output:\n-------\n${result.code}\n-------`,
-        )
-      }
+    if (isUndefined(normalizedTestCase.output)) {
+      return
     }
 
-    // expected fixed
-    if (!isUndefined(testcase.output)) {
-      if (isNull(testcase.output)) {
-        // null means output should be the same as the input
-        expect(result.code, 'output').toBe(testcase.code)
-      } else if (isFunction(testcase.output)) {
-        // custom assertion
-        await testcase.output(result.code || '', testcase.code)
-      } else {
-        expect(result.code, 'output').toBe(testcase.output)
-      }
+    if (isNull(normalizedTestCase.output)) {
+      // null means output should be the same as the input
+      expect(result.code, 'output').toBe(normalizedTestCase.code)
+    } else if (isFunction(normalizedTestCase.output)) {
+      // custom assertion
+      await normalizedTestCase.output(
+        result.code || '',
+        normalizedTestCase.code,
+      )
+    } else {
+      expect(result.code, 'output').toBe(normalizedTestCase.output)
     }
+  }
+
+  /**
+   * Verify fixed result has no warnings
+   */
+  async function verifyFixedResult(
+    result: TestExecutionResult,
+    linterOptions: stylelint.LinterOptions,
+    verifyAfterFix: boolean,
+  ) {
+    if (!result.fixed || !verifyAfterFix) {
+      return
+    }
+
+    const { results = [] } = await stylelint.lint({
+      ...linterOptions,
+      code: result.code,
+      fix: false,
+    })
+    const [lintResult] = results
+
+    expect.soft(lintResult, 'no lint result').toBeDefined()
+    expect.soft(lintResult.warnings, 'no warnings after fix').toEqual([])
+  }
+
+  /**
+   * Validate invalid test case has required assertions
+   */
+  function validateInvalidTestCase(testcase: NormalizedTestCase<RuleOptions>) {
+    const normalized = testcase
 
     if (
-      testcase.type === 'invalid'
-      && isUndefined(testcase.output)
-      && isUndefined(testcase.warnings)
-      && isUndefined(testcase.parseErrors)
-      && isUndefined(testcase.deprecations)
-      && isUndefined(testcase.invalidOptionWarnings)
+      normalized.type === 'invalid'
+      && isUndefined(normalized.output)
+      && isUndefined(normalized.warnings)
+      && isUndefined(normalized.parseErrors)
+      && isUndefined(normalized.deprecations)
+      && isUndefined(normalized.invalidOptionWarnings)
     ) {
       throw new Error(
         `Invalid test case must have either 'output', 'warnings', 'parseErrors', 'deprecations', or 'invalidOptionWarnings' property.`,
       )
     }
+  }
 
-    if (result.fixed && verifyAfterFix) {
-      const { results = [] } = await stylelint.lint({
-        ...linterOptions,
-        code: result.code,
-        fix: false,
-      })
-      const [lintResult] = results
+  async function each(c: TestCase<RuleOptions>) {
+    const testcase = normalizeTestCase(c, defaultFilenames)
 
-      expect.soft(lintResult, 'no lint result').toBeDefined()
-      expect.soft(lintResult.warnings, 'no warnings after fix').toEqual([])
+    const { recursive = 10, verifyAfterFix = true } = {
+      ...options,
+      ...testcase,
     }
 
+    // Resolve rule configuration
+    const ruleMeta = await resolveRuleMeta(options)
+    const ruleOptions = resolveRuleOptions(testcase, options, ruleMeta)
+    const linterOptions = resolveLinterOptions(options, testcase, ruleOptions)
+
+    // Run before hook
+    // eslint-disable-next-line no-useless-call
+    await testcase.before?.call(testcase, linterOptions)
+
+    // Initial lint without fix
+    const linterResult = await stylelint.lint(linterOptions)
+    const [lintResult] = linterResult.results
+
+    await validateLintResult(testcase, lintResult)
+
+    // Apply fix and collect result
+    const fixedLinterResult = await applyFix(testcase.code, linterOptions)
+    let result: TestExecutionResult = {
+      ...fixedLinterResult,
+      steps: [fixedLinterResult],
+    }
+
+    // Apply recursive fix if needed
+    result = await applyRecursiveFix(result, linterOptions, recursive)
+
+    // Verify output expectations
+    await verifyOutput(testcase, result)
+
+    // Validate invalid test case has assertions
+    validateInvalidTestCase(testcase)
+
+    // Verify fixed result has no warnings
+    await verifyFixedResult(result, linterOptions, verifyAfterFix)
+
+    // Run after hooks
     await testcase.onResult?.(result)
     // eslint-disable-next-line no-useless-call
     await testcase.after?.call(testcase, result)

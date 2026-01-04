@@ -22,15 +22,26 @@ export function resolveRuleOptions(
     ? true // use default options if undefined
     : mergedRuleOptions
 
-  if (Array.isArray(resolvedOptions)) {
-    if (resolvedOptions.length === 1) {
-      return url ? [resolvedOptions[0], { url }] : resolvedOptions
-    } else {
-      return url && isUndefined(resolvedOptions[1].url)
-        ? [resolvedOptions[0], { ...resolvedOptions[1], url }]
-        : resolvedOptions
-    }
-  } else {
+  // Helper to inject url into secondary options
+  const injectUrl = (opts: any) => (url ? { ...opts, url } : opts)
+
+  // Handle non-array case: convert to array format with optional url
+  if (!Array.isArray(resolvedOptions)) {
     return url ? [resolvedOptions, { url }] : [resolvedOptions]
   }
+
+  // Handle array case
+  const [primary, secondary] = resolvedOptions
+
+  // Single element array: add url as secondary option if present
+  if (resolvedOptions.length === 1) {
+    return url ? [primary, { url }] : resolvedOptions
+  }
+
+  // Multiple elements: only inject url if secondary options don't have it already
+  if (url && isUndefined(secondary?.url)) {
+    return [primary, injectUrl(secondary)]
+  }
+
+  return resolvedOptions
 }

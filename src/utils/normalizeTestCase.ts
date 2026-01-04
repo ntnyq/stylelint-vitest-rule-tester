@@ -26,13 +26,13 @@ function isInvalidTestCase(testCase: NormalizedTestCase): boolean {
  * @param type - case type
  * @returns normalized test case
  */
-export function normalizeTestCase(
-  testCase: TestCase,
+export function normalizeTestCase<RuleOptions = any>(
+  testCase: TestCase<RuleOptions>,
   defaultFilenames: Partial<DefaultFilenames>,
   type?: 'valid' | 'invalid',
-): NormalizedTestCase {
+): NormalizedTestCase<RuleOptions> {
   const obj = isString(testCase) ? { code: testCase } : { ...testCase }
-  const normalized = obj as NormalizedTestCase
+  const normalized = obj as NormalizedTestCase<RuleOptions>
 
   normalized.type ||=
     type || (isInvalidTestCase(normalized) ? 'invalid' : 'valid')
