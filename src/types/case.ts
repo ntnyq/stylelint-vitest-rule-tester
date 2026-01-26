@@ -68,8 +68,8 @@ export type InvalidTestCaseBase<RuleOptions = any> =
 export type ValidTestCase<RuleOptions = any> =
   | string
   | ValidTestCaseBase<RuleOptions>
-export type ValidTestCaseBase<RuleOptions = any> = RuleTesterBehaviorOptions
-  & StylelintOptions<RuleOptions> & {
+export type ValidTestCaseBase<RuleOptions = any> = RuleTesterBehaviorOptions &
+  StylelintOptions<RuleOptions> & {
     /**
      * code to test
      */

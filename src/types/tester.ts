@@ -37,18 +37,19 @@ export type RuleTesterBehaviorOptions = {
 /**
  * Rule tester init options
  */
-export type RuleTesterInitOptions<RuleOptions = any> = RuleTesterBehaviorOptions
-  & StylelintOptions<RuleOptions> & {
-    /**
-     * rule name to test
-     */
-    name: string
+export type RuleTesterInitOptions<RuleOptions = any> =
+  RuleTesterBehaviorOptions &
+    StylelintOptions<RuleOptions> & {
+      /**
+       * rule name to test
+       */
+      name: string
 
-    /**
-     * default filenames to be used for tests
-     */
-    defaultFileNames?: Partial<DefaultFilenames>
-  }
+      /**
+       * default filenames to be used for tests
+       */
+      defaultFileNames?: Partial<DefaultFilenames>
+    }
 
 /**
  * Rule Tester

@@ -33,7 +33,7 @@ run({
     `@page :left { margin-left: 4cm; }`,
     `@page { @top-center { content: none } }`,
     `@font-face { font-family: MyHelvetica; src: local("Helvetica"), url(MgOpenModern.ttf); }`,
-    `@keyframes identifier { 0% { top: 0; left: 0; } 30% { top: 50px; } 68%, 100% { top: 100px; left: 100%; } }'`,
+    `@keyframes identifier { 0% { top: 0; left: 0; } 30% { top: 50px; } 68%, 100% { top: 100px; left: 100%; } }`,
     `@-webkit-keyframes identifier { 0% { top: 0; left: 0; } 30% { top: 50px; } 68%, 100% { top: 100px; left: 100%; } }`,
     `@viewport { min-width: 640px; max-width: 800px; }`,
     `@viewport { orientation: landscape; }`,

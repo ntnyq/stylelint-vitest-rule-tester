@@ -283,8 +283,8 @@ export type RuleTesterBehaviorOptions = {
 /**
  * Rule tester init options
  */
-export type RuleTesterInitOptions = RuleTesterBehaviorOptions
-  & StylelintOptions & {
+export type RuleTesterInitOptions = RuleTesterBehaviorOptions &
+  StylelintOptions & {
     /**
      * rule name to test
      */
@@ -378,8 +378,8 @@ export type InvalidTestCaseBase = ValidTestCaseBase & {
  * Valid test case
  */
 export type ValidTestCase = string | ValidTestCaseBase
-export type ValidTestCaseBase = RuleTesterBehaviorOptions
-  & StylelintOptions & {
+export type ValidTestCaseBase = RuleTesterBehaviorOptions &
+  StylelintOptions & {
     /**
      * code to test
      */

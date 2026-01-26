@@ -10,11 +10,11 @@ import type { DefaultFilenames, NormalizedTestCase, TestCase } from '../types'
  */
 function isInvalidTestCase(testCase: NormalizedTestCase): boolean {
   return (
-    !!testCase.warnings
-    || !!testCase.deprecations
-    || !!testCase.parseErrors
-    || !!testCase.invalidOptionWarnings
-    || !!testCase.output
+    !!testCase.warnings ||
+    !!testCase.deprecations ||
+    !!testCase.parseErrors ||
+    !!testCase.invalidOptionWarnings ||
+    !!testCase.output
   )
 }
 

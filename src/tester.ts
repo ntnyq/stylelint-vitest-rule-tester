@@ -149,12 +149,12 @@ export function createRuleTester<RuleOptions = any>(
     const normalized = testcase
 
     if (
-      normalized.type === 'invalid'
-      && isUndefined(normalized.output)
-      && isUndefined(normalized.warnings)
-      && isUndefined(normalized.parseErrors)
-      && isUndefined(normalized.deprecations)
-      && isUndefined(normalized.invalidOptionWarnings)
+      normalized.type === 'invalid' &&
+      isUndefined(normalized.output) &&
+      isUndefined(normalized.warnings) &&
+      isUndefined(normalized.parseErrors) &&
+      isUndefined(normalized.deprecations) &&
+      isUndefined(normalized.invalidOptionWarnings)
     ) {
       throw new Error(
         `Invalid test case must have either 'output', 'warnings', 'parseErrors', 'deprecations', or 'invalidOptionWarnings' property.`,
@@ -255,10 +255,10 @@ export function createRuleTester<RuleOptions = any>(
         .toEqual([])
     } else {
       const noMessages =
-        isEmptyArray(lintResult.warnings)
-        && isEmptyArray(lintResult.deprecations)
-        && isEmptyArray(lintResult.parseErrors)
-        && isEmptyArray(lintResult.invalidOptionWarnings)
+        isEmptyArray(lintResult.warnings) &&
+        isEmptyArray(lintResult.deprecations) &&
+        isEmptyArray(lintResult.parseErrors) &&
+        isEmptyArray(lintResult.invalidOptionWarnings)
 
       expect
         .soft(
