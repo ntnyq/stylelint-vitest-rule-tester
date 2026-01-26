@@ -204,8 +204,6 @@ export function createRuleTester<RuleOptions = any>(
     // Verify fixed result has no warnings
     await verifyFixedResult(result, linterOptions, verifyAfterFix)
 
-    // Run after hooks
-    await testcase.onResult?.(result)
     // eslint-disable-next-line no-useless-call
     await testcase.after?.call(testcase, result)
 

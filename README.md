@@ -5,7 +5,7 @@
 [![NPM DOWNLOADS](https://img.shields.io/npm/dy/stylelint-vitest-rule-tester.svg)](https://www.npmjs.com/package/stylelint-vitest-rule-tester)
 [![LICENSE](https://img.shields.io/github/license/ntnyq/stylelint-vitest-rule-tester.svg)](https://github.com/ntnyq/stylelint-vitest-rule-tester/blob/main/LICENSE)
 
-> Styellint rule tester with Vitest, with more powerful and friendly APIs
+> Stylelint rule tester with Vitest integration — powerful, friendly, and modern testing framework for Stylelint rules
 
 ## Install
 
@@ -198,284 +198,460 @@ run({
 
 ## API
 
-### `run`
+### `run(options)`
 
-- `Type:`: `(options: TestCasesOptions & RuleTesterInitOptions) => void`
+Create a rule tester and run all test cases with a single function call.
 
-Create a tester and run.
+- **Type**: `(options: TestCasesOptions & RuleTesterInitOptions) => void`
 
-### `runClassic`
+```ts
+run({
+  name: 'rule-name',
+  valid: [
+    '.class {}',
+    {
+      code: '',
+      ruleOptions: [false],
+    },
+  ],
+  invalid: [
+    {
+      code: '',
+      warnings(warnings) {
+        expect(warnings).toHaveLength(1)
+        expect(warnings[0].rule).toBe('no-empty-source')
+      },
+    },
+  ],
+})
+```
 
-- `Type:`: `(ruleName: string, cases: TestCasesOptions, options?: RuleTesterInitOptions) => void`
+### `runClassic(ruleName, cases, options?)`
 
-Create a classic style tester and run.
+Classic-style function for running tests with explicit arguments.
+
+- **Type**: `(ruleName: string, cases: TestCasesOptions, options?: RuleTesterInitOptions) => void`
+
+```ts
+import { runClassic } from 'stylelint-vitest-rule-tester'
+import { expect } from 'vitest'
+
+runClassic('no-empty-source', {
+  valid: [
+    '.class {}',
+    {
+      code: '',
+      ruleOptions: [false],
+    },
+  ],
+  invalid: [
+    {
+      code: '',
+      warnings(warnings) {
+        expect(warnings).toHaveLength(1)
+        expect(warnings[0].rule).toBe('no-empty-source')
+      },
+    },
+  ],
+})
+```
+
+### `createRuleTester(options)`
+
+Create a reusable tester instance with granular control over test execution.
+
+- **Returns**: `RuleTester<RuleOptions>`
+
+Available methods on the tester instance:
+
+#### `tester.run(cases)`
+
+Run all test cases with a describe/it structure.
+
+#### `tester.each(testCase)`
+
+Run a single test case and return the result. Useful for custom test orchestration.
+
+```ts
+async function runTest() {
+  const tester = createRuleTester({ name: 'rule-name' })
+  const { testcase, result } = await tester.each('a { color: blue }')
+}
+
+runTest()
+```
+
+#### `tester.valid(testCase)`
+
+Run a single valid test case with automatic assertions.
+
+#### `tester.invalid(testCase)`
+
+Run a single invalid test case with automatic assertions.
 
 ## Interface
 
 <details>
-<summary>🟦 RuleTesterInitOptions types</summary>
+<summary>🟦 RuleTesterInitOptions</summary>
 
 <br>
 
+Configuration options for initializing a rule tester.
+
 ```ts
-import type Stylelint from 'stylelint'
-
-/**
- * default filename when not provided
- */
-export interface DefaultFilenames {
-  css: string
-  less: string
-  postcss: string
-  sass: string
-  scss: string
-  styl: string
-  stylus: string
-  [key: string]: string
-}
-
-/**
- * Stylelint options
- */
-export interface StylelintOptions {
+export type RuleTesterInitOptions<RuleOptions = any> = {
   /**
-   * linter options for `stylelint.lint(options)`
+   * Rule name to test
    */
-  linterOptions?: Stylelint.LinterOptions
+  name: string
 
   /**
-   * rule options
+   * Default filenames for different syntaxes (auto-selected by customSyntax)
+   *
+   * Defaults: { css: 'file.css', scss: 'file.scss', sass: 'file.sass',
+   *             less: 'file.less', postcss: 'file.postcss', styl: 'file.styl' }
    */
-  ruleOptions?: any
+  defaultFileNames?: Partial<DefaultFilenames>
 
   /**
-   * stylelint config
-   */
-  stylelintConfig?: Stylelint.Config
-}
-
-/**
- * Rule tester behavior options
- */
-export type RuleTesterBehaviorOptions = {
-  /**
-   * the number of times to recursively apply the rule
+   * The number of times to recursively apply fixes
    *
    * @default 10
    */
   recursive?: false | number
 
   /**
-   * run verification after applying the fix
+   * Verify that fixed code has no warnings
    *
    * @default true
    */
   verifyAfterFix?: boolean
 
   /**
-   * verify that fix allways changes the code
+   * Stylelint configuration (rules, plugins, customSyntax, etc.)
    *
-   * @default true
+   * @see https://stylelint.io/user-guide/configure
    */
-  verifyFixChanges?: boolean
+  stylelintConfig?: Stylelint.Config
+
+  /**
+   * Rule-specific options passed to the rule
+   */
+  ruleOptions?: RuleOptions
+
+  /**
+   * Direct stylelint.lint() options (rarely needed)
+   */
+  linterOptions?: Stylelint.LinterOptions
 }
-
-/**
- * Rule tester init options
- */
-export type RuleTesterInitOptions = RuleTesterBehaviorOptions &
-  StylelintOptions & {
-    /**
-     * rule name to test
-     */
-    name: string
-
-    /**
-     * default filenames to be used for tests
-     */
-    defaultFileNames?: Partial<DefaultFilenames>
-  }
 ```
 
 </details>
 
 <details>
-<summary>🟦 TestCasesOptions types</summary>
+<summary>🟦 TestCasesOptions</summary>
 
 <br>
 
+Options for running multiple test cases.
+
 ```ts
-import type Stylelint from 'stylelint'
-
-/**
- * Test case options
- */
-export interface TestCasesOptions {
+export interface TestCasesOptions<RuleOptions = any> {
   /**
-   * invalid cases
+   * Array of valid test cases (code that should pass the rule)
    */
-  invalid?: (string | InvalidTestCase)[]
+  valid?: (string | ValidTestCase<RuleOptions>)[]
 
   /**
-   * valid cases
+   * Array of invalid test cases (code that should violate the rule)
    */
-  valid?: (string | ValidTestCase)[]
+  invalid?: (string | InvalidTestCase<RuleOptions>)[]
 
   /**
-   * callback to be called after each test case
+   * Callback invoked after each test case completes
    */
   onResult?: (
-    testCase: NormalizedTestCase,
+    testcase: NormalizedTestCase<RuleOptions>,
     result: TestExecutionResult,
-  ) => Promise<void> | void
-}
-
-/**
- * Invalid test case
- */
-export type InvalidTestCase = string | InvalidTestCaseBase
-export type InvalidTestCaseBase = ValidTestCaseBase & {
-  /**
-   * Assert if output is expected.
-   * Pass `null` to assert that the output is the same as the input.
-   */
-  output?: string | ((output: string, input: string) => void) | null
-
-  /**
-   * expect for {@link LintResultDeprecation}
-   */
-  deprecations?:
-    | number
-    | (string | LintResultDeprecation)[]
-    | ((deprecations: LintResultDeprecation[]) => void)
-
-  /**
-   * expect for {@link LintResultInvalidOptionWarning}
-   */
-  invalidOptionWarnings?:
-    | number
-    | (string | LintResultInvalidOptionWarning)[]
-    | ((invalidOptionWarnings: LintResultInvalidOptionWarning[]) => void)
-
-  /**
-   * expect for {@link LintResultParseError}
-   */
-  parseErrors?:
-    | number
-    | (string | LintResultParseError)[]
-    | ((parseErrors: LintResultParseError[]) => void)
-
-  /**
-   * expect for {@link LintResultWarning}
-   */
-  warnings?:
-    | number
-    | (string | LintResultWarning)[]
-    | ((warnings: LintResultWarning[]) => void)
-}
-
-/**
- * Valid test case
- */
-export type ValidTestCase = string | ValidTestCaseBase
-export type ValidTestCaseBase = RuleTesterBehaviorOptions &
-  StylelintOptions & {
-    /**
-     * code to test
-     */
-    code: string
-
-    /**
-     * test case description
-     */
-    description?: string
-
-    /**
-     * test case filename
-     */
-    filename?: string
-
-    /**
-     * test case name
-     */
-    name?: string
-
-    /**
-     * only run this test case
-     */
-    only?: boolean
-
-    /**
-     * skip this test case
-     */
-    skip?: boolean
-
-    /**
-     * lint result
-     */
-    onResult?: (result: TestExecutionResult) => void
-  }
-
-/**
- * Test case
- * @pg
- */
-export type TestCase = InvalidTestCase | ValidTestCase
-
-/**
- * Normalized test case
- * @pg
- */
-export type NormalizedTestCase = InvalidTestCaseBase & {
-  code: string
-  filename: string
-  type: 'invalid' | 'valid'
-}
-
-export type LintResultDeprecation = {
-  text: string
-  reference?: string
-}
-export type LintResultInvalidOptionWarning = {
-  text: string
-}
-export type LintResultParseError = Postcss.Warning & {
-  stylelintType: 'parseError'
-}
-export type LintResultWarning = Stylelint.Warning
-
-export type LintResultMessage =
-  | LintResultDeprecation
-  | LintResultInvalidOptionWarning
-  | LintResultParseError
-  | LintResultWarning
-
-export type StylelintLinterResult = Omit<
-  Stylelint.LinterResult,
-  'cwd' | 'report'
->
-
-/**
- * Test execution result
- */
-export type TestExecutionResult = StylelintLinterResult & {
-  /**
-   * whether the code was fixed
-   */
-  fixed?: boolean
-
-  /**
-   * if the rule fixes in multiple steps, the result of each step is present here
-   */
-  steps?: StylelintLinterResult[]
+  ) => Awaitable<void>
 }
 ```
 
 </details>
 
+<details>
+<summary>🟦 Test Cases</summary>
+
+<br>
+
+### ValidTestCase
+
+Represents valid CSS/styling code that should not trigger the rule.
+
+```ts
+export type ValidTestCase<RuleOptions = any> =
+  | string
+  | {
+      /**
+       * Code to test
+       */
+      code: string
+
+      /**
+       * Human-readable test description
+       */
+      description?: string
+
+      /**
+       * Filename (if not provided, auto-selected from defaultFileNames)
+       */
+      filename?: string
+
+      /**
+       * Skip this test case
+       */
+      skip?: boolean
+
+      /**
+       * Only run this test case (useful for debugging)
+       */
+      only?: boolean
+
+      /**
+       * Stylelint configuration for this specific case
+       */
+      stylelintConfig?: Stylelint.Config
+
+      /**
+       * Rule options override for this case
+       */
+      ruleOptions?: RuleOptions
+
+      /**
+       * Hook: called before linting
+       */
+      before?: (
+        this: NormalizedTestCase,
+        linterOptions: LinterOptions,
+      ) => Awaitable<void>
+
+      /**
+       * Hook: called after linting
+       */
+      after?: (
+        this: NormalizedTestCase,
+        result: TestExecutionResult,
+      ) => Awaitable<void>
+
+      /**
+       * Custom recursion setting for this case
+       */
+      recursive?: false | number
+
+      /**
+       * Skip verification after fixing for this case
+       */
+      verifyAfterFix?: boolean
+    }
+```
+
+### InvalidTestCase
+
+Represents CSS/styling code that should trigger the rule violation(s). Requires at least one assertion.
+
+```ts
+export type InvalidTestCase<RuleOptions = any> =
+  | string
+  | {
+      code: string
+      description?: string
+      filename?: string
+      // ... extends ValidTestCase options ...
+
+      /**
+       * Expected number of warnings or array of warning matchers
+       *
+       * Matchers can be:
+       * - `number` to check count
+       * - `string` to match warning message
+       * - `object` to match warning properties (e.g., { rule: 'my-rule' })
+       * - `function` for custom assertions
+       */
+      warnings?:
+        | number
+        | (string | LintResultWarning)[]
+        | ((w: LintResultWarning[]) => Awaitable<void>)
+
+      /**
+       * Assert the fixed output matches expected code
+       *
+       * - `string` to check exact output
+       * - `null` to verify code is unchanged after fixing
+       * - `function` for custom output assertions
+       */
+      output?:
+        | string
+        | null
+        | ((fixed: string, input: string) => Awaitable<void>)
+
+      /**
+       * Expected parse errors (same matcher format as warnings)
+       */
+      parseErrors?:
+        | number
+        | (string | LintResultParseError)[]
+        | ((e: LintResultParseError[]) => Awaitable<void>)
+
+      /**
+       * Expected deprecation warnings
+       */
+      deprecations?:
+        | number
+        | (string | LintResultDeprecation)[]
+        | ((d: LintResultDeprecation[]) => Awaitable<void>)
+
+      /**
+       * Expected invalid option warnings
+       */
+      invalidOptionWarnings?:
+        | number
+        | (string | LintResultInvalidOptionWarning)[]
+        | ((w: LintResultInvalidOptionWarning[]) => Awaitable<void>)
+    }
+```
+
+</details>
+
+<details>
+<summary>🟦 Result Types</summary>
+
+<br>
+
+```ts
+export type TestExecutionResult = {
+  /**
+   * The final code after all fixes applied
+   */
+  code: string
+
+  /**
+   * Whether the code was modified by the rule
+   */
+  fixed?: boolean
+
+  /**
+   * Array of each fix step (when recursive > 1)
+   */
+  steps?: StylelintLinterResult[]
+
+  /**
+   * Lint result with warnings, parseErrors, etc.
+   */
+  results: [StylelintLinterResult]
+
+  /**
+   * Other properties from stylelint.lint() result
+   */
+  // ... see Stylelint.LinterResult
+}
+```
+
+</details>
+
+## Advanced Usage
+
+### Lifecycle Hooks
+
+Test cases support `before` and `after` hooks for setup/teardown:
+
+```ts
+run({
+  name: 'rule-name',
+  invalid: [
+    {
+      code: 'a { color: red; }',
+      before(linterOptions) {
+        // Called before linting
+        console.log('Testing:', linterOptions.code)
+      },
+      after(result) {
+        // Called after linting
+        console.log('Result:', result.fixed)
+      },
+      warnings(w) {
+        expect(w).toHaveLength(1)
+      },
+    },
+  ],
+})
+```
+
+### Recursive Fix Verification
+
+By default, fixes are applied up to 10 times to handle multi-pass rules. Control this behavior:
+
+```ts
+invalid: [
+  {
+    code: 'a { color: red; }',
+    recursive: false, // Skip recursive fixing
+    verifyAfterFix: false, // Skip verification after fix
+    warnings: 1,
+  },
+]
+```
+
+### Custom Assertion Matchers
+
+All assertion properties accept multiple matcher types:
+
+```ts
+invalid: [
+  {
+    code: 'a { color: red; }',
+
+    // Exact count
+    warnings: 1,
+
+    // Match warning message or properties
+    warnings: [
+      'Unexpected named color "red"',
+      { rule: 'color-no-invalid-hex' },
+    ],
+
+    // Custom function
+    warnings(w) {
+      expect(w).toHaveLength(1)
+      expect(w[0].rule).toBe('my-rule')
+    },
+
+    // Output verification
+    output: 'a { color: blue; }', // exact match
+    output: null, // no change expected
+    output(fixed, input) {
+      expect(fixed).not.toBe(input)
+    },
+  },
+]
+```
+
+## Requirements
+
+- **Node.js**: ≥20.19.0
+- **Package Manager**: pnpm 10.28.1+ (or npm/yarn)
+- **Peer Dependencies**:
+  - stylelint: v17 or higher
+  - vitest: v1, v2, v3, or v4
+
+For non-CSS syntaxes, install the appropriate parser:
+
+- SCSS: `postcss-scss`
+- Less: `postcss-less`
+- HTML/Vue/Svelte: `postcss-html`
+
 ## Credits
 
-- [antfu/eslint-vitest-rule-tester](https://github.com/antfu/eslint-vitest-rule-tester)
+- Inspired by [antfu/eslint-vitest-rule-tester](https://github.com/antfu/eslint-vitest-rule-tester)
 
 ## License
 

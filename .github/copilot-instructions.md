@@ -22,7 +22,7 @@
 3. **Lint**: Run stylelint.lint() without fix, then with fix enabled
 4. **Fix Loop**: Apply fixes recursively (default 10 times) until code stabilizes or verify fixes produced no warnings
 5. **Assert**: Run custom assertions (warnings count, output snapshot, parse errors, etc.)
-6. **Hooks**: Call before/after/onResult lifecycle hooks
+6. **Hooks**: Call before/after lifecycle hooks
 
 ## Key Patterns
 

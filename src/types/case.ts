@@ -101,13 +101,6 @@ export type ValidTestCaseBase<RuleOptions = any> = RuleTesterBehaviorOptions &
     skip?: boolean
 
     /**
-     * lint result
-     *
-     * @deprecated use `after` instead
-     */
-    onResult?: (result: TestExecutionResult) => Awaitable<void>
-
-    /**
      * hook after run test case
      */
     after?: (
