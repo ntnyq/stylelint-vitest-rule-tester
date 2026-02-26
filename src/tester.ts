@@ -65,7 +65,7 @@ export function createRuleTester<RuleOptions = any>(
       return result
     }
 
-    let remainingAttempts = recursive
+    let remainingAttempts: number
 
     for (
       remainingAttempts = recursive;
