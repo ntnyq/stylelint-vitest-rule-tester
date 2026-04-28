@@ -58,7 +58,7 @@ run({
               "line": 1,
               "rule": "at-rule-no-unknown",
               "severity": "error",
-              "text": "Unexpected unknown at-rule "@unknown-at-rule" (at-rule-no-unknown)",
+              "text": "Unknown at-rule "@unknown-at-rule" (at-rule-no-unknown)",
               "url": "https://stylelint.io/user-guide/rules/at-rule-no-unknown",
             },
           ]
@@ -99,7 +99,7 @@ run({
               "line": 1,
               "rule": "at-rule-no-unknown",
               "severity": "error",
-              "text": "Unexpected unknown at-rule "@uNkNoWn" (at-rule-no-unknown)",
+              "text": "Unknown at-rule "@uNkNoWn" (at-rule-no-unknown)",
               "url": "https://stylelint.io/user-guide/rules/at-rule-no-unknown",
             },
           ]
@@ -119,7 +119,7 @@ run({
               "line": 1,
               "rule": "at-rule-no-unknown",
               "severity": "error",
-              "text": "Unexpected unknown at-rule "@UNKNOWN" (at-rule-no-unknown)",
+              "text": "Unknown at-rule "@UNKNOWN" (at-rule-no-unknown)",
               "url": "https://stylelint.io/user-guide/rules/at-rule-no-unknown",
             },
           ]
@@ -139,7 +139,7 @@ run({
               "line": 1,
               "rule": "at-rule-no-unknown",
               "severity": "error",
-              "text": "Unexpected unknown at-rule "@unknown-at-rule" (at-rule-no-unknown)",
+              "text": "Unknown at-rule "@unknown-at-rule" (at-rule-no-unknown)",
               "url": "https://stylelint.io/user-guide/rules/at-rule-no-unknown",
             },
           ]
@@ -159,7 +159,7 @@ run({
               "line": 1,
               "rule": "at-rule-no-unknown",
               "severity": "error",
-              "text": "Unexpected unknown at-rule "@unknown-at-rule" (at-rule-no-unknown)",
+              "text": "Unknown at-rule "@unknown-at-rule" (at-rule-no-unknown)",
               "url": "https://stylelint.io/user-guide/rules/at-rule-no-unknown",
             },
           ]
@@ -179,7 +179,7 @@ run({
               "line": 1,
               "rule": "at-rule-no-unknown",
               "severity": "error",
-              "text": "Unexpected unknown at-rule "@MY-other-at-rule" (at-rule-no-unknown)",
+              "text": "Unknown at-rule "@MY-other-at-rule" (at-rule-no-unknown)",
               "url": "https://stylelint.io/user-guide/rules/at-rule-no-unknown",
             },
           ]
@@ -199,7 +199,7 @@ run({
               "line": 1,
               "rule": "at-rule-no-unknown",
               "severity": "error",
-              "text": "Unexpected unknown at-rule "@not-my-at-rule" (at-rule-no-unknown)",
+              "text": "Unknown at-rule "@not-my-at-rule" (at-rule-no-unknown)",
               "url": "https://stylelint.io/user-guide/rules/at-rule-no-unknown",
             },
           ]

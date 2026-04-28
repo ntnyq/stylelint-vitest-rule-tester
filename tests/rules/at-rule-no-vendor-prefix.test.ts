@@ -39,7 +39,7 @@ run({
               "line": 1,
               "rule": "at-rule-no-vendor-prefix",
               "severity": "error",
-              "text": "Unexpected vendor-prefixed at-rule "@-webkit-keyframes" (at-rule-no-vendor-prefix)",
+              "text": "Vendor-prefixed at-rule "@-webkit-keyframes" (at-rule-no-vendor-prefix)",
               "url": "https://stylelint.io/user-guide/rules/at-rule-no-vendor-prefix",
             },
           ]
@@ -64,7 +64,7 @@ run({
               "line": 1,
               "rule": "at-rule-no-vendor-prefix",
               "severity": "error",
-              "text": "Unexpected vendor-prefixed at-rule "@-wEbKiT-kEyFrAmEs" (at-rule-no-vendor-prefix)",
+              "text": "Vendor-prefixed at-rule "@-wEbKiT-kEyFrAmEs" (at-rule-no-vendor-prefix)",
               "url": "https://stylelint.io/user-guide/rules/at-rule-no-vendor-prefix",
             },
           ]
@@ -89,7 +89,7 @@ run({
               "line": 1,
               "rule": "at-rule-no-vendor-prefix",
               "severity": "error",
-              "text": "Unexpected vendor-prefixed at-rule "@-WEBKIT-KEYFRAMES" (at-rule-no-vendor-prefix)",
+              "text": "Vendor-prefixed at-rule "@-WEBKIT-KEYFRAMES" (at-rule-no-vendor-prefix)",
               "url": "https://stylelint.io/user-guide/rules/at-rule-no-vendor-prefix",
             },
           ]
@@ -114,7 +114,7 @@ run({
               "line": 1,
               "rule": "at-rule-no-vendor-prefix",
               "severity": "error",
-              "text": "Unexpected vendor-prefixed at-rule "@-moz-keyframes" (at-rule-no-vendor-prefix)",
+              "text": "Vendor-prefixed at-rule "@-moz-keyframes" (at-rule-no-vendor-prefix)",
               "url": "https://stylelint.io/user-guide/rules/at-rule-no-vendor-prefix",
             },
           ]
@@ -141,7 +141,7 @@ run({
               "line": 1,
               "rule": "at-rule-no-vendor-prefix",
               "severity": "error",
-              "text": "Unexpected vendor-prefixed at-rule "@-ms-viewport" (at-rule-no-vendor-prefix)",
+              "text": "Vendor-prefixed at-rule "@-ms-viewport" (at-rule-no-vendor-prefix)",
               "url": "https://stylelint.io/user-guide/rules/at-rule-no-vendor-prefix",
             },
           ]
