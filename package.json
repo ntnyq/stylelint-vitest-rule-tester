@@ -38,10 +38,10 @@
   "scripts": {
     "build": "tsdown",
     "dev": "tsdown --watch",
-    "lint": "eslint",
-    "prepare": "husky",
     "format": "oxfmt",
     "format:check": "oxfmt --check",
+    "lint": "eslint",
+    "prepare": "husky",
     "prepublishOnly": "pnpm run build",
     "release": "run-s release:check release:version",
     "release:check": "run-s format:check lint typecheck test",
