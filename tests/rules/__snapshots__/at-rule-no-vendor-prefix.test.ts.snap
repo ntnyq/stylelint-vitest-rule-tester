@@ -8,6 +8,7 @@ exports[`at-rule-no-vendor-prefix > invalid > Invalid #4: @-ms-viewport { orient
   "reportedDisables": [],
   "results": [
     {
+      "autofixed": true,
       "deprecations": [],
       "errored": false,
       "ignored": undefined,
@@ -30,6 +31,7 @@ exports[`at-rule-no-vendor-prefix > invalid > Invalid #4: @-ms-viewport { orient
       "reportedDisables": [],
       "results": [
         {
+          "autofixed": true,
           "deprecations": [],
           "errored": false,
           "ignored": undefined,
@@ -52,6 +54,7 @@ exports[`at-rule-no-vendor-prefix > invalid > Invalid #4: @-ms-viewport { orient
       "reportedDisables": [],
       "results": [
         {
+          "autofixed": undefined,
           "deprecations": [],
           "errored": false,
           "ignored": undefined,
@@ -79,6 +82,7 @@ exports[`at-rule-no-vendor-prefix > valid > Valid #1: @viewport { orientation: l
   "reportedDisables": [],
   "results": [
     {
+      "autofixed": undefined,
       "deprecations": [],
       "errored": false,
       "ignored": undefined,
@@ -101,6 +105,7 @@ exports[`at-rule-no-vendor-prefix > valid > Valid #1: @viewport { orientation: l
       "reportedDisables": [],
       "results": [
         {
+          "autofixed": undefined,
           "deprecations": [],
           "errored": false,
           "ignored": undefined,
