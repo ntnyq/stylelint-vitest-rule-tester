@@ -1,7 +1,11 @@
 overrides:
-  esbuild: ^0.28.0
+  esbuild: ^0.28.2
 
 allowBuilds:
   unrs-resolver: true
 
+ignoreWorkspaceRootCheck: true
+
 minimumReleaseAge: 0
+
+pmOnFail: warn

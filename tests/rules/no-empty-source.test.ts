@@ -51,7 +51,7 @@ run({
     },
     {
       filename: 'whitespaces.css',
-      code: `    `,
+      code: ' '.repeat(4),
       warnings(warnings) {
         expect(warnings).toMatchInlineSnapshot(`
           [
@@ -135,7 +135,7 @@ run({
     },
     {
       filename: 'multi-line.css',
-      code: `\n\n\n`,
+      code: '\n'.repeat(3),
       warnings(warnings) {
         expect(warnings).toMatchInlineSnapshot(`
           [

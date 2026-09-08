@@ -6,8 +6,10 @@ export default defineESLintConfig({
   oxfmt: true,
   prettier: false,
   test: {
-    overridesVitestRules: {
-      'vitest/no-standalone-expect': 'off',
+    vitest: {
+      overrides: {
+        'vitest/no-standalone-expect': 'off',
+      },
     },
   },
 })
