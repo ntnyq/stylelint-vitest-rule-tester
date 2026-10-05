@@ -2,7 +2,7 @@
   "name": "stylelint-vitest-rule-tester",
   "type": "module",
   "version": "0.4.0",
-  "packageManager": "pnpm@12.5.1",
+  "packageManager": "pnpm@12.7.0",
   "description": "Styelint rule tester with Vitest.",
   "keywords": [
     "rule-tester",
@@ -59,14 +59,14 @@
     "postcss": "^8.5.28"
   },
   "devDependencies": {
-    "@ntnyq/eslint-config": "^7.0.0-beta.20",
-    "@types/node": "^26.6.2",
+    "@ntnyq/eslint-config": "^7.0.0-beta.22",
+    "@types/node": "^26.6.3",
     "bumpp": "^12.3.0",
     "eslint": "^10.11.0",
     "husky": "^9.1.7",
     "nano-staged": "^1.0.2",
     "npm-run-all2": "^9.0.3",
-    "oxfmt": "^0.68.0",
+    "oxfmt": "^0.70.0",
     "postcss-html": "^2.0.0",
     "postcss-less": "^6.0.0",
     "postcss-scss": "^4.0.9",
@@ -74,7 +74,7 @@
     "stylelint-scss": "^7.3.0",
     "tsdown": "^0.23.0",
     "typescript": "^6.0.3",
-    "vitest": "^5.0.1"
+    "vitest": "^5.0.2"
   },
   "engines": {
     "node": "^22.13.0 || >=24.11.0"
