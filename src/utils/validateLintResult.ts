@@ -46,6 +46,7 @@ async function verifyLintResultMessages({
   testCase: NormalizedTestCase
   messages: LintResultInvalidOptionWarning[]
 }): Promise<void>
+
 async function verifyLintResultMessages({
   type,
   testCase,

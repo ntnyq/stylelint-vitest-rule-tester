@@ -8,6 +8,7 @@ export function run<RuleOptions = any>(
   options: TestCasesOptions<RuleOptions> & RuleTesterInitOptions<RuleOptions>,
 ) {
   const tester = createRuleTester<RuleOptions>(options)
+
   return tester.run(options)
 }
 
@@ -23,5 +24,6 @@ export function runClassic<RuleOptions = any>(
     name: ruleName,
     ...options,
   })
+
   return tester.run(cases)
 }
