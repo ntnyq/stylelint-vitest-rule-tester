@@ -637,11 +637,23 @@ invalid: [
 
 ## Requirements
 
-- **Node.js**: ≥20.19.0
-- **Package Manager**: pnpm 10.28.1+ (or npm/yarn)
+- **Node.js**: `^22.13.0 || >=24.11.0`; Stylelint 18 requires `^22.22.2 || ^24.15.0 || >=26.0.0`
 - **Peer Dependencies**:
-  - stylelint: v17 or higher
-  - vitest: v1, v2, v3, or v4
+  - stylelint: v17 or v18
+  - vitest: v1, v2, v3, v4, or v5
+
+The same tester API supports both Stylelint versions. Rule availability, options,
+messages, and result fields follow the installed Stylelint version, so snapshots
+may need updating when switching versions.
+
+When testing plugins with Stylelint 18, use a `fix` callback in
+`stylelint.utils.report()` and set `rule.meta.fixable` to `true`. The removed
+`context.fix` API cannot be restored by the tester; the callback API works with
+both Stylelint 17 and 18. Relative plugin and config paths must include the
+filename and extension, for example `./plugin.js`.
+
+See the [Stylelint 18 migration guide](https://stylelint.io/migration-guide/to-18/)
+for the complete list of breaking changes.
 
 For non-CSS syntaxes, install the appropriate parser:
 

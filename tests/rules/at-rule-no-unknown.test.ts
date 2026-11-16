@@ -5,6 +5,7 @@
 import { unindent as $ } from '@ntnyq/utils'
 import { expect } from 'vitest'
 import { run } from '../../src'
+import { normalizeSnapshotWarnings } from '../utils'
 
 /**
  * default
@@ -48,7 +49,7 @@ run({
       filename: 'unknown.css',
       code: '@unknown-at-rule { }',
       warnings(warnings) {
-        expect(warnings).toMatchInlineSnapshot(`
+        expect(normalizeSnapshotWarnings(warnings)).toMatchInlineSnapshot(`
           [
             {
               "column": 1,
@@ -89,7 +90,7 @@ run({
     {
       code: `@uNkNoWn { }`,
       warnings(warnings) {
-        expect(warnings).toMatchInlineSnapshot(`
+        expect(normalizeSnapshotWarnings(warnings)).toMatchInlineSnapshot(`
           [
             {
               "column": 1,
@@ -109,7 +110,7 @@ run({
     {
       code: `@UNKNOWN { }`,
       warnings(warnings) {
-        expect(warnings).toMatchInlineSnapshot(`
+        expect(normalizeSnapshotWarnings(warnings)).toMatchInlineSnapshot(`
           [
             {
               "column": 1,
@@ -129,7 +130,7 @@ run({
     {
       code: `@unknown-at-rule { }`,
       warnings(warnings) {
-        expect(warnings).toMatchInlineSnapshot(`
+        expect(normalizeSnapshotWarnings(warnings)).toMatchInlineSnapshot(`
           [
             {
               "column": 1,
@@ -149,7 +150,7 @@ run({
     {
       code: `@unknown { @unknown-at-rule { font-size: 14px; } }`,
       warnings(warnings) {
-        expect(warnings).toMatchInlineSnapshot(`
+        expect(normalizeSnapshotWarnings(warnings)).toMatchInlineSnapshot(`
           [
             {
               "column": 12,
@@ -169,7 +170,7 @@ run({
     {
       code: `@MY-other-at-rule { }`,
       warnings(warnings) {
-        expect(warnings).toMatchInlineSnapshot(`
+        expect(normalizeSnapshotWarnings(warnings)).toMatchInlineSnapshot(`
           [
             {
               "column": 1,
@@ -189,7 +190,7 @@ run({
     {
       code: `@not-my-at-rule {}`,
       warnings(warnings) {
-        expect(warnings).toMatchInlineSnapshot(`
+        expect(normalizeSnapshotWarnings(warnings)).toMatchInlineSnapshot(`
           [
             {
               "column": 1,

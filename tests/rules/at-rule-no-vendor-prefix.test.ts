@@ -5,6 +5,7 @@
 import { unindent as $ } from '@ntnyq/utils'
 import { expect } from 'vitest'
 import { run } from '../../src'
+import { normalizeSnapshotResult, normalizeSnapshotWarnings } from '../utils'
 
 /**
  * default
@@ -16,7 +17,7 @@ run({
     {
       code: `@viewport { orientation: landscape; }`,
       after(result) {
-        expect(result).toMatchSnapshot()
+        expect(normalizeSnapshotResult(result)).toMatchSnapshot()
       },
     },
   ],
@@ -29,7 +30,7 @@ run({
         expect(output).toMatchInlineSnapshot(`"@keyframes { 0% { top: 0; } }"`)
       },
       warnings(warnings) {
-        expect(warnings).toMatchInlineSnapshot(`
+        expect(normalizeSnapshotWarnings(warnings)).toMatchInlineSnapshot(`
           [
             {
               "column": 1,
@@ -54,7 +55,7 @@ run({
         expect(output).toMatchInlineSnapshot(`"@kEyFrAmEs { 0% { top: 0; } }"`)
       },
       warnings(warnings) {
-        expect(warnings).toMatchInlineSnapshot(`
+        expect(normalizeSnapshotWarnings(warnings)).toMatchInlineSnapshot(`
           [
             {
               "column": 1,
@@ -79,7 +80,7 @@ run({
         expect(output).toMatchInlineSnapshot(`"@KEYFRAMES { 0% { top: 0; } }"`)
       },
       warnings(warnings) {
-        expect(warnings).toMatchInlineSnapshot(`
+        expect(normalizeSnapshotWarnings(warnings)).toMatchInlineSnapshot(`
           [
             {
               "column": 1,
@@ -104,7 +105,7 @@ run({
         expect(output).toMatchInlineSnapshot(`"@keyframes { 0% { top: 0; } }"`)
       },
       warnings(warnings) {
-        expect(warnings).toMatchInlineSnapshot(`
+        expect(normalizeSnapshotWarnings(warnings)).toMatchInlineSnapshot(`
           [
             {
               "column": 1,
@@ -131,7 +132,7 @@ run({
         )
       },
       warnings(warnings) {
-        expect(warnings).toMatchInlineSnapshot(`
+        expect(normalizeSnapshotWarnings(warnings)).toMatchInlineSnapshot(`
           [
             {
               "column": 1,
@@ -148,7 +149,7 @@ run({
         `)
       },
       after(result) {
-        expect(result).toMatchSnapshot()
+        expect(normalizeSnapshotResult(result)).toMatchSnapshot()
       },
     },
   ],

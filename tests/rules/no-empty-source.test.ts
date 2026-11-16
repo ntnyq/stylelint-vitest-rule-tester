@@ -4,6 +4,7 @@
 
 import { expect } from 'vitest'
 import { run } from '../../src'
+import { normalizeSnapshotWarnings } from '../utils'
 
 run({
   name: 'no-empty-source',
@@ -32,7 +33,7 @@ run({
       filename: 'empty.css',
       code: '',
       warnings(warnings) {
-        expect(warnings).toMatchInlineSnapshot(`
+        expect(normalizeSnapshotWarnings(warnings)).toMatchInlineSnapshot(`
           [
             {
               "column": 1,
@@ -53,7 +54,7 @@ run({
       filename: 'whitespaces.css',
       code: ' '.repeat(4),
       warnings(warnings) {
-        expect(warnings).toMatchInlineSnapshot(`
+        expect(normalizeSnapshotWarnings(warnings)).toMatchInlineSnapshot(`
           [
             {
               "column": 1,
@@ -74,7 +75,7 @@ run({
       filename: 'tab.css',
       code: `\t`,
       warnings(warnings) {
-        expect(warnings).toMatchInlineSnapshot(`
+        expect(normalizeSnapshotWarnings(warnings)).toMatchInlineSnapshot(`
           [
             {
               "column": 1,
@@ -95,7 +96,7 @@ run({
       filename: 'newline.css',
       code: `\n`,
       warnings(warnings) {
-        expect(warnings).toMatchInlineSnapshot(`
+        expect(normalizeSnapshotWarnings(warnings)).toMatchInlineSnapshot(`
           [
             {
               "column": 1,
@@ -116,7 +117,7 @@ run({
       filename: 'carriage-return-newline.css',
       code: `\r\n`,
       warnings(warnings) {
-        expect(warnings).toMatchInlineSnapshot(`
+        expect(normalizeSnapshotWarnings(warnings)).toMatchInlineSnapshot(`
           [
             {
               "column": 1,
@@ -137,7 +138,7 @@ run({
       filename: 'multi-line.css',
       code: '\n'.repeat(3),
       warnings(warnings) {
-        expect(warnings).toMatchInlineSnapshot(`
+        expect(normalizeSnapshotWarnings(warnings)).toMatchInlineSnapshot(`
           [
             {
               "column": 1,
@@ -158,7 +159,7 @@ run({
       filename: 'carriage-return-multi-line.css',
       code: `\r\n\r\n\r\n`,
       warnings(warnings) {
-        expect(warnings).toMatchInlineSnapshot(`
+        expect(normalizeSnapshotWarnings(warnings)).toMatchInlineSnapshot(`
           [
             {
               "column": 1,
@@ -179,7 +180,7 @@ run({
       filename: 'newline-with-whitespace.css',
       code: `   \n    `,
       warnings(warnings) {
-        expect(warnings).toMatchInlineSnapshot(`
+        expect(normalizeSnapshotWarnings(warnings)).toMatchInlineSnapshot(`
           [
             {
               "column": 1,
@@ -200,7 +201,7 @@ run({
       filename: 'carriage-return-with-whitespace.css',
       code: `   \r\n    `,
       warnings(warnings) {
-        expect(warnings).toMatchInlineSnapshot(`
+        expect(normalizeSnapshotWarnings(warnings)).toMatchInlineSnapshot(`
           [
             {
               "column": 1,
@@ -227,7 +228,7 @@ run({
         },
       ],
       warnings(warnings) {
-        expect(warnings).toMatchInlineSnapshot(`
+        expect(normalizeSnapshotWarnings(warnings)).toMatchInlineSnapshot(`
           [
             {
               "column": 1,
@@ -251,7 +252,7 @@ run({
       },
       code: '<style>\n</style>',
       warnings(warnings) {
-        expect(warnings).toMatchInlineSnapshot(`
+        expect(normalizeSnapshotWarnings(warnings)).toMatchInlineSnapshot(`
           [
             {
               "column": 1,
