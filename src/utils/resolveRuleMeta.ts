@@ -32,6 +32,7 @@ async function resolveRulesFromTesterOptions(options: RuleTesterInitOptions) {
         const pluginRules = toArray(
           (await interopDefault(require(plugin))) as Stylelint.Plugin,
         )
+
         pluginRules.forEach(rule => {
           loadPluginRule(rule)
         })
