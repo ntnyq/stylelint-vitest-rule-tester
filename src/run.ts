@@ -18,11 +18,11 @@ export function run<RuleOptions = any>(
 export function runClassic<RuleOptions = any>(
   ruleName: string,
   cases: TestCasesOptions<RuleOptions>,
-  options?: RuleTesterInitOptions<RuleOptions>,
+  options?: Omit<RuleTesterInitOptions<RuleOptions>, 'name'>,
 ) {
   const tester = createRuleTester<RuleOptions>({
-    name: ruleName,
     ...options,
+    name: ruleName,
   })
 
   return tester.run(cases)

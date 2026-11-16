@@ -6,10 +6,10 @@ import {
   normalizeLinterResult,
   normalizeTestCase,
   resolveLinterOptions,
-  resolveRuleMeta,
   resolveRuleOptions,
   validateLintResult,
 } from './utils'
+import { resolveRule } from './utils/resolveRuleMeta'
 import type {
   DefaultFilenames,
   InvalidTestCase,
@@ -30,6 +30,37 @@ export function createRuleTester<RuleOptions = any>(
     ...options.defaultFileNames,
   }
 
+  function normalizeCase(c: TestCase<RuleOptions>, type?: 'invalid' | 'valid') {
+    const testcase = typeof c === 'string' ? { code: c } : c
+    const customSyntax =
+      testcase.linterOptions?.customSyntax ??
+      options.linterOptions?.customSyntax ??
+      testcase.stylelintConfig?.customSyntax ??
+      options.stylelintConfig?.customSyntax
+
+    return normalizeTestCase(testcase, defaultFilenames, type, customSyntax)
+  }
+
+  function getLintResult(result: stylelint.LinterResult) {
+    const [lintResult] = result.results
+
+    expect(lintResult, 'no lint result').toBeDefined()
+    expect(lintResult.ignored, 'test case was ignored').toBeFalsy()
+
+    return lintResult
+  }
+
+  function verifyNoMessages(lintResult: stylelint.LintResult, context: string) {
+    for (const type of [
+      'warnings',
+      'deprecations',
+      'parseErrors',
+      'invalidOptionWarnings',
+    ] as const) {
+      expect.soft(lintResult[type], `no ${type} ${context}`).toEqual([])
+    }
+  }
+
   /**
    * Apply fix to code and check if the code changed
    */
@@ -43,10 +74,15 @@ export function createRuleTester<RuleOptions = any>(
       fix: true,
     })
 
-    const fixed = linterResult.code !== code
+    getLintResult(linterResult)
+
+    // Parse errors may not have generated output.
+    const fixedCode = linterResult.code ?? code
+    const fixed = fixedCode !== code
 
     return {
       ...normalizeLinterResult(linterResult),
+      code: fixedCode,
       fixed,
     }
   }
@@ -61,36 +97,26 @@ export function createRuleTester<RuleOptions = any>(
   ): Promise<TestExecutionResult> {
     const result = { ...initialResult }
 
-    if (!result.fixed || recursive === false) {
+    if (!result.fixed || recursive === false || recursive === 0) {
       return result
     }
 
-    let remainingAttempts: number
-
-    for (
-      remainingAttempts = recursive;
-      remainingAttempts >= 0;
-      remainingAttempts--
-    ) {
-      const step = await applyFix(result.code!, linterOptions)
+    for (let attempt = 0; attempt < recursive; attempt++) {
+      const step = await applyFix(result.code, linterOptions)
 
       result.steps?.push(step)
-      result.code = step.code
+      Object.assign(result, step, { fixed: initialResult.fixed })
 
       if (!step.fixed) {
-        break
+        return result
       }
     }
 
-    if (remainingAttempts === 0) {
-      const totalAttempts = recursive + 1
+    const totalAttempts = recursive + 1
 
-      throw new Error(
-        `Fix recursion limit exceeded after ${totalAttempts} attempts, possibly the fix is not stable. Last output:\n-------\n${result.code}\n-------`,
-      )
-    }
-
-    return result
+    throw new Error(
+      `Fix recursion limit exceeded after ${totalAttempts} attempts, possibly the fix is not stable. Last output:\n-------\n${result.code}\n-------`,
+    )
   }
 
   /**
@@ -99,6 +125,7 @@ export function createRuleTester<RuleOptions = any>(
   async function verifyOutput(
     testcase: NormalizedTestCase<RuleOptions>,
     result: TestExecutionResult,
+    verifyFixChanges: boolean,
   ) {
     const normalizedTestCase = testcase
 
@@ -106,15 +133,18 @@ export function createRuleTester<RuleOptions = any>(
       return
     }
 
+    if (verifyFixChanges && !isNull(normalizedTestCase.output)) {
+      expect(result.code, 'expected fix to change the code').not.toBe(
+        normalizedTestCase.code,
+      )
+    }
+
     if (isNull(normalizedTestCase.output)) {
       // null means output should be the same as the input
       expect(result.code, 'output').toBe(normalizedTestCase.code)
     } else if (isFunction(normalizedTestCase.output)) {
       // custom assertion
-      await normalizedTestCase.output(
-        result.code || '',
-        normalizedTestCase.code,
-      )
+      await normalizedTestCase.output(result.code, normalizedTestCase.code)
     } else {
       expect(result.code, 'output').toBe(normalizedTestCase.output)
     }
@@ -132,15 +162,13 @@ export function createRuleTester<RuleOptions = any>(
       return
     }
 
-    const { results = [] } = await stylelint.lint({
+    const linterResult = await stylelint.lint({
       ...linterOptions,
       code: result.code,
       fix: false,
     })
-    const [lintResult] = results
 
-    expect.soft(lintResult, 'no lint result').toBeDefined()
-    expect.soft(lintResult.warnings, 'no warnings after fix').toEqual([])
+    verifyNoMessages(getLintResult(linterResult), 'after fix')
   }
 
   /**
@@ -163,18 +191,45 @@ export function createRuleTester<RuleOptions = any>(
     }
   }
 
-  async function each(c: TestCase<RuleOptions>) {
-    const testcase = normalizeTestCase(c, defaultFilenames)
+  async function each(c: TestCase<RuleOptions>, type?: 'invalid' | 'valid') {
+    const testcase = normalizeCase(c, type)
 
-    const { recursive = 10, verifyAfterFix = true } = {
+    const {
+      recursive = 10,
+      verifyAfterFix = true,
+      verifyFixChanges = true,
+    } = {
       ...options,
       ...testcase,
     }
 
+    if (
+      recursive !== false &&
+      (!Number.isInteger(recursive) || recursive < 0)
+    ) {
+      throw new Error('recursive must be false or a non-negative integer')
+    }
+
+    validateInvalidTestCase(testcase)
+
     // Resolve rule configuration
-    const ruleMeta = await resolveRuleMeta(options)
-    const ruleOptions = resolveRuleOptions(testcase, options, ruleMeta)
-    const linterOptions = resolveLinterOptions(options, testcase, ruleOptions)
+    const linterOptions = resolveLinterOptions(options, testcase, true)
+    const rule = await resolveRule({
+      name: options.name,
+      stylelintConfig: linterOptions.config,
+      linterOptions,
+    })
+    const ruleOptions = resolveRuleOptions(
+      testcase,
+      options,
+      rule?.meta,
+      rule?.primaryOptionArray,
+    )
+
+    linterOptions.config = {
+      ...linterOptions.config,
+      rules: { [options.name]: ruleOptions },
+    }
 
     // Run before hook
     // eslint-disable-next-line no-useless-call
@@ -182,9 +237,13 @@ export function createRuleTester<RuleOptions = any>(
 
     // Initial lint without fix
     const linterResult = await stylelint.lint(linterOptions)
-    const [lintResult] = linterResult.results
+    const lintResult = getLintResult(linterResult)
 
     await validateLintResult(testcase, lintResult)
+
+    if (type === 'valid') {
+      verifyNoMessages(lintResult, 'on valid cases')
+    }
 
     // Apply fix and collect result
     const fixedLinterResult = await applyFix(testcase.code, linterOptions)
@@ -197,62 +256,12 @@ export function createRuleTester<RuleOptions = any>(
     result = await applyRecursiveFix(result, linterOptions, recursive)
 
     // Verify output expectations
-    await verifyOutput(testcase, result)
+    await verifyOutput(testcase, result, verifyFixChanges)
 
-    // Validate invalid test case has assertions
-    validateInvalidTestCase(testcase)
-
-    // Verify fixed result has no warnings
-    await verifyFixedResult(result, linterOptions, verifyAfterFix)
-
-    // eslint-disable-next-line no-useless-call
-    await testcase.after?.call(testcase, result)
-
-    return {
-      testcase,
-      result,
-    }
-  }
-
-  async function valid(arg: ValidTestCase<RuleOptions> | string) {
-    const { testcase, result } = await each(arg)
-    const [lintResult] = result.results
-
-    expect.soft(lintResult, 'no lint result').toBeDefined()
-    expect.soft(result.fixed, 'no need to fix for valid cases').toBeFalsy()
-
-    expect.soft(lintResult.warnings, 'no warnings on valid cases').toEqual([])
-    expect
-      .soft(lintResult.deprecations, 'no deprecations on valid cases')
-      .toEqual([])
-    expect
-      .soft(lintResult.parseErrors, 'no parseErrors on valid cases')
-      .toEqual([])
-    expect
-      .soft(
-        lintResult.invalidOptionWarnings,
-        'no invalidOptionWarnings on valid cases',
-      )
-      .toEqual([])
-
-    return {
-      testcase,
-      result,
-    }
-  }
-
-  async function invalid(arg: InvalidTestCase<RuleOptions> | string) {
-    const { testcase, result } = await each(arg)
-    const [lintResult] = result.results
-
-    expect.soft(lintResult, 'no lint result').toBeDefined()
-
-    // This case has been fixed
-    if (result.fixed) {
-      expect
-        .soft(lintResult.warnings, 'expect no warnings on fixed invalid case')
-        .toEqual([])
-    } else {
+    if (type === 'valid') {
+      expect.soft(result.fixed, 'no need to fix for valid cases').toBeFalsy()
+      verifyNoMessages(result.results[0], 'on valid cases')
+    } else if (type === 'invalid' && !result.fixed) {
       const noMessages =
         isEmptyArray(lintResult.warnings) &&
         isEmptyArray(lintResult.deprecations) &&
@@ -267,10 +276,24 @@ export function createRuleTester<RuleOptions = any>(
         .toBeFalsy()
     }
 
+    // Verify fixed result has no warnings
+    await verifyFixedResult(result, linterOptions, verifyAfterFix)
+
+    // eslint-disable-next-line no-useless-call
+    await testcase.after?.call(testcase, result)
+
     return {
       testcase,
       result,
     }
+  }
+
+  async function valid(arg: ValidTestCase<RuleOptions> | string) {
+    return each(arg, 'valid')
+  }
+
+  async function invalid(arg: InvalidTestCase<RuleOptions> | string) {
+    return each(arg, 'invalid')
   }
 
   async function run(cases: TestCasesOptions<RuleOptions>) {
@@ -278,7 +301,7 @@ export function createRuleTester<RuleOptions = any>(
       if (cases.valid?.length) {
         describe('valid', () => {
           cases.valid!.forEach((c, index) => {
-            const testCase = normalizeTestCase(c, defaultFilenames, 'valid')
+            const testCase = normalizeCase(c, 'valid')
             let run: typeof it | typeof it.only = it
 
             if (testCase.only) {
@@ -290,7 +313,7 @@ export function createRuleTester<RuleOptions = any>(
             }
 
             run(
-              `Valid #${index}: ${testCase.description || testCase.code}`,
+              `Valid #${index}: ${testCase.name || testCase.description || testCase.code}`,
               async () => {
                 const { testcase, result } = await valid(testCase)
 
@@ -304,7 +327,7 @@ export function createRuleTester<RuleOptions = any>(
       if (cases.invalid?.length) {
         describe('invalid', () => {
           cases.invalid!.forEach((c, index) => {
-            const testCase = normalizeTestCase(c, defaultFilenames, 'invalid')
+            const testCase = normalizeCase(c, 'invalid')
             let run: typeof it | typeof it.only = it
 
             if (testCase.only) {
@@ -316,7 +339,7 @@ export function createRuleTester<RuleOptions = any>(
             }
 
             run(
-              `Invalid #${index}: ${testCase.description || testCase.code}`,
+              `Invalid #${index}: ${testCase.name || testCase.description || testCase.code}`,
               async () => {
                 const { testcase, result } = await invalid(testCase)
 

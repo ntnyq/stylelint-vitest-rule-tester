@@ -40,9 +40,9 @@ export interface StylelintOptions<RuleOptions = any> {
   linterOptions?: Stylelint.LinterOptions
 
   /**
-   * rule options
+   * Rule options. Set null to disable the rule for this tester or case.
    */
-  ruleOptions?: RuleOptions
+  ruleOptions?: RuleOptions | null
 
   /**
    * stylelint config

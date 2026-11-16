@@ -25,7 +25,7 @@ pnpm add stylelint-vitest-rule-tester -D
 
 ```ts
 import stylelintSCSS from 'stylelint-scss'
-import { run } from 'stylelint-vitest-rule-tester'
+import { $, run } from 'stylelint-vitest-rule-tester'
 import { expect } from 'vitest'
 
 run({
@@ -102,7 +102,7 @@ run({
     {
       filename: 'disable.css',
       code: '',
-      ruleOptions: [false],
+      ruleOptions: [null],
     },
 
     // object case with stylelint config
@@ -202,7 +202,7 @@ run({
 
 Create a rule tester and run all test cases with a single function call.
 
-- **Type**: `(options: TestCasesOptions & RuleTesterInitOptions) => void`
+- **Type**: `(options: TestCasesOptions & RuleTesterInitOptions) => Promise<void>`
 
 ```ts
 run({
@@ -211,7 +211,7 @@ run({
     '.class {}',
     {
       code: '',
-      ruleOptions: [false],
+      ruleOptions: [null],
     },
   ],
   invalid: [
@@ -230,7 +230,7 @@ run({
 
 Classic-style function for running tests with explicit arguments.
 
-- **Type**: `(ruleName: string, cases: TestCasesOptions, options?: RuleTesterInitOptions) => void`
+- **Type**: `(ruleName: string, cases: TestCasesOptions, options?: Omit<RuleTesterInitOptions, 'name'>) => Promise<void>`
 
 ```ts
 import { runClassic } from 'stylelint-vitest-rule-tester'
@@ -241,7 +241,7 @@ runClassic('no-empty-source', {
     '.class {}',
     {
       code: '',
-      ruleOptions: [false],
+      ruleOptions: [null],
     },
   ],
   invalid: [
@@ -306,7 +306,8 @@ export type RuleTesterInitOptions<RuleOptions = any> = {
   name: string
 
   /**
-   * Default filenames for different syntaxes (auto-selected by customSyntax)
+   * Default filenames for named postcss-* syntaxes (e.g. postcss-scss).
+   * Other syntax objects or paths use the CSS default; set filename explicitly.
    *
    * Defaults: { css: 'file.css', scss: 'file.scss', sass: 'file.sass',
    *             less: 'file.less', postcss: 'file.postcss', styl: 'file.styl' }
@@ -314,7 +315,10 @@ export type RuleTesterInitOptions<RuleOptions = any> = {
   defaultFileNames?: Partial<DefaultFilenames>
 
   /**
-   * The number of times to recursively apply fixes
+   * Maximum additional fix passes after the initial fix.
+   * Must be a non-negative integer. Additional passes stop once the code
+   * stabilizes and throw if the last allowed pass still changes the code.
+   * Set false or 0 to run only the initial fix.
    *
    * @default 10
    */
@@ -328,6 +332,14 @@ export type RuleTesterInitOptions<RuleOptions = any> = {
   verifyAfterFix?: boolean
 
   /**
+   * Require string or callback output expectations to change the input.
+   * Use output: null to assert unchanged code, or set this to false.
+   *
+   * @default true
+   */
+  verifyFixChanges?: boolean
+
+  /**
    * Stylelint configuration (rules, plugins, customSyntax, etc.)
    *
    * @see https://stylelint.io/user-guide/configure
@@ -335,9 +347,9 @@ export type RuleTesterInitOptions<RuleOptions = any> = {
   stylelintConfig?: Stylelint.Config
 
   /**
-   * Rule-specific options passed to the rule
+   * Rule-specific options passed to the rule. Set null to disable the rule.
    */
-  ruleOptions?: RuleOptions
+  ruleOptions?: RuleOptions | null
 
   /**
    * Direct stylelint.lint() options (rarely needed)
@@ -423,9 +435,9 @@ export type ValidTestCase<RuleOptions = any> =
       stylelintConfig?: Stylelint.Config
 
       /**
-       * Rule options override for this case
+       * Rule options override for this case. Set null to disable the rule.
        */
-      ruleOptions?: RuleOptions
+      ruleOptions?: RuleOptions | null
 
       /**
        * Hook: called before linting
@@ -479,7 +491,7 @@ export type InvalidTestCase<RuleOptions = any> =
        */
       warnings?:
         | number
-        | (string | LintResultWarning)[]
+        | (string | Partial<LintResultWarning>)[]
         | ((w: LintResultWarning[]) => Awaitable<void>)
 
       /**
@@ -499,7 +511,7 @@ export type InvalidTestCase<RuleOptions = any> =
        */
       parseErrors?:
         | number
-        | (string | LintResultParseError)[]
+        | (string | Partial<LintResultParseError>)[]
         | ((e: LintResultParseError[]) => Awaitable<void>)
 
       /**
@@ -507,7 +519,7 @@ export type InvalidTestCase<RuleOptions = any> =
        */
       deprecations?:
         | number
-        | (string | LintResultDeprecation)[]
+        | (string | Partial<LintResultDeprecation>)[]
         | ((d: LintResultDeprecation[]) => Awaitable<void>)
 
       /**
@@ -515,7 +527,7 @@ export type InvalidTestCase<RuleOptions = any> =
        */
       invalidOptionWarnings?:
         | number
-        | (string | LintResultInvalidOptionWarning)[]
+        | (string | Partial<LintResultInvalidOptionWarning>)[]
         | ((w: LintResultInvalidOptionWarning[]) => Awaitable<void>)
     }
 ```
@@ -540,14 +552,14 @@ export type TestExecutionResult = {
   fixed?: boolean
 
   /**
-   * Array of each fix step (when recursive > 1)
+   * Each fix pass, including the initial pass and the stabilizing pass
    */
   steps?: StylelintLinterResult[]
 
   /**
    * Lint result with warnings, parseErrors, etc.
    */
-  results: [StylelintLinterResult]
+  results: Stylelint.LintResult[]
 
   /**
    * Other properties from stylelint.lint() result
@@ -588,7 +600,15 @@ run({
 
 ### Recursive Fix Verification
 
-By default, fixes are applied up to 10 times to handle multi-pass rules. Control this behavior:
+The tester always applies an initial fix. By default, it then runs up to 10
+additional fix passes, stopping once a pass leaves the code unchanged. It throws
+if the last allowed pass still changes the code.
+
+`recursive` accepts `false` or a non-negative integer. With `recursive: 0` or
+`recursive: false`, only the initial fix runs. `verifyAfterFix` independently
+controls whether the final output is linted again to check for diagnostics
+(warnings, deprecations, parse errors, and invalid options). Control
+this behavior per tester or per case:
 
 ```ts
 invalid: [

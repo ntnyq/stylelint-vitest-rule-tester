@@ -16,6 +16,7 @@ export function resolveLinterOptions(
 ) {
   const linterOptions: Stylelint.LinterOptions = {
     ...options.linterOptions,
+    ...testCase.linterOptions,
     config: {
       ...deepmerge(
         options.stylelintConfig || {},
@@ -24,6 +25,7 @@ export function resolveLinterOptions(
       rules: {
         [options.name]: ruleOptions,
       },
+      fix: false,
     },
     code: testCase.code,
     codeFilename: testCase.filename,

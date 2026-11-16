@@ -23,7 +23,7 @@ export type InvalidTestCaseBase<RuleOptions = any> =
      */
     deprecations?:
       | number
-      | (string | LintResultDeprecation)[]
+      | (string | Partial<LintResultDeprecation>)[]
       | ((deprecations: LintResultDeprecation[]) => Awaitable<void>)
 
     /**
@@ -31,7 +31,7 @@ export type InvalidTestCaseBase<RuleOptions = any> =
      */
     invalidOptionWarnings?:
       | number
-      | (string | LintResultInvalidOptionWarning)[]
+      | (string | Partial<LintResultInvalidOptionWarning>)[]
       | ((
           invalidOptionWarnings: LintResultInvalidOptionWarning[],
         ) => Awaitable<void>)
@@ -50,7 +50,7 @@ export type InvalidTestCaseBase<RuleOptions = any> =
      */
     parseErrors?:
       | number
-      | (string | LintResultParseError)[]
+      | (string | Partial<LintResultParseError>)[]
       | ((parseErrors: LintResultParseError[]) => Awaitable<void>)
 
     /**
@@ -58,7 +58,7 @@ export type InvalidTestCaseBase<RuleOptions = any> =
      */
     warnings?:
       | number
-      | (string | LintResultWarning)[]
+      | (string | Partial<LintResultWarning>)[]
       | ((warnings: LintResultWarning[]) => Awaitable<void>)
   }
 

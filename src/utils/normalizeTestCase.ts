@@ -1,5 +1,6 @@
-import { isString } from '@ntnyq/utils'
+import { isString, isUndefined } from '@ntnyq/utils'
 import { DEFAULT_FILE_NAME } from '../constants'
+import type Stylelint from 'stylelint'
 import type { DefaultFilenames, NormalizedTestCase, TestCase } from '../types'
 
 /**
@@ -10,11 +11,11 @@ import type { DefaultFilenames, NormalizedTestCase, TestCase } from '../types'
  */
 function isInvalidTestCase(testCase: NormalizedTestCase): boolean {
   return (
-    !!testCase.warnings ||
-    !!testCase.deprecations ||
-    !!testCase.parseErrors ||
-    !!testCase.invalidOptionWarnings ||
-    !!testCase.output
+    !isUndefined(testCase.warnings) ||
+    !isUndefined(testCase.deprecations) ||
+    !isUndefined(testCase.parseErrors) ||
+    !isUndefined(testCase.invalidOptionWarnings) ||
+    !isUndefined(testCase.output)
   )
 }
 
@@ -24,20 +25,35 @@ function isInvalidTestCase(testCase: NormalizedTestCase): boolean {
  * @param testCase - test case
  * @param defaultFilenames - given default file name
  * @param type - case type
+ * @param customSyntax - effective custom syntax for choosing a default filename
  * @returns normalized test case
  */
 export function normalizeTestCase<RuleOptions = any>(
   testCase: TestCase<RuleOptions>,
   defaultFilenames: Partial<DefaultFilenames>,
   type?: 'valid' | 'invalid',
+  customSyntax?: Stylelint.Config['customSyntax'],
 ): NormalizedTestCase<RuleOptions> {
   const obj = isString(testCase) ? { code: testCase } : { ...testCase }
   const normalized = obj as NormalizedTestCase<RuleOptions>
 
-  normalized.type ||=
-    type || (isInvalidTestCase(normalized) ? 'invalid' : 'valid')
+  normalized.type =
+    type ||
+    normalized.type ||
+    (isInvalidTestCase(normalized) ? 'invalid' : 'valid')
 
-  normalized.filename ||= defaultFilenames.css || DEFAULT_FILE_NAME
+  const syntax =
+    customSyntax ??
+    normalized.linterOptions?.customSyntax ??
+    normalized.stylelintConfig?.customSyntax
+  const syntaxName = isString(syntax)
+    ? /^postcss-(\w+)$/.exec(syntax)?.[1]
+    : undefined
+
+  normalized.filename ||=
+    (syntaxName && defaultFilenames[syntaxName]) ||
+    defaultFilenames.css ||
+    DEFAULT_FILE_NAME
 
   return normalized
 }

@@ -29,6 +29,11 @@ export interface TestCasesOptions<RuleOptions = any> {
  */
 export type TestExecutionResult = StylelintLinterResult & {
   /**
+   * Final code after fixing, or the original input when no output was generated
+   */
+  code: string
+
+  /**
    * whether the code was fixed
    */
   fixed?: boolean

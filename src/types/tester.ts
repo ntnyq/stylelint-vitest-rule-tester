@@ -13,7 +13,10 @@ import type { TestCasesOptions, TestExecutionResult } from './test'
  */
 export type RuleTesterBehaviorOptions = {
   /**
-   * the number of times to recursively apply the rule
+   * Maximum additional fix passes after the initial fix.
+   * Must be a non-negative integer. Additional passes stop once the code
+   * stabilizes and throw if the last allowed pass still changes the code.
+   * Set false or 0 to run only the initial fix.
    *
    * @default 10
    */
@@ -27,7 +30,8 @@ export type RuleTesterBehaviorOptions = {
   verifyAfterFix?: boolean
 
   /**
-   * verify that fix allways changes the code
+   * Require a non-null output expectation to change the input code.
+   * Set false to allow unchanged string or callback output expectations.
    *
    * @default true
    */
@@ -64,7 +68,7 @@ export interface RuleTester<RuleOptions = any> {
   /**
    * run a single test case
    */
-  each: (arg: TestCase) => Promise<{
+  each: (arg: TestCase<RuleOptions>) => Promise<{
     result: TestExecutionResult
     testcase: NormalizedTestCase<RuleOptions>
   }>
@@ -72,7 +76,7 @@ export interface RuleTester<RuleOptions = any> {
   /**
    * run a single invalid test case
    */
-  invalid: (arg: InvalidTestCase) => Promise<{
+  invalid: (arg: InvalidTestCase<RuleOptions>) => Promise<{
     result: TestExecutionResult
     testcase: NormalizedTestCase<RuleOptions>
   }>
@@ -80,7 +84,7 @@ export interface RuleTester<RuleOptions = any> {
   /**
    * run a single valid test case
    */
-  valid: (arg: ValidTestCase) => Promise<{
+  valid: (arg: ValidTestCase<RuleOptions>) => Promise<{
     result: TestExecutionResult
     testcase: NormalizedTestCase<RuleOptions>
   }>

@@ -56,7 +56,7 @@ async function verifyLintResultMessages({
   testCase: NormalizedTestCase
   messages: any[]
 }) {
-  if (!testCase[type]) {
+  if (testCase[type] === undefined) {
     return
   }
 
@@ -69,9 +69,7 @@ async function verifyLintResultMessages({
       normalizeCaseMessage(message),
     )
 
-    expect(testCaseMessages.length, `number of ${type}`).toBe(
-      testCase[type].length,
-    )
+    expect(messages.length, `number of ${type}`).toBe(testCaseMessages.length)
 
     testCaseMessages.forEach((expected, idx) => {
       expect

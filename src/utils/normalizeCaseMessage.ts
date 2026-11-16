@@ -8,7 +8,7 @@ import type { LintResultMessage } from '../types'
  * @returns normalized message
  */
 export function normalizeCaseMessage(
-  message: string | LintResultMessage,
+  message: string | Partial<LintResultMessage>,
 ): Partial<LintResultMessage> {
   if (isString(message)) {
     return {
@@ -16,7 +16,7 @@ export function normalizeCaseMessage(
     }
   }
 
-  const clone = { ...message }
-
-  return clone as Partial<LintResultMessage>
+  return {
+    ...message,
+  }
 }
