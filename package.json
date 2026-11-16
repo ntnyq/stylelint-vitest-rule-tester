@@ -68,7 +68,7 @@
     "npm-run-all2": "^9.0.4",
     "oxfmt": "^0.75.0",
     "postcss-html": "^2.0.0",
-    "postcss-less": "^6.0.0",
+    "postcss-less": "^7.0.1",
     "postcss-scss": "^4.0.9",
     "stylelint": "^17.16.0",
     "stylelint-scss": "^7.4.0",
