@@ -15,6 +15,7 @@ export function normalizeCaseMessage(
       text: message,
     }
   }
+
   const clone = { ...message }
 
   return clone as Partial<LintResultMessage>

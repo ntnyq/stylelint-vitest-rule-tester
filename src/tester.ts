@@ -84,6 +84,7 @@ export function createRuleTester<RuleOptions = any>(
 
     if (remainingAttempts === 0) {
       const totalAttempts = recursive + 1
+
       throw new Error(
         `Fix recursion limit exceeded after ${totalAttempts} attempts, possibly the fix is not stable. Last output:\n-------\n${result.code}\n-------`,
       )
@@ -283,6 +284,7 @@ export function createRuleTester<RuleOptions = any>(
             if (testCase.only) {
               run = it.only
             }
+
             if (testCase.skip) {
               run = it.skip
             }
@@ -291,6 +293,7 @@ export function createRuleTester<RuleOptions = any>(
               `Valid #${index}: ${testCase.description || testCase.code}`,
               async () => {
                 const { testcase, result } = await valid(testCase)
+
                 await cases?.onResult?.(testcase, result)
               },
             )
@@ -307,6 +310,7 @@ export function createRuleTester<RuleOptions = any>(
             if (testCase.only) {
               run = it.only
             }
+
             if (testCase.skip) {
               run = it.skip
             }
@@ -315,6 +319,7 @@ export function createRuleTester<RuleOptions = any>(
               `Invalid #${index}: ${testCase.description || testCase.code}`,
               async () => {
                 const { testcase, result } = await invalid(testCase)
+
                 await cases?.onResult?.(testcase, result)
               },
             )

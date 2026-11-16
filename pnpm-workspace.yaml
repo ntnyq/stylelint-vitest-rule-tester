@@ -5,7 +5,5 @@ allowBuilds:
   unrs-resolver: true
 
 ignoreWorkspaceRootCheck: true
-
 minimumReleaseAge: 0
-
 pmOnFail: warn
